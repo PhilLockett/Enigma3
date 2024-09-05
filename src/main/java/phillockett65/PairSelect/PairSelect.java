@@ -1,0 +1,466 @@
+/*  CustomRotorController - a JavaFX based Custom Controller representing a Rotor.
+ *
+ *  Copyright 2024 Philip Lockett.
+ *
+ *  This file is part of CustomRotorController.
+ *
+ *  CustomRotorController is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  CustomRotorController is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with CustomRotorController.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Boilerplate code responsible for launching the JavaFX application. 
+ */
+package phillockett65.PairSelect;
+
+
+import java.util.ArrayList;
+
+import javafx.geometry.Point2D;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Text;
+
+
+public class PairSelect extends AnchorPane {
+
+    private static final int PAIR_COUNT = 12;
+
+    private boolean onHandle = false;
+    private boolean dragged = false;
+    private int currentIndex = -1;
+    private Line guide;
+
+    private static double xCentre = 200.0;
+    private static double yCentre = 200.0;
+    private static double radius = 150.0;
+    private static double labelRadius = radius + 25.0;
+
+    private static double colIndent = 40.0;
+    private static double rowIndent = 40.0;
+    private static double colStep = 40.0;
+    private static double rowStep = 100.0;
+
+    private static final String GUIDECOL = "select-guide";
+    private static final String TEXTCOL = "select-text";
+    private static final String LINECOL = "select-line";
+
+    private final Color guideCol = Color.SILVER;
+    private final Color textCol = Color.WHITE;
+    private final Color lineCol = Color.GREEN;
+
+
+    public double getMyWidth() { return xCentre * 2; }
+    public double getMyHeight() { 
+        return isPlugboard() ? (rowStep * 3) : (yCentre * 2) + rowIndent; 
+    }
+
+    public static final int STEPS = 13;
+    public static final double pi = Math.acos(-1);
+    public static final double STEP = (pi / STEPS);
+
+    private ArrayList<Pair> pairList;
+
+    private ArrayList<Plug> buttons;
+    private ArrayList<Text> labels;
+    private Point2D[] points;
+    private boolean plugboard = false;
+
+
+    public static int charToUpper(int v) { return Character.toUpperCase(v); }
+    public static int charToIndex(int v) { return charToUpper(v) - 'A'; }
+    public static int letterToIndex(String v) { return charToIndex(v.charAt(0)); }
+    public static int indexToChar(int v) { return v + 'A'; }
+    public static String indexToLetter(int v) { return "" + (char)indexToChar(v); }
+
+    public static int charToInt(int v) { return charToIndex(v) + 1; }
+    public static int intTochar(int v) { return indexToChar(v-1); }
+    public static String intToString(int v) { return "" + (char)intTochar(v); }
+
+    public static String indexToNumber(int v) { return Integer.toString(v+1); }
+    public static int numberToIndex(String v) { return Integer.parseInt(v)-1; }
+
+    public static int stringToIndex(String s) { return Character.isDigit(s.charAt(0)) ? numberToIndex(s) : letterToIndex(s); }
+
+    public int size() { return pairList.size(); }
+    public String getText(int index)	{ return pairList.get(index).get(); }
+
+    public boolean isPlugboard() { return plugboard; }
+
+
+    private void dragWire(Plug button, int index) {
+        dragged = true;
+        currentIndex = index;
+        button.stateChange(true, true);
+
+        guide.setStartX(button.getCenterX());
+        guide.setStartY(button.getCenterY());
+        guide.setEndX(button.getCenterX());
+        guide.setEndY(button.getCenterY());
+        guide.setVisible(true);
+    }
+
+    private void dropWire(Plug button, int index) {
+        dragged = false;
+        button.stateChange(false, false);
+        guide.setVisible(false);
+    }
+
+    private void pairWire(Plug button, int index) {
+        dragged = false;
+        button.stateChange(true, false);
+
+        Plug currentButton = buttons.get(currentIndex);
+        Pair pair = new Pair(currentButton, button);
+
+        pairList.add(pair);
+        Line line = pair.getLine();
+        line.setStroke(lineCol);
+        line.getStyleClass().add(LINECOL);
+        this.getChildren().add(line);
+
+        guide.setVisible(false);
+
+        button.fireEvent(new SelectEvent(this, pair, SelectEvent.LINK_ADDED));
+    }
+
+    private void removeLink(Plug button, int index) {
+
+        for (Pair pair : pairList)
+        {
+            int gotIndex = pair.gotIndex(index);
+            if (gotIndex == 0)
+                continue;
+
+            int otherIndex = (gotIndex == 1) ? pair.getSecond() : pair.getFirst();
+
+            Plug otherButton = buttons.get(otherIndex);
+            otherButton.stateChange(false, false);
+            button.stateChange(false, true);
+
+            pair.resetTips();
+            this.getChildren().remove(pair.getLine());
+            pairList.remove(pair);
+
+            button.fireEvent(new SelectEvent(this, pair, SelectEvent.LINK_REMOVED));
+
+            break;
+        }
+    }
+
+
+    private void loadPlugboard() {
+        final String[] plugOrder = { "QWERTZUIO", "ASDFGHJK", "PYXCVBNML" };
+        points = new Point2D[26];
+
+        int row = 0;
+        for (String plug : plugOrder) {
+            final int max = plug.length();
+            for (int col = 0; col < max; ++col) {
+                int index = charToIndex(plug.charAt(col));
+                double x = colIndent + (col * colStep) + ((row % 2) * (colStep / 2));
+                double y = rowIndent + (row * rowStep);
+                points[index] = new Point2D(x, y);
+            }
+            ++row;
+        }
+    }
+
+    private void positionReflectorButton(int index) {
+        final double theta = STEP * index;
+        final double s = Math.sin(theta);
+        final double c = Math.cos(theta);
+
+        final double x = (radius * s) + xCentre;
+        final double y = (radius * c) + yCentre;
+        Plug button = buttons.get(index);
+        button.setCenterX(x);
+        button.setCenterY(y);
+
+        final double a = (labelRadius * s) + xCentre - 4;
+        final double b = (labelRadius * c) + yCentre + 5;
+        Text text = labels.get(index);
+        text.setX(a);
+        text.setY(b);
+    }
+
+    private void positionPlugboardButton(int index) {
+        Point2D point = points[index];
+        Plug button = buttons.get(index);
+        button.setCentre(point);
+
+        final double x = point.getX();
+        final double y = point.getY();
+        Text text = labels.get(index);
+        text.setX(x-4);
+        text.setY(y-20);
+    }
+
+    private void positionButtons() {
+        if (isPlugboard()) {
+            loadPlugboard();
+            for (int index = 0; index < (STEPS*2); ++index) {
+                positionPlugboardButton(index);
+            }
+        } else {
+            for (int index = 0; index < (STEPS*2); ++index) {
+                positionReflectorButton(index);
+            }
+        }
+
+        // Reset position of the links.
+        for (Pair pair : pairList) {
+            pair.resetLine();
+        }
+    }
+
+
+    private void addButton(int index) {
+        
+        final String letter = indexToLetter(index);
+        Plug button = new Plug(letter);
+
+        Text text = new Text();
+        text.setText(letter);
+        text.setStroke(textCol);
+        text.setFill(textCol);
+        text.getStyleClass().add(TEXTCOL);
+        text.setStrokeType(StrokeType.OUTSIDE);
+
+        button.setOnMouseClicked(event -> {
+            if (buttons.get(index).isUsed()) {
+                removeLink(button, index);
+            } else {
+                if (dragged == true)
+                    pairWire(button, index);
+                else
+                    dragWire(button, index);
+            }
+        });
+
+        button.setOnMouseEntered(event -> {
+            button.stateChange(buttons.get(index).isUsed(), true);
+            onHandle = true;
+        });
+
+        button.setOnMouseExited(event -> {
+            button.stateChange(buttons.get(index).isUsed(), false);
+            onHandle = false;
+        });
+
+        this.getChildren().add(button);
+        this.getChildren().add(text);
+
+        buttons.add(button);
+        labels.add(text);
+
+    }
+    private void addButtons() {
+        for (int i = 0; i < (STEPS*2); ++i) {
+            addButton(i);
+        }
+    }
+
+
+
+    /**
+     * Determine if the plugboard is valid.
+     * @return true if the plugboard is valid, false otherwise.
+     */
+    public boolean isValid() {
+        // Check we have only 1 unconfigured pair.
+        if ((!isPlugboard()) && (pairList.size() < PAIR_COUNT))
+            return false;
+
+        return true;
+    }
+
+    public int[] getMap() {
+        int[] map = new int[26];
+
+        for (int i = 0; i < map.length; ++i)
+            map[i] = i;
+
+        if (!isValid())
+            return map;
+
+        for (Pair pair : pairList) {
+            final int a = pair.getFirst();
+            final int b = pair.getSecond();
+            map[a] = b;
+            map[b] = a;
+        }
+
+        if ((isPlugboard()) || (pairList.size() > PAIR_COUNT))
+            return map;
+
+        // Set up reflector unconfigured pair.
+        int first = -1;
+        for (int index = 0; index < buttons.size(); ++index) {
+            if (buttons.get(index).isUsed())
+                continue;
+
+            if (first == -1) {
+                first = index;
+            } else {
+                map[first] = index;
+                map[index] = first;
+
+                break;
+            }
+        }
+
+        return map;
+    }
+
+    public void clear() {
+        for (Pair pair : pairList) {
+            this.getChildren().remove(pair.getLine());
+            pair.resetTips();
+        }
+        pairList.clear();
+
+        for (Plug button : buttons) {
+            button.stateChange(false, false);
+        }
+    }
+
+    private void init() {
+
+        pairList = new ArrayList<Pair>();
+        buttons = new ArrayList<Plug>();
+        labels = new ArrayList<Text>();
+
+        guide = new Line();
+        guide.setStroke(guideCol);
+        guide.getStyleClass().add(GUIDECOL);
+        guide.setStrokeWidth(5);
+        guide.setStrokeLineCap(StrokeLineCap.ROUND);
+        guide.setVisible(false);
+        this.getChildren().add(guide);
+
+        addButtons();
+
+        this.setOnMouseClicked(event -> {
+            if (onHandle == true)
+                return;
+
+            if (dragged == true) {
+                Plug currrentButton = buttons.get(currentIndex);
+                dropWire(currrentButton, currentIndex);
+            }
+        });
+
+        this.setOnMouseMoved(event -> {
+            if (dragged == false)
+                return;
+
+            guide.setEndX(event.getX());
+            guide.setEndY(event.getY());
+
+        });
+    }
+
+
+    /**
+     * Set up layout for either plugboard or reflector.
+     * @param plugboardLayout some pairs may be empty.
+     */
+    private void loadSelector(boolean plugboardLayout) {
+        // getStylesheets().add(App.class.getResource("PairSelect.css").toExternalForm());
+
+        plugboard = plugboardLayout;
+
+        setPrefWidth(getMyWidth());
+        setPrefHeight(getMyHeight());
+
+        positionButtons();
+    }
+
+    public String getPairString() {
+        // System.out.println("getPairString()");
+
+        String to = "";
+        final int MAX = size();
+        for (int i = 0; i < MAX; ++i)
+            to += getText(i) + " ";
+
+        return to;
+    }
+
+    public ArrayList<String> getLinks() {
+        // System.out.println("getList()");
+
+        ArrayList<String> to = new ArrayList<String>();
+        final int MAX = size();
+        for (int i = 0; i < MAX; ++i)
+            to.add(getText(i));
+
+        return to;
+    }
+
+    private Pair addLink(int index1, int index2) {
+
+        Plug button1 = buttons.get(index1);
+        Plug button2 = buttons.get(index2);
+        button1.stateChange(true, false);
+        button2.stateChange(true, false);
+        Pair pair = new Pair(button1, button2);
+
+        pairList.add(pair);
+        Line line = pair.getLine();
+        line.setStroke(lineCol);
+        line.getStyleClass().add(LINECOL);
+        this.getChildren().add(line);
+
+        return pair;
+    }
+
+    public void setLinks(ArrayList<String> links) {
+        // System.out.println("setLinks()");
+        clear();
+        if (links == null)
+            return;
+
+        for (String pairString : links) {
+            if (pairString.length() != 2)
+                continue;
+
+            int index1 = charToIndex(pairString.charAt(0));
+            int index2 = charToIndex(pairString.charAt(1));
+
+            addLink(index1, index2);
+        }
+    }
+
+    public void setAsReflector() {
+        loadSelector(false);
+    }
+ 
+    public void setAsPlugboard() {
+        loadSelector(true);
+    }
+
+    /**
+     * Constructor.
+     */
+    public PairSelect() {
+        super();
+
+        init();
+    }
+
+}

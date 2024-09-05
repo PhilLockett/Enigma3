@@ -1,0 +1,192 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.root{
+    -fx-background-color: #303030;
+    -fx-border-color: silver;
+}
+
+.top-bar{
+    -fx-background-color: linear-gradient(to bottom, #505050, #303030);
+}
+.top-bar:hover{
+    -fx-background-color: linear-gradient(to bottom, #707070, #505050);
+}
+
+.top-bar-icon{
+    -fx-stroke: white;
+}
+
+.top-bar-icon:hover{
+    -fx-background-color: red;
+}
+
+.heading{
+    -fx-text-fill: #e8e8e8;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+}
+
+.label, .label:selected, .check-box:selected, .radio-button:selected{
+    -fx-text-fill: #e8e8e8;
+    -fx-font-weight: bold;
+}
+.check-box, .radio-button{
+    -fx-text-fill: #bbbbbb;
+    -fx-font-weight: bold;
+}
+
+.titled-pane{
+    -fx-text-fill: #e8e8e8;
+}
+.title{
+    -fx-background-color: #303030;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+
+.tooltip{
+    -fx-font-size: 14;
+    -fx-font-style: italic;
+    -fx-font-weight: normal;
+    -fx-text-fill: black;
+    -fx-background-color: #e8e8e8;
+}
+.text-field:readonly{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color: #808080;
+}
+.text-field{
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-background-color: #c0c0c0;
+}
+.error-text-field{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color: red;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+.content{
+    -fx-background-color: #080808;
+	-fx-border-color: white;
+	-fx-border-insets: 1;
+}
+.spinner{
+    -fx-background-color: #282828;
+}
+
+.choice-box, .button{
+    -fx-background-color: linear-gradient(to bottom, #BB6662, #7B2622);
+    -fx-text-fill: #e8e8e8;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12;
+}
+.context-menu{
+    -fx-background-color: #9B4642;
+    -fx-text-fill: #e8e8e8;
+    -fx-font-weight: bold;
+}
+
+.toggle-button:selected{
+    -fx-text-fill: #e8e8e8;
+}
+.toggle-button{
+    -fx-background-color: transparent;
+    -fx-text-fill: #8e8e8e;
+    -fx-font-weight: bold;
+}
+
+.mfx-toggle-button {
+    -mfx-main: #b8b8b8;
+    -mfx-secondary: #6a6a6a;
+    -mfx-main-circle: radial-gradient(center 50% 25%, radius 100%, #e8e8e8, #767676);
+    -mfx-secondary-circle: radial-gradient(center 50% 25%, radius 100%, #888888, #4d4d4d);
+    -fx-text-fill: #aeaeae;
+    -fx-font-weight: bold;
+
+    -fx-padding: 10;
+}
+
+.mfx-toggle-button:selected {
+    -fx-text-fill: #e8e8e8;
+}
+
+.mfx-toggle-button .mfx-ripple-generator {
+    -mfx-animation-speed: 1.5;
+    -mfx-ripple-radius: 10;
+    -mfx-ripple-color: transparent;
+    -mfx-ripple-opacity: 0.4;
+}
+
+.mfx-toggle-button .circle {
+    -fx-stroke: transparent;
+    -fx-fill: -mfx-secondary-circle;
+}
+
+.mfx-toggle-button .line {
+    -fx-stroke-line-cap: ROUND;
+    -fx-stroke: -mfx-secondary;
+    -fx-opacity: 1;
+}
+
+.mfx-toggle-button:selected .mfx-ripple-generator {
+    -mfx-ripple-color: transparent;
+}
+
+.mfx-toggle-button:selected .circle {
+    -fx-fill: -mfx-main-circle;
+}
+
+.mfx-toggle-button:selected .line {
+    -fx-stroke: -mfx-main;
+}
+
+.mfx-toggle-button:disabled .circle,
+.mfx-toggle-button:disabled:selected .circle {
+    -fx-fill: radial-gradient(center 50% 25%, radius 100%, #666666, #222222);
+}
+
+.mfx-toggle-button:disabled .line,
+.mfx-toggle-button:disabled:selected .line {
+    -fx-stroke: gray;
+}
+
+
+.increment-arrow-button{
+    -fx-background-radius: 0 12 0 0;
+    -fx-background-color: linear-gradient(to bottom, #BB6662, #9B4642);
+}
+.decrement-arrow-button{
+    -fx-background-radius: 0 0 12 0;
+    -fx-background-color: linear-gradient(to bottom, #9B4642, #7B2622);
+}
+.increment-arrow, .decrement-arrow, .arrow{
+    -fx-background-color: #e8e8e8;
+}
+
+.big-text-field{
+    -fx-font-size: 24;
+}
+
+.key-text-field:readonly{
+    -fx-text-fill: silver;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-background-color: black;
+    -fx-border-color: silver;
+    -fx-border-width: 2;
+    -fx-shape: "M50 0 A1 1, 0, 0 0, 50 50 A1 1, 0, 0 0, 50 0";
+}
+
+.lamp-text-field:readonly{
+    -fx-text-fill: black;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-background-color: white;
+    -fx-border-color: silver;
+    -fx-border-width: 2;
+    -fx-shape: "M50 0 A1 1, 0, 0 0, 50 50 A1 1, 0, 0 0, 50 0";
+}
+
