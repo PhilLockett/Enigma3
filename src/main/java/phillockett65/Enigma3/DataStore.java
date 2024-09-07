@@ -48,7 +48,6 @@ public class DataStore implements Serializable {
     private ArrayList<Integer> rotorOffsets = new ArrayList<Integer>();
 
     private ArrayList<String> plugs = new ArrayList<String>();
-    private Boolean extPlugboard;
 
     private Boolean encipher;
 
@@ -66,9 +65,7 @@ public class DataStore implements Serializable {
         reflectorChoice = model.getReflectorChoice();
         reconfigurable = model.isReconfigurable();
 
-        final int pairCount = model.getPairCount();
-        for (int i = 0; i < pairCount; ++i)
-            pairs.add(model.getPairText(i));
+        pairs = model.getPairText();
 
         fourthWheel = model.isFourthWheel();
         useNumbers = model.isUseNumbers();
@@ -81,11 +78,7 @@ public class DataStore implements Serializable {
             rotorOffsets.add(model.getRotorIndex(i));
         }
 
-        final int plugCount = model.getPlugCount();
-        for (int i = 0; i < plugCount; ++i)
-            plugs.add(model.getPlugText(i));
-
-        extPlugboard = model.isExtPlugboard();
+        plugs = model.getPlugText();
 
         encipher = model.isEncipher();
 
@@ -103,9 +96,7 @@ public class DataStore implements Serializable {
         model.setReflectorChoice(reflectorChoice);
         model.setReconfigurable(reconfigurable);
 
-        final int pairCount = pairs.size();
-        for (int i = 0; i < pairCount; ++i)
-            model.setPairText(i, pairs.get(i));
+        model.setPairText(pairs);
 
         model.setFourthWheel(fourthWheel);
         model.setUseNumbers(useNumbers);
@@ -118,11 +109,7 @@ public class DataStore implements Serializable {
             model.setRotorIndex(i, rotorOffsets.get(i));
         }
 
-        final int plugCount = plugs.size();
-        for (int i = 0; i < plugCount; ++i)
-            model.setPlugText(i, plugs.get(i));
-
-        model.setExtPlugboard(extPlugboard);
+        model.setPlugText(plugs);
 
         model.setEncipher(encipher);
 

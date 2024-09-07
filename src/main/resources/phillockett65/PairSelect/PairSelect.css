@@ -48,14 +48,14 @@
     -fx-stroke-width: 5;
 }
 
-.select-text{
-    -fx-fill: white;
-    -fx-stroke: white;
-}
-
 .select-line{
     -fx-stroke: green;
     -fx-stroke-width: 5;
+}
+
+.select-text{
+    -fx-fill: white;
+    -fx-stroke: white;
 }
 
 .select-button{

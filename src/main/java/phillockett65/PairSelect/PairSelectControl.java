@@ -161,7 +161,7 @@ public class PairSelectControl extends Stage {
         });
 
         clear.setOnAction(event -> {
-            pairSelect.clear();
+            clear();
             syncUI();
         });
 
@@ -184,7 +184,7 @@ public class PairSelectControl extends Stage {
         loadTopBar();
         root.getChildren().add(topBar);
 
-        pairSelect = new PairSelect();
+        pairSelect = new PairSelect(plugboard);
         root.getChildren().add(pairSelect);
 
         pairSelect.addEventHandler(SelectEvent.LINK_ADDED, 
@@ -206,7 +206,7 @@ public class PairSelectControl extends Stage {
         field.setEditable(false);
         field.setFocusTraversable(false);
         root.getChildren().add(field);
- 
+
         loadOptions();
         root.getChildren().add(options);
 
@@ -214,26 +214,22 @@ public class PairSelectControl extends Stage {
         scene.getStylesheets().add(getClass().getResource("PairSelect.css").toExternalForm());
 
         this.setScene(scene);
+
+        syncUI();
     }
 
 
     public ArrayList<String> getLinks() { return pairSelect.getLinks(); }
+    public String getText(int index) { return pairSelect.getText(index); }
     public int size() { return pairSelect.size(); }
+    public boolean hasLinks() { return pairSelect.hasPairs(); }
     public int[] getMap() { return pairSelect.getMap(); }
+    public boolean isValid() { return pairSelect.isValid(); }
+    public boolean isValid(int index) { return pairSelect.isValid(index); }
+    public void clear() { pairSelect.clear(); }
+    
 
-    public boolean showReflector() {
-        plugboard = false;
-        pairSelect.setAsReflector();
-        syncUI();
-        this.showAndWait();
- 
-        return result;
-    }
- 
-    public boolean showPlugboard() {
-        plugboard = true;
-        pairSelect.setAsPlugboard();
-        syncUI();
+    public boolean showControl() {
         this.showAndWait();
 
         return result;
@@ -246,13 +242,9 @@ public class PairSelectControl extends Stage {
     /**
      * Constructor.
      */
-    public PairSelectControl() {
+    public PairSelectControl(boolean isPlugboard, String title) {
         super();
-        init();
-    }
-
-    public PairSelectControl(String title) {
-        super();
+        plugboard = isPlugboard;
         init();
 
         setHeading(title);

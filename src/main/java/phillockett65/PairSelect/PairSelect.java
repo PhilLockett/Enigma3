@@ -55,12 +55,12 @@ public class PairSelect extends AnchorPane {
     private static double rowStep = 100.0;
 
     private static final String GUIDECOL = "select-guide";
-    private static final String TEXTCOL = "select-text";
     private static final String LINECOL = "select-line";
+    private static final String TEXTCOL = "select-text";
 
     private final Color guideCol = Color.SILVER;
-    private final Color textCol = Color.WHITE;
     private final Color lineCol = Color.GREEN;
+    private final Color textCol = Color.WHITE;
 
 
     public double getMyWidth() { return xCentre * 2; }
@@ -95,13 +95,37 @@ public class PairSelect extends AnchorPane {
 
     public static int stringToIndex(String s) { return Character.isDigit(s.charAt(0)) ? numberToIndex(s) : letterToIndex(s); }
 
+    public boolean hasPairs() { return !pairList.isEmpty(); }
     public int size() { return pairList.size(); }
-    public String getText(int index)	{ return pairList.get(index).get(); }
+    public String getText(int index) { return index < size() ? pairList.get(index).get() : ""; }
 
     public boolean isPlugboard() { return plugboard; }
+    public boolean isReflector() { return !isPlugboard(); }
+    
+    private boolean isPairingDone() {
+        if (isPlugboard())
+            return false;
 
+        if (pairList.size() >= PAIR_COUNT)
+            return true;
+
+        return false;
+    }
+
+    private boolean isCableAvailable() {
+        if (!isPlugboard())
+            return true;
+
+        if (pairList.size() < 9)
+            return true;
+
+        return false;
+    }
 
     private void dragWire(Plug button, int index) {
+        if (isPairingDone())
+            return;
+
         dragged = true;
         currentIndex = index;
         button.stateChange(true, true);
@@ -220,11 +244,6 @@ public class PairSelect extends AnchorPane {
                 positionReflectorButton(index);
             }
         }
-
-        // Reset position of the links.
-        for (Pair pair : pairList) {
-            pair.resetLine();
-        }
     }
 
 
@@ -272,17 +291,22 @@ public class PairSelect extends AnchorPane {
         for (int i = 0; i < (STEPS*2); ++i) {
             addButton(i);
         }
+
+        positionButtons();
     }
 
 
+    public boolean isValid(int index) {
+        return index < pairList.size();
+    }
 
     /**
-     * Determine if the plugboard is valid.
-     * @return true if the plugboard is valid, false otherwise.
+     * Determine if the reflector is valid.
+     * @return true if the reflector is valid, false otherwise.
      */
     public boolean isValid() {
         // Check we have only 1 unconfigured pair.
-        if ((!isPlugboard()) && (pairList.size() < PAIR_COUNT))
+        if ((isReflector()) && (pairList.size() < PAIR_COUNT))
             return false;
 
         return true;
@@ -304,7 +328,7 @@ public class PairSelect extends AnchorPane {
             map[b] = a;
         }
 
-        if ((isPlugboard()) || (pairList.size() > PAIR_COUNT))
+        if (isPlugboard())
             return map;
 
         // Set up reflector unconfigured pair.
@@ -372,23 +396,11 @@ public class PairSelect extends AnchorPane {
             guide.setEndY(event.getY());
 
         });
-    }
-
-
-    /**
-     * Set up layout for either plugboard or reflector.
-     * @param plugboardLayout some pairs may be empty.
-     */
-    private void loadSelector(boolean plugboardLayout) {
-        // getStylesheets().add(App.class.getResource("PairSelect.css").toExternalForm());
-
-        plugboard = plugboardLayout;
 
         setPrefWidth(getMyWidth());
         setPrefHeight(getMyHeight());
-
-        positionButtons();
     }
+
 
     public String getPairString() {
         // System.out.println("getPairString()");
@@ -446,20 +458,12 @@ public class PairSelect extends AnchorPane {
         }
     }
 
-    public void setAsReflector() {
-        loadSelector(false);
-    }
- 
-    public void setAsPlugboard() {
-        loadSelector(true);
-    }
-
     /**
      * Constructor.
      */
-    public PairSelect() {
+    public PairSelect(boolean isPlugboard) {
         super();
-
+        plugboard = isPlugboard;
         init();
     }
 

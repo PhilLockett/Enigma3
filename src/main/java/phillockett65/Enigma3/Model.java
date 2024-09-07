@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import phillockett65.PairSelect.PairSelectControl;
 
 public class Model {
 
@@ -105,7 +106,8 @@ public class Model {
         setReflectorChoice("Reflector B");
 
         setReconfigurable(false);
-        pairs.clear();
+        reflectorControl.clear();
+        syncReflector();
 
         setFourthWheel(false);
         setRotorState(SLOW, "IV", 0, 0);
@@ -116,8 +118,8 @@ public class Model {
         setUseNumbers(false);
         setShow(false);
 
-        setExtPlugboard(false);
-        plugs.clear();
+        plugboardControl.clear();
+        syncPlugboard();
 
         setEncipher(false);
     }
@@ -147,16 +149,16 @@ public class Model {
 
         commercial.add(new Rotor("IC",	"DMTWSILRUYQNKFEJCAZBPGXOHV",	"1924",	"Commercial Enigma A, B", "R"));
         commercial.add(new Rotor("IIC",	"HQZGPJTMOBLNCIFDYAWVEUSRKX",	"1924",	"Commercial Enigma A, B", "F"));
-        commercial.add(new Rotor("IIIC","UQNTLSZFMREHDPXKIBVYGJCWOA",	"1924",	"Commercial Enigma A, B", "W"));
+        commercial.add(new Rotor("IIIC", "UQNTLSZFMREHDPXKIBVYGJCWOA",	"1924",	"Commercial Enigma A, B", "W"));
 
-        rocket.add(new Rotor("I-R", 	"JGDQOXUSCAMIFRVTPNEWKBLZYH",	"7 February 1941",	"German Railway (Rocket)", "R"));
-        rocket.add(new Rotor("II-R",	"NTZPSFBOKMWRCJDIVLAEYUXHGQ",	"7 February 1941",	"German Railway (Rocket)", "F"));
+        rocket.add(new Rotor("I-R", 	    "JGDQOXUSCAMIFRVTPNEWKBLZYH",	"7 February 1941",	"German Railway (Rocket)", "R"));
+        rocket.add(new Rotor("II-R",	    "NTZPSFBOKMWRCJDIVLAEYUXHGQ",	"7 February 1941",	"German Railway (Rocket)", "F"));
         rocket.add(new Rotor("III-R",	"JVIUBHTCDYAKEQZPOSGXNRMWFL",	"7 February 1941",	"German Railway (Rocket)", "W"));
         rocket.add(new Rotor("UKW-R",	"QYHOGNECVPUZTFDJAXWMKISRBL",	"7 February 1941",	"German Railway (Rocket)", ""));
         rocket.add(new Rotor("ETW-R",	"QWERTZUIOASDFGHJKPYXCVBNML",	"7 February 1941",	"German Railway (Rocket)", ""));
 
         swissK.add(new Rotor("I-K",		"PEZUOHXSCVFMTBGLRINQJWAYDK",	"February 1939",	"Swiss K", "R"));
-        swissK.add(new Rotor("II-K",	"ZOUESYDKFWPCIQXHMVBLGNJRAT",	"February 1939",	"Swiss K", "F"));
+        swissK.add(new Rotor("II-K",	    "ZOUESYDKFWPCIQXHMVBLGNJRAT",	"February 1939",	"Swiss K", "F"));
         swissK.add(new Rotor("III-K",	"EHRVXGAOBQUSIMZFLYNWKTPDJC",	"February 1939",	"Swiss K", "W"));
         swissK.add(new Rotor("UKW-K",	"IMETCGFRAYSQBZXWLHKDVUPOJN",	"February 1939",	"Swiss K", ""));
         swissK.add(new Rotor("ETW-K",	"QWERTZUIOASDFGHJKPYXCVBNML",	"February 1939",	"Swiss K", ""));
@@ -168,16 +170,16 @@ public class Model {
         m3.add(new Rotor("V",		"VZBRGITYUPSDNHLXAWMJQOFECK",	"December 1938",	"M3 Army", "A"));
         m3.add(new Rotor("VI",		"JPGVOUMFYQBENHZRDKASXLICTW",	"1939",	"M3 & M4 Naval (FEB 1942)", "AN"));
         m3.add(new Rotor("VII",		"NZJHGRCXMYSWBOUFAIVLPEKQDT",	"1939",	"M3 & M4 Naval (FEB 1942)", "AN"));
-        m3.add(new Rotor("VIII",	"FKQHTLXOCBJSPDZRAMEWNIUYGV",	"1939",	"M3 & M4 Naval (FEB 1942)", "AN"));
+        m3.add(new Rotor("VIII",	    "FKQHTLXOCBJSPDZRAMEWNIUYGV",	"1939",	"M3 & M4 Naval (FEB 1942)", "AN"));
 
         m4.add(new Rotor("Beta",				"LEYJVCNIXWPBQMDRTAKZGFUHOS",	"Spring 1941",	"M4 R2", ""));
-        m4.add(new Rotor("Gamma",				"FSOKANUERHMBTIYCWLQPZXVGJD",	"Spring 1942",	"M4 R2", ""));
-        m4.add(new Rotor("Reflector A",			"EJMZALYXVBWFCRQUONTSPIKHGD",	"",	"", ""));
-        m4.add(new Rotor("Reflector B",			"YRUHQSLDPXNGOKMIEBFZCWVJAT",	"",	"", ""));
-        m4.add(new Rotor("Reflector C",			"FVPJIAOYEDRZXWGCTKUQSBNMHL",	"",	"", ""));
+        m4.add(new Rotor("Gamma",			"FSOKANUERHMBTIYCWLQPZXVGJD",	"Spring 1942",	"M4 R2", ""));
+        m4.add(new Rotor("Reflector A",		"EJMZALYXVBWFCRQUONTSPIKHGD",	"",	"", ""));
+        m4.add(new Rotor("Reflector B",		"YRUHQSLDPXNGOKMIEBFZCWVJAT",	"",	"", ""));
+        m4.add(new Rotor("Reflector C",		"FVPJIAOYEDRZXWGCTKUQSBNMHL",	"",	"", ""));
         m4.add(new Rotor("Reflector B Thin",	"ENKQAUYWJICOPBLMDXZVFTHRGS",	"1940",	"M4 R1 (M3 + Thin)", ""));
         m4.add(new Rotor("Reflector C Thin",	"RDOBJNTKVEHMLFCWZAXGYIPSUQ",	"1940",	"M4 R1 (M3 + Thin)", ""));
-        m4.add(new Rotor("ETW",					"ABCDEFGHIJKLMNOPQRSTUVWXYZ",	"",	"Enigma I", ""));
+        m4.add(new Rotor("ETW",				"ABCDEFGHIJKLMNOPQRSTUVWXYZ",	"",	"Enigma I", ""));
 
         // Build list of rotors and list of reflectors that can be selected.
         for (Rotor rotor : m3)
@@ -217,10 +219,11 @@ public class Model {
     private String reflectorChoice;
     private boolean reconfigurable = false;
     
+    private PairSelectControl reflectorControl;
+    private ArrayList<String> reflectorPairs;
     private int[] reflectorMap;
-    private Pairs pairs;
+    private int[] customReflectorMap;
     private Mapper reflector;
-
 
     public ObservableList<String> getReflectorList()   { return reflectorList; }
     public String getReflectorChoice()   { return reflectorChoice; }
@@ -229,25 +232,26 @@ public class Model {
     public void setReconfigurable(boolean state) { reconfigurable = state; }
     public boolean isReconfigurable() { return reconfigurable; }
 
-    public void setPairText(int index, String text) { pairs.setText(index, text); }
-
-    public int getPairCount() { return pairs.size(); }
-    public String getPairText(int index)	{ return pairs.getText(index); }
-    public int getPairCount(int index)		{ return pairs.getCount(index); }
-
-    /**
-     * Determine if the indexed pair is valid.
-     * @param index of targeted pair.
-     * @return true if the pair is valid, false otherwise.
-     */
-    public boolean isPairValid(int index) {
-        if (!reconfigurable)
-            return true;
-
-        return pairs.isValid(index);
+    private void syncReflector() {
+        reflectorPairs = reflectorControl.getLinks();
+        customReflectorMap = reflectorControl.getMap();
     }
 
-    public void setPairText(String id, String text) { setPairText(idToIndex(id), text); }
+    // Called by DataStore on start up.
+    public void setPairText(ArrayList<String> links) {
+        reflectorControl.setLinks(links);
+        syncReflector();
+    }
+
+    public ArrayList<String> getPairText()  { return reflectorPairs; }
+    public boolean hasPairText()            { return reflectorControl.hasLinks(); }
+
+    public int getPairCount()               { return reflectorControl.size(); }
+    public String getPairText(int index)	{ return reflectorControl.getText(index); }
+    public int getPairCount(int index)		{ return getPairText(index).length(); }
+
+    public boolean isPairValid(int index)   { return reflectorControl.isValid(index); }
+
     public String getPairText(String id)	{ return getPairText(idToIndex(id)); }
     public int getPairCount(String id)		{ return getPairCount(idToIndex(id)); }
     public boolean isPairValid(String id)	{ return isPairValid(idToIndex(id)); }
@@ -258,27 +262,20 @@ public class Model {
      */
     public boolean isReflectorValid() {
         if (reconfigurable)
-            return pairs.isValid();
+            return reflectorControl.isValid();
 
         return true;
     }
 
-    /**
-     * @return a reference to the active reflector map.
-     */
-    private int[] getReflectorMap() {
-        
-        if (reconfigurable) {
-            pairs.buildMap();
+    public boolean launchReflector() {
+        reflectorControl.setLinks(reflectorPairs);
+        if (reflectorControl.showControl()) {
+            syncReflector();
 
-            return pairs.getMap();
-        } else {
-            Rotor rotor = getRotor(reflectors, reflectorChoice);
-            if (rotor != null)
-                return rotor.getMap();
+            return true;
         }
 
-        return null;
+        return false;
     }
 
     /**
@@ -286,7 +283,13 @@ public class Model {
      * reflectorMap.
      */
     private void lockdownReflector() {
-        reflectorMap = getReflectorMap();
+        if (reconfigurable) {
+            reflectorMap = customReflectorMap;
+        } else {
+            Rotor rotor = getRotor(reflectors, reflectorChoice);
+            if (rotor != null)
+                reflectorMap = rotor.getMap();
+        }
     }
 
     /**
@@ -303,8 +306,9 @@ public class Model {
      * Initialize "Reflector Set-Up" panel.
      */
     private void initializeReflector() {
-        pairs = new Pairs(false);
         fillReflectorList();
+
+        reflectorControl = new PairSelectControl(false, "Configure Reflector connections");
     }
 
 
@@ -405,52 +409,60 @@ public class Model {
      * Support code for "Plugboard Connections" panel.
      */
     
+    private PairSelectControl plugboardControl;
+    private ArrayList<String> plugboardPairs;
     private int[] plugboardMap;
-    private Pairs plugs;
     private Mapper plugboard;
 
-    private boolean extPlugboard = false;
-
-
-    public void setExtPlugboard(boolean state) { 
-        extPlugboard = state;
-        for (int i = PLUG_COUNT; i < FULL_COUNT; ++i)
-            plugs.setEnabled(i, state);
-
-        plugs.countLetterUsage();
+    private void syncPlugboard() {
+        plugboardPairs = plugboardControl.getLinks();
+        plugboardMap = plugboardControl.getMap();
     }
-    public boolean isExtPlugboard() { return extPlugboard; }
 
-    public void setPlugText(int index, String text) { plugs.setText(index, text); }
+    // Called by DataStore on start up.
+    public void setPlugText(ArrayList<String> links) {
+        plugboardControl.setLinks(links);
+        syncPlugboard();
+    }
 
-    public int getPlugCount() { return plugs.size(); }
-    public int getActivePlugCount() { return extPlugboard ? plugs.size() : PLUG_COUNT; }
-    public String getPlugText(int index)	{ return plugs.getText(index); }
-    public int getPlugCount(int index)		{ return plugs.getCount(index); }
+    public ArrayList<String> getPlugText()  { return plugboardPairs; }
+    public boolean hasPlugText()            { return plugboardControl.hasLinks(); }
 
-    public boolean isPlugValid(int index) { return plugs.isValid(index); }
+    public int getPlugCount()               { return plugboardControl.size(); }
+    public String getPlugText(int index)	{ return plugboardControl.getText(index); }
+    public int getPlugCount(int index)		{ return getPlugText(index).length(); }
 
-    public void setPlugText(String id, String text) { setPlugText(idToIndex(id), text); }
+    public boolean isPlugValid(int index)   { return plugboardControl.isValid(index); }
+
     public String getPlugText(String id)	{ return getPlugText(idToIndex(id)); }
     public int getPlugCount(String id)		{ return getPlugCount(idToIndex(id)); }
     public boolean isPlugValid(String id)	{ return isPlugValid(idToIndex(id)); }
 
-    public boolean isPlugboardValid() { return plugs.isValid(); }
+    public boolean isPlugboardValid()       { return plugboardControl.isValid(); }
+
+    public boolean launchPlugboard() {
+        plugboardControl.setLinks(plugboardPairs);
+        if (plugboardControl.showControl()) {
+            syncPlugboard();
+
+            return true;
+        }
+
+        return false;
+    }
 
 
     /**
      * Lockdown the plugboardMap.
      */
     private void lockdownPlugboard() {
-        plugs.buildMap();
-        plugboardMap = plugs.getMap();
     }
 
     /**
      * Initialize "Plugboard Connections" panel.
      */
     private void initializePlugboardConnections() {
-        plugs = new Pairs(true);
+        plugboardControl = new PairSelectControl(true, "Select Plugboard connections");
     }
 
 
@@ -465,11 +477,11 @@ public class Model {
 
     /**
      * Determine if all settings are valid which requires checking the 
-     * reflector and the plugboard.
+     * reflector, the plugboard is always valid.
      * @return true if the settings are valid, false otherwise.
      */
     public boolean isConfigValid() {
-        return isPlugboardValid() && isReflectorValid();
+        return isReflectorValid();
     }
 
     public boolean isEncipher() { return encipher; }

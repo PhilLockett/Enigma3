@@ -49,12 +49,6 @@ public class Pair extends Node {
     }
 
     public Line getLine() { return line; }
-    public void resetLine() {
-        line.setStartX(button1.getCenterX());
-        line.setStartY(button1.getCenterY());
-        line.setEndX(button2.getCenterX());
-        line.setEndY(button2.getCenterY());
-    }
 
     private static Line buildLine(Plug b1, Plug b2, double width) {
         Line line = new Line(b1.getCenterX(), b1.getCenterY(), b2.getCenterX(), b2.getCenterY());

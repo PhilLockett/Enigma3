@@ -52,6 +52,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
+import phillockett65.PairSelect.PairSelect;
 
 public class PrimaryController {
 
@@ -142,13 +143,13 @@ public class PrimaryController {
     public void syncUI() {
         reflectorChoicebox.setValue(model.getReflectorChoice());
         reconfigurableCheckbox.setSelected(model.isReconfigurable());
+
         for (int i = 0; i < pairs.size(); ++i) {
             TextField pair = pairs.get(i);
             pair.setText(model.getPairText(i));
         }
 
         fourthWheelCheckbox.setSelected(model.isFourthWheel());
-        plugboardCheckbox.setSelected(model.isExtPlugboard());
         useNumbersCheckbox.setSelected(model.isUseNumbers());
         showStepsCheckbox.setSelected(model.isShow());
 
@@ -243,6 +244,9 @@ public class PrimaryController {
     private MFXToggleButton reconfigurableCheckbox;
 
     @FXML
+    private Button reflectorButton;
+
+    @FXML
     void reconfigurableCheckboxActionPerformed(ActionEvent event) {
         model.setReconfigurable(reconfigurableCheckbox.isSelected());
         setReconfigurable();
@@ -288,17 +292,18 @@ public class PrimaryController {
 
     private ArrayList<TextField> pairs = new ArrayList<TextField>(Model.PAIR_COUNT);
 
+
     @FXML
-    void reflectorKeyTyped(KeyEvent event) {
-        TextField field = (TextField)event.getSource();
-        // System.out.println("reflectorKeyTyped(" + field.getId() + ", " + field.getText() + ")");
-
-        model.setPairText(field.getId(), field.getText());
-
-        checkReflector();
-        syncEncipherButton();
+    void reflectorButtonOnAction(ActionEvent event) {
+        if (model.launchReflector()) {
+            final int max = model.getPairCount();
+            for (int index = 0; index < max; ++index) {
+                TextField pair = pairs.get(index);
+                pair.setText(model.getPairText(index));
+                setValidTextField(pair, true);
+            }    
+        }
     }
-
     /**
      * Indicate error state of each reflector pair based on it's validity.
      */
@@ -336,6 +341,7 @@ public class PrimaryController {
             setReconfigurable();
         } else {
             reflectorChoicebox.setDisable(true);
+            reflectorButton.setDisable(true);
             editablePairs(false);
         }
         reconfigurableCheckbox.setDisable(!editable);
@@ -349,6 +355,7 @@ public class PrimaryController {
         final boolean reconfigurable = model.isReconfigurable();
 
         reflectorChoicebox.setDisable(reconfigurable);
+        reflectorButton.setDisable(!reconfigurable);
         editablePairs(reconfigurable);
     }
 
@@ -368,6 +375,8 @@ public class PrimaryController {
             model.setReflectorChoice(newValue);
         });
 
+        reflectorButton.setTooltip(new Tooltip("Edit the reconfigurable Reflector"));
+
         pairs.add(pair0);
         pairs.add(pair1);
         pairs.add(pair2);
@@ -385,23 +394,10 @@ public class PrimaryController {
             String id = String.valueOf(i);
             TextField pair = pairs.get(i);
             pair.setId(id);         // Use id as an index.
-            pair.setTooltip(new Tooltip("Configure unique loop-back wiring pair"));
+            pair.setEditable(false);
+            pair.setText(model.getPairText(i));
 
             setValidTextField(pair, model.isPairValid(i));
-
-            pair.setTextFormatter(new TextFormatter<>(change -> {
-
-                if (change.isAdded()) {
-                    if (change.getText().matches("[a-z]*")) {
-                        String text = change.getText().toUpperCase();
-                        change.setText(text);
-                    } else if (!change.getText().matches("[A-Z]*")) {
-                        return null;
-                    }
-                }
-
-                return change;
-            }));
         }
     }
 
@@ -420,7 +416,6 @@ public class PrimaryController {
         // System.out.println("editableReflector(" + editable + ")");
 
         fourthWheelCheckbox.setDisable(!editable);
-        plugboardCheckbox.setDisable(!editable);
         model.setTranslate(!editable);
     }
 
@@ -462,8 +457,6 @@ public class PrimaryController {
      * Initialize "Rotor Set-Up".
      */
     private void initializeRotorSetup() {
-
-
         rotorSetUpHBox.getChildren().addAll(model.getRotorControls());
 
         rotorSetUpTitledPane.setTooltip(new Tooltip("Select and set up the Rotors (wheels / drums)"));
@@ -480,6 +473,9 @@ public class PrimaryController {
 
     @FXML
     private TitledPane plugboardConnectionsTitledPane;
+
+    @FXML
+    private Button plugboardButton;
 
     @FXML
     private TextField plug0;
@@ -520,54 +516,25 @@ public class PrimaryController {
     @FXML
     private TextField plug12;
 
-    @FXML
-    private MFXToggleButton plugboardCheckbox;
-
     private ArrayList<TextField> plugs = new ArrayList<TextField>(Model.FULL_COUNT);
 
-    @FXML
-    void plugBoardKeyTyped(KeyEvent event) {
-        TextField field = (TextField)event.getSource();
-        // System.out.println("plugBoardKeyTyped(" + field.getId() + ", " + field.getText() + ")");
 
-        model.setPlugText(field.getId(), field.getText());
-        
-        checkPlugboard();
-        syncEncipherButton();
-    }
+    private void displayPlugboardPairs() {
+        for (TextField field : plugs) {
+            field.setText("");
+        }
 
-    @FXML
-    void plugboardCheckboxActionPerformed(ActionEvent event) {
-        model.setExtPlugboard(plugboardCheckbox.isSelected());
-        checkPlugboard();
-        editableExtPlugboard();
-        syncEncipherButton();
-    }
-
-    /**
-     * Control whether it is possible to change the extended plugboard 
-     * depending on the states of plugboardCheckbox and encipherButton.
-     */
-    private void editableExtPlugboard() {
-        final boolean extended = model.isExtPlugboard();
-        final boolean encipher = model.isEncipher();
-        final boolean disable = extended ? encipher : true;
-
-        for (int i = Model.PLUG_COUNT; i < Model.FULL_COUNT; ++i) {
-            plugs.get(i).setDisable(!extended);
-            plugs.get(i).setEditable(!disable);
+        final int max = model.getPlugCount();
+        for (int index = 0; index < max; ++index) {
+            TextField plug = plugs.get(index);
+            plug.setText(model.getPlugText(index));
         }
     }
 
-    /**
-     * Indicate error state of each plugboard pair based on it's validity.
-     */
-    private void checkPlugboard() {
-        // System.out.println("checkPlugboard()");
-
-        for (int i = 0; i < plugs.size(); ++i) {
-            final Boolean valid = model.isPlugValid(i);
-            setValidTextField(plugs.get(i), valid);
+    @FXML
+    void plugboardButtonOnAction(ActionEvent event) {
+        if (model.launchPlugboard()) {
+            displayPlugboardPairs();
         }
     }
 
@@ -581,7 +548,7 @@ public class PrimaryController {
         for (TextField field : plugs)
             field.setEditable(editable);
 
-        editableExtPlugboard();
+        plugboardButton.setDisable(!editable);
     }
 
     /**
@@ -590,7 +557,7 @@ public class PrimaryController {
     private void initializePlugboardConnections() {
 
         plugboardConnectionsTitledPane.setTooltip(new Tooltip("Configure the Plugboard using unique wiring pairs"));
-        plugboardCheckbox.setTooltip(new Tooltip("Select to use all wiring pairs"));
+        plugboardButton.setTooltip(new Tooltip("Edit the Plugboard"));
 
         plugs.add(plug0);
         plugs.add(plug1);
@@ -610,23 +577,8 @@ public class PrimaryController {
             String id = String.valueOf(i);
             TextField plug = plugs.get(i);
             plug.setId(id);         // Use id as an index.
-            plug.setTooltip(new Tooltip("Configure plugboard wiring pair"));
-
-            setValidTextField(plug, model.isPlugValid(i));
-
-            plug.setTextFormatter(new TextFormatter<>(change -> {
-
-                if (change.isAdded()) {
-                    if (change.getText().matches("[a-z]*")) {
-                        String text = change.getText().toUpperCase();
-                        change.setText(text);
-                    } else if (!change.getText().matches("[A-Z]*")) {
-                        return null;
-                    }
-                }
-
-                return change;
-            }));
+            plug.setEditable(false);
+            plug.setText(model.getPlugText(i));
         }
     }
 
