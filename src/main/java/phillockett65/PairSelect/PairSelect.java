@@ -38,6 +38,7 @@ import javafx.scene.text.Text;
 public class PairSelect extends AnchorPane {
 
     private static final int PAIR_COUNT = 12;
+    private static final int WIRE_COUNT = 10;
 
     private boolean onHandle = false;
     private boolean dragged = false;
@@ -55,13 +56,28 @@ public class PairSelect extends AnchorPane {
     private static double rowStep = 100.0;
 
     private static final String GUIDECOL = "select-guide";
+    private static final String UNGUIDECOL = "unselect-guide";
     private static final String LINECOL = "select-line";
     private static final String TEXTCOL = "select-text";
 
     private final Color guideCol = Color.SILVER;
+    private final Color unguideCol = Color.MAROON;
     private final Color lineCol = Color.GREEN;
     private final Color textCol = Color.WHITE;
 
+
+    private void setLineColours() {
+ 
+        if (isCableAvailable()) {
+            guide.setStroke(guideCol);
+            guide.getStyleClass().remove(UNGUIDECOL);
+        } else {
+            guide.setStroke(unguideCol);
+            if (!guide.getStyleClass().contains(UNGUIDECOL)) {
+                guide.getStyleClass().add(UNGUIDECOL);
+            }
+        }
+    }
 
     public double getMyWidth() { return xCentre * 2; }
     public double getMyHeight() { 
@@ -116,7 +132,7 @@ public class PairSelect extends AnchorPane {
         if (!isPlugboard())
             return true;
 
-        if (pairList.size() < 9)
+        if (pairList.size() < WIRE_COUNT)
             return true;
 
         return false;
@@ -135,6 +151,7 @@ public class PairSelect extends AnchorPane {
         guide.setEndX(button.getCenterX());
         guide.setEndY(button.getCenterY());
         guide.setVisible(true);
+        setLineColours();
     }
 
     private void dropWire(Plug button, int index) {
@@ -179,6 +196,7 @@ public class PairSelect extends AnchorPane {
             this.getChildren().remove(pair.getLine());
             pairList.remove(pair);
 
+            setLineColours();
             button.fireEvent(new SelectEvent(this, pair, SelectEvent.LINK_REMOVED));
 
             break;
@@ -306,8 +324,9 @@ public class PairSelect extends AnchorPane {
      */
     public boolean isValid() {
         // Check we have only 1 unconfigured pair.
-        if ((isReflector()) && (pairList.size() < PAIR_COUNT))
+        if ((isReflector()) && (pairList.size() < PAIR_COUNT)) {
             return false;
+        }
 
         return true;
     }
