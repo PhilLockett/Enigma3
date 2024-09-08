@@ -11,7 +11,8 @@ Maven can be run from the command line as shown below.
 Maven resolves dependencies and builds the application independently of an IDE.
 
 This application simulates the [Enigma Machine](https://en.wikipedia.org/wiki/Enigma_machine). 
-There are no restrictions placed on the Rotor selection, as such some 
+
+Note: there are no restrictions placed on the Rotor selection, as such some 
 Rotor combinations can be made that may not be available on the real machine.
 
 Note: the turnover points for the Commercial, Rocket and SwissK Rotors are 
@@ -53,22 +54,18 @@ to continue from where it left off.
 The choice box allows standard pre-configured reflectors to be selected. 
 
 Alternatively, the toggle allows for a reconfigurable reflector to be used.
-Twelve loop-back wired pairs must be defined using the text boxes. When all 
-Twelve pairs are defined using each letter only once, the reflector is 
-considered valid. The thirteenth pair is assumed from the two remaining 
-unused letters.
+Twelve loop-back wired pairs must be defined using the pair-select pop-up 
+window after clicking the 'Edit' buttton. 
+The thirteenth pair is assumed from the two remaining unused letters.
 
 ### Rotor Set-Up
 By default, Enigma3 functions as a 3 Rotor machine, allowing the Left, Middle 
 and Right Rotors to be defined. The 'Fourth Rotor' toggle, when selected, 
 brings in the Fourth Rotor.
 
-Some machines use letters on the Rotors, whereas some use numbers. The 'Use 
-Numbers' toggle switches between these characters on the 'Ring Settings'
-and Rotor 'Offsets' spinners for convenience.
-
-To see all the individual translation steps displayed on the command line
-select the 'Show Steps' toggle.
+Some machines use letters on the Rotors, whereas some use numbers. 
+The 'Use Numbers' toggle switches between these characters on the 'Ring 
+Settings' and Rotor 'Offsets' spinners for convenience.
 
 #### Rotor Selection
 These choice boxes allow different Rotors to be selected for each of the 
@@ -86,8 +83,8 @@ translation.
 
 ### Plugboard Connections
 Zero or more swap-over pairs can be configured (typically 10 are set). 
-The letters must be in pairs and each letter can be used only once for a valid 
-plugboard configuration.
+The pairs are be defined using the pair-select pop-up window after clicking 
+the 'Edit' buttton. 
 
 The toggle switch allows for up to 13 plugboard pairs to be configured.
 
@@ -103,6 +100,10 @@ Select the toggle to translate key presses using the current configuration
 settings.
 The majority of the settings become disabled while translating.
 
+#### Show Translation
+Select the 'Show Translation' toggle to see all the individual translation 
+steps displayed on the command line.
+
 #### Default Settings
 The 'Default Settings' button returns all settings to the original values 
 including clearing all the text boxes.
@@ -111,11 +112,12 @@ including clearing all the text boxes.
 This code has the following points of interest:
 
   * Enigma3 simulates the behaviour of the [Enigma](https://en.wikipedia.org/wiki/Enigma_machine) machine.
-  * Enigma3 is an updated version of [Enigma2](https://github.com/PhilLockett/Enigma).
+  * Enigma3 is an updated version of [Enigma2](https://github.com/PhilLockett/Enigma2).
   * Enigma3 is a Maven project that uses JavaFX, MaterialFX, FXML and CSS.
   * Uses a custom controller, "RotorControl", to represent rotor settings.
-  * Uses a custom controller, "PairSelect", to represent flrector and plugboard settings.
+  * Uses a custom controller, "PairSelect", to represent reflector and plugboard settings.
   * Uses subtle linear and radial colour gradients on controls.
   * Uses SVG paths to create circular text fields.
+  * Uses custom top-bars on all windows.
   * Rotor combinations can be selected that may not be available on the real machine.
   * Data is persisted from one session to the next.
