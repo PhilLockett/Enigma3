@@ -61,13 +61,7 @@
     -fx-font-weight: bold;
     -fx-background-color: #c0c0c0;
 }
-.error-text-field:readonly{
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-color: red;
-    -fx-background-radius: 4;
-    -fx-border-radius: 4;
-}
+
 .content{
     -fx-background-color: #080808;
 	-fx-border-color: white;

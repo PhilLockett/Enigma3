@@ -61,26 +61,9 @@ public class PrimaryController {
      * General support code.
      */
 
-    private static final String ERROR = "error-text-field";
     private static final String TOPBARICON = "top-bar-icon";
 
     private final double cancelStroke = 2.5;
-
-    /**
-     * Use CSS to indicate if the contents of a TextField is valid.
-     * @param field to adjust the appearance of.
-     * @param valid status of TextField.
-     */
-    private void setValidTextField(TextField field, boolean valid) {
-
-        if (valid) {
-            field.getStyleClass().remove(ERROR);
-        } else {
-            if (!field.getStyleClass().contains(ERROR))
-                field.getStyleClass().add(ERROR);
-        }
-        
-    }
 
 
 
@@ -248,7 +231,6 @@ public class PrimaryController {
     void reconfigurableCheckboxActionPerformed(ActionEvent event) {
         model.setReconfigurable(reconfigurableCheckbox.isSelected());
         setReconfigurable();
-        checkReflector();
         syncEncipherButton();
     }
 
@@ -298,21 +280,9 @@ public class PrimaryController {
             for (int index = 0; index < max; ++index) {
                 TextField pair = pairs.get(index);
                 pair.setText(model.getPairText(index));
-                setValidTextField(pair, true);
             }
 
             syncEncipherButton();
-        }
-    }
-    /**
-     * Indicate error state of each reflector pair based on it's validity.
-     */
-    private void checkReflector() {
-        // System.out.println("checkReflector()");
-
-        final boolean valid = model.isReflectorValid();
-        for (int i = 0; i < pairs.size(); ++i) {
-            setValidTextField(pairs.get(i), valid);
         }
     }
 
@@ -395,8 +365,6 @@ public class PrimaryController {
             pair.setId(id);         // Use id as an index.
             pair.setEditable(false);
             pair.setText(model.getPairText(i));
-
-            setValidTextField(pair, valid);
         }
     }
 

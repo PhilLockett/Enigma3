@@ -106,7 +106,7 @@ public class Model {
         setReflectorChoice("Reflector B");
 
         setReconfigurable(false);
-        reflectorControl.clear();
+        reflectorControl.defaultSettings();
         syncReflector();
 
         setFourthWheel(false);

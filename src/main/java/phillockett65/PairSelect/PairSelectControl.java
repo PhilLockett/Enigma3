@@ -236,6 +236,16 @@ public class PairSelectControl extends Stage {
         pairSelect.setLinks(links);
     }
 
+    public void defaultSettings() {
+        ArrayList<String> links = new ArrayList<String>();
+        for (int i = 0; i  < 12; ++i) {
+            final int a = i * 2;
+            String pair = PairSelect.indexToLetter(a) + PairSelect.indexToLetter(a+1);
+            links.add(pair);
+        }
+        pairSelect.setLinks(links);
+    }
+
     /**
      * Constructor.
      */
