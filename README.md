@@ -12,11 +12,11 @@ Maven resolves dependencies and builds the application independently of an IDE.
 
 This application simulates the [Enigma Machine](https://en.wikipedia.org/wiki/Enigma_machine). 
 
-Note: there are no restrictions placed on the Rotor selection, as such some 
-Rotor combinations can be made that may not be available on the real machine.
+**Note: there are no restrictions placed on the Rotor selection, as such some 
+Rotor combinations can be made that may not be available on the real machine.**
 
-Note: the turnover points for the Commercial, Rocket and SwissK Rotors are 
-guesses and may be incorrect.
+**Note: the turnover points for the Commercial, Rocket and SwissK Rotors are 
+guesses and may be incorrect.**
 
 ## Dependencies
 'Enigma3' is dependent on the following:
@@ -85,8 +85,6 @@ translation.
 Zero or more swap-over pairs can be configured (typically 10 are set). 
 The pairs are be defined using the pair-select pop-up window after clicking 
 the 'Edit' buttton. 
-
-The toggle switch allows for up to 13 plugboard pairs to be configured.
 
 ### Translation
 This area shows the key presses and translated values.
