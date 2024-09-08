@@ -39,11 +39,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -52,7 +50,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
-import phillockett65.PairSelect.PairSelect;
 
 public class PrimaryController {
 
@@ -157,7 +154,8 @@ public class PrimaryController {
             TextField plug = plugs.get(i);
             plug.setText(model.getPlugText(i));
         }
-        encipherCheckbox.setSelected(model.isEncipher());
+
+        encipherCheckbox.setSelected(updateGUIState());
     }
 
 
@@ -250,8 +248,8 @@ public class PrimaryController {
     void reconfigurableCheckboxActionPerformed(ActionEvent event) {
         model.setReconfigurable(reconfigurableCheckbox.isSelected());
         setReconfigurable();
-        syncEncipherButton();
         checkReflector();
+        syncEncipherButton();
     }
 
     @FXML
@@ -301,7 +299,9 @@ public class PrimaryController {
                 TextField pair = pairs.get(index);
                 pair.setText(model.getPairText(index));
                 setValidTextField(pair, true);
-            }    
+            }
+
+            syncEncipherButton();
         }
     }
     /**
@@ -310,23 +310,21 @@ public class PrimaryController {
     private void checkReflector() {
         // System.out.println("checkReflector()");
 
+        final boolean valid = model.isReflectorValid();
         for (int i = 0; i < pairs.size(); ++i) {
-            final Boolean valid = model.isPairValid(i);
             setValidTextField(pairs.get(i), valid);
         }
     }
 
     /**
      * Control whether it is possible to change the reflector pairs.
-     * @param editable indicates if the reflector pairs are editable.
      */
-    private void editablePairs(boolean editable) {
+    private void editablePairs() {
         // System.out.println("editablePairs(" + editable + ")");
 
         final boolean reconfigurable = model.isReconfigurable();
         for (TextField field : pairs) {
             field.setDisable(!reconfigurable);
-            field.setEditable(editable);
         }
     }
 
@@ -342,7 +340,7 @@ public class PrimaryController {
         } else {
             reflectorChoicebox.setDisable(true);
             reflectorButton.setDisable(true);
-            editablePairs(false);
+            editablePairs();
         }
         reconfigurableCheckbox.setDisable(!editable);
     }
@@ -356,7 +354,7 @@ public class PrimaryController {
 
         reflectorChoicebox.setDisable(reconfigurable);
         reflectorButton.setDisable(!reconfigurable);
-        editablePairs(reconfigurable);
+        editablePairs();
     }
 
     /**
@@ -390,6 +388,7 @@ public class PrimaryController {
         pairs.add(pair10);
         pairs.add(pair11);
 
+        final boolean valid = model.isReflectorValid();
         for (int i = 0; i < pairs.size(); ++i) {
             String id = String.valueOf(i);
             TextField pair = pairs.get(i);
@@ -397,7 +396,7 @@ public class PrimaryController {
             pair.setEditable(false);
             pair.setText(model.getPairText(i));
 
-            setValidTextField(pair, model.isPairValid(i));
+            setValidTextField(pair, valid);
         }
     }
 
@@ -544,9 +543,6 @@ public class PrimaryController {
      */
     private void editablePlugboard(boolean editable) {
         // System.out.println("editablePlugboard(" + editable + ")");
-
-        for (TextField field : plugs)
-            field.setEditable(editable);
 
         plugboardButton.setDisable(!editable);
     }

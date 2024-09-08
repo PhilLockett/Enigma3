@@ -61,7 +61,7 @@
     -fx-font-weight: bold;
     -fx-background-color: #c0c0c0;
 }
-.error-text-field{
+.error-text-field:readonly{
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color: red;
