@@ -153,8 +153,6 @@ public class PairSelectControl extends Stage {
         done = new Button("Done");
         clear = new Button("Clear");
     
-        syncUI();
-
         done.setOnAction(event -> {
             result = true;
             close();
@@ -214,8 +212,6 @@ public class PairSelectControl extends Stage {
         scene.getStylesheets().add(getClass().getResource("PairSelect.css").toExternalForm());
 
         this.setScene(scene);
-
-        syncUI();
     }
 
 
@@ -230,6 +226,7 @@ public class PairSelectControl extends Stage {
     
 
     public boolean showControl() {
+        syncUI();
         this.showAndWait();
 
         return result;
