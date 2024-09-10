@@ -358,7 +358,6 @@ public class PrimaryController {
         pairs.add(pair10);
         pairs.add(pair11);
 
-        final boolean valid = model.isReflectorValid();
         for (int i = 0; i < pairs.size(); ++i) {
             String id = String.valueOf(i);
             TextField pair = pairs.get(i);
