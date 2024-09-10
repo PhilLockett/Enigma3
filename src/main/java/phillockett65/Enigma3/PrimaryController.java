@@ -581,7 +581,6 @@ public class PrimaryController {
         // System.out.println("encipherButtonActionPerformed(" + encipher + ")");
 
         model.setEncipher(encipher);
-        updateGUIState();
         syncUI();
         keyIO.requestFocus();
     }
