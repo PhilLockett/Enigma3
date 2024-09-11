@@ -34,17 +34,11 @@ class SelectEvent extends Event {
 
     private static final long serialVersionUID = 202408191851L;
 
-    private Pair pair;
-
-    public Pair getPair() { return pair; }
-
     /**
      * The only valid EventTypes for the SelectEvent.
      */
-    public static final EventType<SelectEvent> LINK_ADDED =
-        new EventType<>(Event.ANY, "LINK_ADDED");
-    public static final EventType<SelectEvent> LINK_REMOVED =
-        new EventType<>(Event.ANY, "LINK_REMOVED");
+    public static final EventType<SelectEvent> LINK_CHANGE =
+        new EventType<>(Event.ANY, "LINK_CHANGE");
 
     /**
      * Creates a new {@code SelectEvent} with an event type of {@code ANY}.
@@ -57,12 +51,9 @@ class SelectEvent extends Event {
      *
      * @param source    the event source which sent the event
      * @param target    the event target to associate with the event
-     * @param type      the event type of the event
      */
-    public SelectEvent(Object source, EventTarget target, EventType<SelectEvent> type) {
-        super(source, target, type);
-
-        pair = ((Pair)target);
+    public SelectEvent(Object source, EventTarget target) {
+        super(source, target, LINK_CHANGE);
     }
 
     @Override

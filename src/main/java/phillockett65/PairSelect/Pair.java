@@ -23,11 +23,10 @@
  */
 package phillockett65.PairSelect;
 
-import javafx.scene.Node;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 
-public class Pair extends Node {
+public class Pair {
     private final int first;
     private final int second;
     private Line line;

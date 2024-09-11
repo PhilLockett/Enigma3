@@ -185,14 +185,7 @@ public class PairSelectControl extends Stage {
         pairSelect = new PairSelect(plugboard);
         root.getChildren().add(pairSelect);
 
-        pairSelect.addEventHandler(SelectEvent.LINK_ADDED, 
-            new EventHandler<SelectEvent>() {
-                @Override public void handle(SelectEvent event) {
-                    syncUI();
-                }
-        });
-
-        pairSelect.addEventHandler(SelectEvent.LINK_REMOVED, 
+        pairSelect.addEventHandler(SelectEvent.LINK_CHANGE, 
             new EventHandler<SelectEvent>() {
                 @Override public void handle(SelectEvent event) {
                     syncUI();
