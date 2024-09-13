@@ -109,6 +109,7 @@ public class PairSelectControl extends Stage {
         cancel.getChildren().addAll(cancelLine1, cancelLine2);
 
         cancel.setOnMouseClicked(event -> {
+            restoreSnapshot();
             result = false;
             close();
         });
@@ -216,18 +217,7 @@ public class PairSelectControl extends Stage {
     public boolean isValid() { return pairSelect.isValid(); }
     public boolean isValid(int index) { return pairSelect.isValid(index); }
     public void clear() { pairSelect.clear(); }
-    
-
-    public boolean showControl() {
-        syncUI();
-        this.showAndWait();
-
-        return result;
-    }
-
-    public void setLinks(ArrayList<String> links) {
-        pairSelect.setLinks(links);
-    }
+    public void setLinks(ArrayList<String> links) { pairSelect.setLinks(links); }
 
     public void defaultSettings() {
         ArrayList<String> links = new ArrayList<String>();
@@ -236,7 +226,22 @@ public class PairSelectControl extends Stage {
             String pair = PairSelect.indexToLetter(a) + PairSelect.indexToLetter(a+1);
             links.add(pair);
         }
-        pairSelect.setLinks(links);
+        setLinks(links);
+    }
+
+    private ArrayList<String> snapshot = new ArrayList<String>();
+
+    private void takeSnapshot() {
+        snapshot.clear();
+        ArrayList<String> links = getLinks();
+
+        for (String link : links) {
+            snapshot.add(link);
+        }
+    }
+
+    private void restoreSnapshot() {
+        setLinks(snapshot);
     }
 
     /**
@@ -248,6 +253,15 @@ public class PairSelectControl extends Stage {
         init();
 
         setHeading(title);
+    }
+
+
+    public boolean showControl() {
+        takeSnapshot();
+        syncUI();
+        this.showAndWait();
+
+        return result;
     }
 
 }

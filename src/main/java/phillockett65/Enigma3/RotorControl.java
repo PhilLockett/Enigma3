@@ -95,6 +95,26 @@ public class RotorControl extends VBox {
         rotorOffsetSpinner.setValueFactory(rotorOffsetSVF);
         rotorOffsetSpinner.getValueFactory().wrapAroundProperty().set(true);
         rotorOffsetSpinner.setTooltip(new Tooltip("Select offset for the " + name + " Rotor"));
+
+    }
+
+    public void initListeners() {
+        System.out.println("initListeners()");
+
+        wheelChoicebox.valueProperty().addListener( (v, oldValue, newValue) -> {
+            // System.out.println("wheelChoicebox[" + id + "] = " + newValue);
+            wheelChoicebox.fireEvent(new RotorEvent(this, wheelChoicebox, RotorEvent.WHEEL_CHOICE, id));
+        });
+
+        ringSettingSpinner.valueProperty().addListener( (v, oldValue, newValue) -> {
+            // System.out.println("ringSettingSpinner[" + id + "] = " + newValue);
+            ringSettingSpinner.fireEvent(new RotorEvent(this, ringSettingSpinner, RotorEvent.RING_SETTING, id));
+        });
+
+        rotorOffsetSpinner.valueProperty().addListener( (v, oldValue, newValue) -> {
+            // System.out.println("rotorOffsetSpinner[" + id + "] = " + newValue);
+            rotorOffsetSpinner.fireEvent(new RotorEvent(this, rotorOffsetSpinner, RotorEvent.ROTOR_OFFSET, id));
+        });
     }
 
     private int valueToIndex(String s) { return useNumbers ? Mapper.numberToIndex(s) : Mapper.letterToIndex(s); }
@@ -126,13 +146,13 @@ public class RotorControl extends VBox {
     public void setWheelChoice(String value) { wheelChoicebox.setValue(value); }
 
     private String getRingValue() { return ringSettingSVF.getValue(); }
+    private void setRingValue(String value) { ringSettingSVF.setValue(value); }
     public int getRingIndex() { return valueToIndex(getRingValue()); }
-    public void setRingValue(String value) { ringSettingSVF.setValue(value); }
     public void setRingIndex(int index) { setRingValue(ringList.get(index % 26)); }
 
     private String getRotorValue() { return rotorOffsetSVF.getValue(); }
+    private void setRotorValue(String value) { rotorOffsetSVF.setValue(value); }
     public int getRotorIndex() { return valueToIndex(getRotorValue()); }
-    public void setRotorValue(String value) { rotorOffsetSVF.setValue(value); }
     public void setRotorIndex(int index) { setRotorValue(ringList.get(index % 26)); }
     public void increment(int steps) { rotorOffsetSVF.increment(steps); }
     

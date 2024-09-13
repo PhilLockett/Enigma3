@@ -49,8 +49,6 @@ public class DataStore implements Serializable {
 
     private ArrayList<String> plugs = new ArrayList<String>();
 
-    private Boolean encipher;
-
     public DataStore() {
     }
 
@@ -80,8 +78,6 @@ public class DataStore implements Serializable {
 
         plugs = model.getPlugText();
 
-        encipher = model.isEncipher();
-
         return success;
     }
 
@@ -94,24 +90,20 @@ public class DataStore implements Serializable {
         boolean success = true;
 
         model.setReflectorChoice(reflectorChoice);
-        model.setReconfigurable(reconfigurable);
+        model.initReconfigurable(reconfigurable);
 
-        model.setPairText(pairs);
+        model.initPairText(pairs);
 
-        model.setFourthWheel(fourthWheel);
+        model.initFourthWheel(fourthWheel);
         model.setUseNumbers(useNumbers);
         model.setShow(show);
 
         final int rotorStateCount = wheels.size();
         for (int i = 0; i < rotorStateCount; ++i) {
-            model.setWheelChoice(i, wheels.get(i));
-            model.setRingIndex(i, ringSettings.get(i));
-            model.setRotorIndex(i, rotorOffsets.get(i));
+            model.setRotorState(i, wheels.get(i), ringSettings.get(i), rotorOffsets.get(i));
         }
 
-        model.setPlugText(plugs);
-
-        model.setEncipher(encipher);
+        model.initPlugText(plugs);
 
         return success;
     }

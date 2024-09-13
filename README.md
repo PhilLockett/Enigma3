@@ -12,11 +12,11 @@ Maven resolves dependencies and builds the application independently of an IDE.
 
 This application simulates the [Enigma Machine](https://en.wikipedia.org/wiki/Enigma_machine). 
 
-**Note: there are no restrictions placed on the Rotor selection, as such some 
-Rotor combinations can be made that may not be available on the real machine.**
+**Note:** _there are no restrictions placed on the Rotor selection, as such some 
+Rotor combinations can be made that may not be available on the real machine._
 
-**Note: the turnover points for the Commercial, Rocket and SwissK Rotors are 
-guesses and may be incorrect.**
+**Note:** _the turnover points for the Commercial, Rocket and SwissK Rotors are 
+guesses and may be incorrect._
 
 ## Dependencies
 'Enigma3' is dependent on the following:
@@ -47,8 +47,9 @@ Once cloned the following command executes the code:
 ## User Guide
 Selected settings and states will be persisted from one session to the next.
 This means that all settings are saved to "Settings.dat" when the application 
-is shutdown. The next time Enigma3 is executed, these settings are loaded ready 
-to continue from where it left off.
+is shutdown.
+The next time Enigma3 is executed, these settings are loaded ready to continue 
+from where it left off.
 
 ### Reflector Set-Up
 The choice box allows standard pre-configured reflectors to be selected. 
@@ -60,43 +61,36 @@ The thirteenth pair is assumed from the two remaining unused letters.
 
 ### Rotor Set-Up
 By default, Enigma3 functions as a 3 Rotor machine, allowing the Left, Middle 
-and Right Rotors to be defined. The 'Fourth Rotor' toggle, when selected, 
-brings in the Fourth Rotor.
+and Right Rotors to be defined.
+The 'Use Fourth Rotor' toggle, when selected, brings in the Fourth Rotor.
 
 Some machines use letters on the Rotors, whereas some use numbers. 
 The 'Use Numbers' toggle switches between these characters on the 'Ring 
 Settings' and Rotor 'Offsets' spinners for convenience.
 
 #### Rotor Selection
-These choice boxes allow different Rotors to be selected for each of the 
-positions. No restrictions are placed on the selection so combinations 
-can be selected that may not be available on the real machine.
+The 'Rotor' choice box allows different Rotors to be selected for each of the 
+rotor positions.
+No restrictions are placed on the selection so combinations can be selected 
+that may not be available on the real machine.
 
 #### Ring Settings
-These spinners allow the ring settings for each rotor to be set.
+The 'Ring Setting' spinners set the ring setting for each rotor.
 
 #### Rotor Offsets
-These spinners set up the initial rotor offsets. 
+These rotor 'Offset' spinners set up the initial rotor positions. 
 
 The Rotors advance in a predefined orderly manner with each key press before 
 translation.
 
 ### Plugboard Connections
-Zero or more swap-over pairs can be configured (typically 10 are set). 
-The pairs are be defined using the pair-select pop-up window after clicking 
-the 'Edit' buttton. 
+Zero or more swap-over pairs can be configured (typically ten are set). 
+The pairs are defined using the pair-select pop-up window after clicking the 
+'Edit' buttton. 
 
 ### Translation
-This area shows the key presses and translated values.
-
-#### Encipher / Decipher
-The 'Encipher' toggle is only available when all settings are valid. 
-
-Un-select the toggle to make configuration changes.
-
-Select the toggle to translate key presses using the current configuration 
-settings.
-The majority of the settings become disabled while translating.
+This area shows the key presses and the translated values using the current 
+configuration settings.
 
 #### Show Translation
 Select the 'Show Translation' toggle to see all the individual translation 

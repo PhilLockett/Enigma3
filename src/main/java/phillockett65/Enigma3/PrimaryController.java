@@ -137,8 +137,6 @@ public class PrimaryController {
             TextField plug = plugs.get(i);
             plug.setText(model.getPlugText(i));
         }
-
-        encipherCheckbox.setSelected(updateGUIState());
     }
 
 
@@ -231,7 +229,6 @@ public class PrimaryController {
     void reconfigurableCheckboxActionPerformed(ActionEvent event) {
         model.setReconfigurable(reconfigurableCheckbox.isSelected());
         setReconfigurable();
-        syncEncipherButton();
     }
 
     @FXML
@@ -272,48 +269,21 @@ public class PrimaryController {
 
     private ArrayList<TextField> pairs = new ArrayList<TextField>(Model.PAIR_COUNT);
 
+    private void displayPairs() {
+        final int max = model.getPairCount();
+        for (int index = 0; index < max; ++index) {
+            TextField pair = pairs.get(index);
+            pair.setText(model.getPairText(index));
+        }
+    }
 
     @FXML
     void reflectorButtonOnAction(ActionEvent event) {
         if (model.launchReflector()) {
-            final int max = model.getPairCount();
-            for (int index = 0; index < max; ++index) {
-                TextField pair = pairs.get(index);
-                pair.setText(model.getPairText(index));
-            }
-
-            syncEncipherButton();
+            displayPairs();
         }
     }
 
-    /**
-     * Control whether it is possible to change the reflector pairs.
-     */
-    private void editablePairs() {
-        // System.out.println("editablePairs(" + editable + ")");
-
-        final boolean reconfigurable = model.isReconfigurable();
-        for (TextField field : pairs) {
-            field.setDisable(!reconfigurable);
-        }
-    }
-
-    /**
-     * Control whether it is possible to change the reflector set-up.
-     * @param editable indicates if the reflector set-up is editable.
-     */
-    private void editableReflector(boolean editable) {
-        // System.out.println("editableReflector(" + editable + ")");
-
-        if (editable) {
-            setReconfigurable();
-        } else {
-            reflectorChoicebox.setDisable(true);
-            reflectorButton.setDisable(true);
-            editablePairs();
-        }
-        reconfigurableCheckbox.setDisable(!editable);
-    }
 
     /**
      * Switch between being able to select a hard-wired reflector or set-up a 
@@ -324,7 +294,9 @@ public class PrimaryController {
 
         reflectorChoicebox.setDisable(reconfigurable);
         reflectorButton.setDisable(!reconfigurable);
-        editablePairs();
+        for (TextField field : pairs) {
+            field.setDisable(!reconfigurable);
+        }
     }
 
     /**
@@ -334,7 +306,6 @@ public class PrimaryController {
         reflectorSetUpTitledPane.setTooltip(new Tooltip("Select which Reflector (reversing drum) to use"));
         reconfigurableCheckbox.setSelected(model.isReconfigurable());
         reconfigurableCheckbox.setTooltip(new Tooltip("Select to set up and use a reconfigurable Reflector"));
-        setReconfigurable();
 
         reflectorChoicebox.setItems(model.getReflectorList());
         reflectorChoicebox.setTooltip(new Tooltip("Select a Reflector"));
@@ -365,25 +336,10 @@ public class PrimaryController {
             pair.setEditable(false);
             pair.setText(model.getPairText(i));
         }
+
+        setReconfigurable();
     }
 
-
-
-     /************************************************************************
-     * Support code for "Rotor Selection" panel.
-     */
-
-    /**
-     * Control whether it is possible to change the rotor selection. Note 
-     * wheel0Choicebox is controlled seperately in editableFourthWheel().
-     * @param editable indicates if the rotor selections are editable.
-     */
-    private void editableWheelOrder(boolean editable) {
-        // System.out.println("editableReflector(" + editable + ")");
-
-        fourthWheelCheckbox.setDisable(!editable);
-        model.setTranslate(!editable);
-    }
 
 
     /************************************************************************
@@ -403,9 +359,6 @@ public class PrimaryController {
     private MFXToggleButton useNumbersCheckbox;
 
     @FXML
-    private MFXToggleButton showStepsCheckbox;
-
-    @FXML
     void fourthWheelCheckboxActionPerformed(ActionEvent event) {
         model.setFourthWheel(fourthWheelCheckbox.isSelected());
     }
@@ -413,10 +366,6 @@ public class PrimaryController {
     @FXML
     void useNumbersCheckboxActionPerformed(ActionEvent event) {
         model.setUseNumbers(useNumbersCheckbox.isSelected());
-    }
-    @FXML
-    void showStepsCheckboxActionPerformed(ActionEvent event) {
-        model.setShow(showStepsCheckbox.isSelected());
     }
 
     /**
@@ -428,7 +377,6 @@ public class PrimaryController {
         rotorSetUpTitledPane.setTooltip(new Tooltip("Select and set up the Rotors (wheels / drums)"));
         fourthWheelCheckbox.setTooltip(new Tooltip("Select to use a fourth Rotor"));
         useNumbersCheckbox.setTooltip(new Tooltip("Select to use Numbers on the Rotors instead of Letters"));
-        showStepsCheckbox.setTooltip(new Tooltip("Select to show each translation step on the command line"));
     }
 
 
@@ -485,7 +433,7 @@ public class PrimaryController {
     private ArrayList<TextField> plugs = new ArrayList<TextField>(Model.FULL_COUNT);
 
 
-    private void displayPlugboardPairs() {
+    private void displayPlugs() {
         for (TextField field : plugs) {
             field.setText("");
         }
@@ -500,18 +448,8 @@ public class PrimaryController {
     @FXML
     void plugboardButtonOnAction(ActionEvent event) {
         if (model.launchPlugboard()) {
-            displayPlugboardPairs();
+            displayPlugs();
         }
-    }
-
-    /**
-     * Control whether it is possible to change the plugboard connections.
-     * @param editable indicates if the plugboard connections are editable.
-     */
-    private void editablePlugboard(boolean editable) {
-        // System.out.println("editablePlugboard(" + editable + ")");
-
-        plugboardButton.setDisable(!editable);
     }
 
     /**
@@ -554,16 +492,13 @@ public class PrimaryController {
     private int currentKey = -1;
 
     @FXML
-    private MFXToggleButton encipherCheckbox;
+    private MFXToggleButton showStepsCheckbox;
 
     @FXML
     private Button resetButton;
 
     @FXML
     private HBox mainIO;
-
-    @FXML
-    private Label mainLabel;
 
     @FXML
     private TextField keyIO;
@@ -575,13 +510,8 @@ public class PrimaryController {
     private TextField lampIO;
 
     @FXML
-    void encipherCheckboxActionPerformed(ActionEvent event) {
-        final boolean encipher = encipherCheckbox.isSelected();
-        // System.out.println("encipherButtonActionPerformed(" + encipher + ")");
-
-        model.setEncipher(encipher);
-        syncUI();
-        keyIO.requestFocus();
+    void showStepsCheckboxActionPerformed(ActionEvent event) {
+        model.setShow(showStepsCheckbox.isSelected());
     }
 
     @FXML
@@ -591,62 +521,12 @@ public class PrimaryController {
     }
 
     /**
-     * Control whether it is possible to reset the settings.
-     * @param editable indicates if the reset button is available.
-     */
-    private void editableTranslation(boolean editable) {
-        resetButton.setDisable(!editable);
-    }
-
-    /**
-     * Update the config editability state of the GUI depending on whether we 
-     * are currently translating letters or not.
-     * @return true if we are currently translating letters, false otherwise.
-     */
-    private boolean updateGUIState() {
-        final boolean encipher = model.isEncipher();
-
-        // System.out.println("updateGUIState(" + encipher + ")");
-        editableReflector(!encipher);
-        editableWheelOrder(!encipher);
-        editablePlugboard(!encipher);
-        editableTranslation(!encipher);
-
-        if (encipher) {
-            // encipherCheckbox.setText("Press to Change Settings");
-            encipherCheckbox.setTooltip(new Tooltip("Un-select to resume changing settings"));
-
-            mainLabel.setVisible(false);
-            mainIO.setVisible(true);
-        } else {
-            // encipherCheckbox.setText("Press to Start Translation");
-            encipherCheckbox.setTooltip(new Tooltip("Select to translate letters using the current settings"));
-
-            mainLabel.setVisible(true);
-            mainIO.setVisible(false);
-            keyIO.setText("");
-            lampIO.setText("");
-        }
-
-        return encipher;
-    }
-
-    /**
-     * Only allow the encipherButton to be selected if the config is valid.
-     */
-    private void syncEncipherButton() {
-        encipherCheckbox.setDisable(!model.isConfigValid());
-    }
-
-    /**
      * Initialize "Translation" panel.
      */
     private void initializeEncipher() {
-        syncEncipherButton();
-        encipherCheckbox.setSelected(updateGUIState());
+        showStepsCheckbox.setTooltip(new Tooltip("Select to show each translation step on the command line"));
         resetButton.setTooltip(new Tooltip("Click to return all settings to the default values"));
 
-        mainLabel.setText("Configure Settings");
         final char arrow = '\u2799';
         labelIO.setText("" + arrow);
     }
@@ -657,16 +537,12 @@ public class PrimaryController {
      * @param keyCode key to be processed
      */
     public void keyPress(KeyCode keyCode) {
-        final boolean encipher = model.isEncipher();
+        if (currentKey == -1) {
+            currentKey = Mapper.letterToIndex(keyCode.getChar());
+            final int index = model.translate(currentKey);
 
-        if (encipher) {
-            if (currentKey == -1) {
-                currentKey = Mapper.letterToIndex(keyCode.getChar());
-                final int index = model.translate(currentKey);
-
-                keyIO.setText(keyCode.getChar());
-                lampIO.setText(Mapper.indexToLetter(index));
-            }
+            keyIO.setText(keyCode.getChar());
+            lampIO.setText(Mapper.indexToLetter(index));
         }
     }
 
@@ -675,16 +551,9 @@ public class PrimaryController {
      * @param keyCode key to be processed
      */
     public void keyRelease(KeyCode keyCode) {
-        final boolean encipher = model.isEncipher();
-
-        if (encipher) {
-            final int index = Mapper.letterToIndex(keyCode.getChar());
-            if (currentKey == index) {
-                currentKey = -1;
-                
-            // lampIO.setText("");
-            // keyIO.setText("");
-            }
+        final int index = Mapper.letterToIndex(keyCode.getChar());
+        if (currentKey == index) {
+            currentKey = -1;
         }
     }
 
