@@ -63,7 +63,6 @@ public class PrimaryController {
 
     private static final String TOPBARICON = "top-bar-icon";
 
-    private final double cancelStroke = 2.5;
 
 
 
@@ -144,10 +143,8 @@ public class PrimaryController {
      * Support code for "Top Bar" panel.
      */
 
-    private final double iconSize = 28.0;
     private double x = 0.0;
     private double y = 0.0;
-    private Pane cancel;
 
     @FXML
     private HBox topBar;
@@ -168,8 +165,11 @@ public class PrimaryController {
     }
  
  
-    private void buildCancel() {
-        cancel = new Pane();
+    private Pane buildCancel() {
+        final double iconSize = 28.0;
+        final double cancelStroke = 2.5;
+
+        Pane cancel = new Pane();
         cancel.setPrefWidth(iconSize);
         cancel.setPrefHeight(iconSize);
         cancel.getStyleClass().add(TOPBARICON);
@@ -177,25 +177,26 @@ public class PrimaryController {
         double centre = iconSize / 2;
         double radius = centre * 0.7;
 
-        Circle cancelCircle = new Circle(centre, centre, radius);
-        cancelCircle.setFill(Color.TRANSPARENT);
-        cancelCircle.getStyleClass().add(TOPBARICON);
-        cancelCircle.setStrokeWidth(cancelStroke);
+        Circle circle = new Circle(centre, centre, radius);
+        circle.setFill(Color.TRANSPARENT);
+        circle.getStyleClass().add(TOPBARICON);
+        circle.setStrokeWidth(cancelStroke);
 
         double length = radius * 0.6;
         double a = centre + length;
         double b = centre - length;
-        Line cancelLine = new Line(centre, a, centre, b);
-        cancelLine.getStyleClass().add(TOPBARICON);
-        cancelLine.setStrokeWidth(cancelStroke);
-        cancelLine.setStrokeLineCap(StrokeLineCap.ROUND);
+        Line line = new Line(centre, a, centre, b);
+        line.getStyleClass().add(TOPBARICON);
+        line.setStrokeWidth(cancelStroke);
+        line.setStrokeLineCap(StrokeLineCap.ROUND);
 
-        cancel.getChildren().addAll(cancelCircle, cancelLine);
+        cancel.getChildren().addAll(circle, line);
 
         cancel.setOnMouseClicked(event -> {
             stage.close();
         });
 
+        return cancel;
     }
 
 
@@ -203,8 +204,7 @@ public class PrimaryController {
      * Initialize "Reflector" panel.
      */
     private void initializeTopBar() {
-        buildCancel();
-        topBar.getChildren().add(cancel);
+        topBar.getChildren().add(buildCancel());
     }
   
 

@@ -46,6 +46,8 @@ import javafx.stage.StageStyle;
  */
 public class PairSelectControl extends Stage {
 
+    private static final String TOPBARICON = "top-bar-icon";
+
     private Scene scene;
 
     private VBox root;
@@ -87,7 +89,7 @@ public class PairSelectControl extends Stage {
         Pane cancel = new Pane();
         cancel.setPrefWidth(iconSize);
         cancel.setPrefHeight(iconSize);
-        cancel.getStyleClass().add("top-bar-icon");
+        cancel.getStyleClass().add(TOPBARICON);
 
         double a = iconSize * cancelPadding;
         double b = iconSize - a;
