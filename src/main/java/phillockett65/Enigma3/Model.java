@@ -114,15 +114,15 @@ public class Model {
      * Set all attributes to the default values.
      */
     public void defaultSettings() {
-        setReflectorChoice("Reflector B");
+        initReflectorChoice("Reflector B");
 
         reflectorControl.defaultSettings();
 
         initFourthWheel(false);
-        setRotorState(SLOW, "IV", 0, 0);
-        setRotorState(LEFT, "I", 1, 0);
-        setRotorState(MIDDLE, "II", 10, 20);
-        setRotorState(RIGHT, "III", 1, 25);
+        setRotorState(SLOW, "I", 0, 0);
+        setRotorState(LEFT, "IV", 15, 12);
+        setRotorState(MIDDLE, "II", 23, 19);
+        setRotorState(RIGHT, "V", 26, 1);
 
         setUseNumbers(false);
         setShow(false);
