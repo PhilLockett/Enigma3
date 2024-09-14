@@ -52,12 +52,14 @@ The next time Enigma3 is executed, these settings are loaded ready to continue
 from where it left off.
 
 ### Reflector Set-Up
-The choice box allows standard pre-configured reflectors to be selected. 
+The choice box allows standard fixed configuration reflectors to be selected. 
 
-Alternatively, the toggle allows for a reconfigurable reflector to be used.
+Alternatively, select 'CONFIGURABLE' to use a reconfigurable reflector.
 Twelve loop-back wired pairs must be defined using the pair-select pop-up 
 window after clicking the 'Edit' buttton. 
-The thirteenth pair is assumed from the two remaining unused letters.
+
+**Note:** _the thirteenth pair is assumed from the two remaining unused 
+letters._
 
 ### Rotor Set-Up
 By default, Enigma3 functions as a 3 Rotor machine, allowing the Left, Middle 

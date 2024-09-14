@@ -99,7 +99,7 @@ public class RotorControl extends VBox {
     }
 
     public void initListeners() {
-        System.out.println("initListeners()");
+        // System.out.println("initListeners()");
 
         wheelChoicebox.valueProperty().addListener( (v, oldValue, newValue) -> {
             // System.out.println("wheelChoicebox[" + id + "] = " + newValue);

@@ -122,7 +122,6 @@ public class PrimaryController {
      */
     public void syncUI() {
         reflectorChoicebox.setValue(model.getReflectorChoice());
-        reconfigurableCheckbox.setSelected(model.isReconfigurable());
 
         for (int i = 0; i < pairs.size(); ++i) {
             TextField pair = pairs.get(i);
@@ -220,16 +219,7 @@ public class PrimaryController {
     private ChoiceBox<String> reflectorChoicebox;
 
     @FXML
-    private MFXToggleButton reconfigurableCheckbox;
-
-    @FXML
     private Button reflectorButton;
-
-    @FXML
-    void reconfigurableCheckboxActionPerformed(ActionEvent event) {
-        model.setReconfigurable(reconfigurableCheckbox.isSelected());
-        setReconfigurable();
-    }
 
     @FXML
     private TextField pair0;
@@ -292,7 +282,6 @@ public class PrimaryController {
     private void setReconfigurable() {
         final boolean reconfigurable = model.isReconfigurable();
 
-        reflectorChoicebox.setDisable(reconfigurable);
         reflectorButton.setDisable(!reconfigurable);
         for (TextField field : pairs) {
             field.setDisable(!reconfigurable);
@@ -304,14 +293,13 @@ public class PrimaryController {
      */
     private void initializeReflector() {
         reflectorSetUpTitledPane.setTooltip(new Tooltip("Select which Reflector (reversing drum) to use"));
-        reconfigurableCheckbox.setSelected(model.isReconfigurable());
-        reconfigurableCheckbox.setTooltip(new Tooltip("Select to set up and use a reconfigurable Reflector"));
 
         reflectorChoicebox.setItems(model.getReflectorList());
         reflectorChoicebox.setTooltip(new Tooltip("Select a Reflector"));
 
         reflectorChoicebox.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             model.setReflectorChoice(newValue);
+            setReconfigurable();
         });
 
         reflectorButton.setTooltip(new Tooltip("Edit the reconfigurable Reflector"));

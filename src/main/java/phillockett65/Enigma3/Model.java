@@ -34,13 +34,13 @@ import phillockett65.PairSelect.PairSelectControl;
 public class Model {
 
     private final static String DATAFILE = "Settings.dat";
+    private final static String CONFIGURABLE = "CONFIGURABLE";
 
     public static final int ROTOR_COUNT = 4;
     public final static int FULL_COUNT = 13;
     public final static int PLUG_COUNT = 10;
     public final static int PAIR_COUNT = 12;
 
-    // private static final int OTHER = -1;
     private static final int SLOW = 0;
     private static final int LEFT = 1;
     private static final int MIDDLE = 2;
@@ -107,6 +107,7 @@ public class Model {
         for (RotorControl rotor : rotorControls) {
             rotor.initListeners();
         }
+        updatePipelineReflector();
     }
 
     /**
@@ -115,7 +116,6 @@ public class Model {
     public void defaultSettings() {
         setReflectorChoice("Reflector B");
 
-        initReconfigurable(false);
         reflectorControl.defaultSettings();
 
         initFourthWheel(false);
@@ -186,7 +186,8 @@ public class Model {
     private void initRotorWiring() {
 
         // Build list of rotors and list of reflectors that can be selected.
-        for (RotorData rotor : rotorData)
+        for (RotorData rotor : rotorData) {
+
             if (rotor.isReflector()) {
                 reflectors.add(rotor);
                 reflectorList.add(rotor.getId());
@@ -194,6 +195,9 @@ public class Model {
                 rotors.add(rotor);
                 wheelList.add(rotor.getId());
             }
+        }
+
+        reflectorList.add(CONFIGURABLE);
     }
 
 
@@ -210,9 +214,15 @@ public class Model {
 
     public ObservableList<String> getReflectorList()   { return reflectorList; }
     public String getReflectorChoice()   { return reflectorChoice; }
-    public void setReflectorChoice(String choice)   { reflectorChoice = choice; }
+    public void initReflectorChoice(String choice)   {
+        reflectorChoice = choice;
+        reconfigurable = CONFIGURABLE.equals(reflectorChoice);
+    }
 
-    public void initReconfigurable(boolean state) { reconfigurable = state; }
+    public void setReflectorChoice(String choice)   {
+        initReflectorChoice(choice);
+        updatePipelineReflector();
+    }
 
     public Mapper buildNewReconfigurable() {
         int[] reflectorMap;
@@ -227,10 +237,8 @@ public class Model {
         return new Mapper("Reflector", reflectorMap);
     }
 
-    public void setReconfigurable(boolean state) {
-        initReconfigurable(state);
+    public void updatePipelineReflector() {
         updatePipeline(REFLECT, buildNewReconfigurable(), Mapper.RIGHT_TO_LEFT);
-
     }
 
     public boolean isReconfigurable() { return reconfigurable; }
@@ -255,7 +263,7 @@ public class Model {
 
     public boolean launchReflector() {
         if (reflectorControl.showControl()) {
-            updatePipeline(REFLECT, buildNewReconfigurable(), Mapper.RIGHT_TO_LEFT);
+            updatePipelineReflector();
 
             return true;
         }

@@ -36,7 +36,6 @@ public class DataStore implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String reflectorChoice;
-    private Boolean reconfigurable;
     private ArrayList<String> pairs = new ArrayList<String>();
 
     private Boolean fourthWheel;
@@ -61,7 +60,6 @@ public class DataStore implements Serializable {
         boolean success = true;
 
         reflectorChoice = model.getReflectorChoice();
-        reconfigurable = model.isReconfigurable();
 
         pairs = model.getPairText();
 
@@ -89,8 +87,7 @@ public class DataStore implements Serializable {
     public boolean push(Model model) {
         boolean success = true;
 
-        model.setReflectorChoice(reflectorChoice);
-        model.initReconfigurable(reconfigurable);
+        model.initReflectorChoice(reflectorChoice);
 
         model.initPairText(pairs);
 
