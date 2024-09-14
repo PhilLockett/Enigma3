@@ -49,19 +49,12 @@ public class PairSelectControl extends Stage {
     private Scene scene;
 
     private VBox root;
-    private HBox topBar;
     private Label heading;
     private PairSelect pairSelect;
     private TextField field;
-    private HBox selection;
-    private HBox options;
 
     private Button done;
     private Button clear;
-
-    private Pane cancel;
-    private double cancelPadding = 0.3;
-    private double iconSize = 28.0;
 
     private double x = 0.0;
     private double y = 0.0;
@@ -87,8 +80,11 @@ public class PairSelectControl extends Stage {
     }
 
 
-    private void buildCancel() {
-        cancel = new Pane();
+    private Pane buildCancel() {
+        final double cancelPadding = 0.3;
+        final double iconSize = 28.0;
+    
+        Pane cancel = new Pane();
         cancel.setPrefWidth(iconSize);
         cancel.setPrefHeight(iconSize);
         cancel.getStyleClass().add("top-bar-icon");
@@ -113,10 +109,11 @@ public class PairSelectControl extends Stage {
             close();
         });
 
+        return cancel;
     }
 
-    private void loadTopBar() {
-        topBar = new HBox();
+    private HBox buildTopBar() {
+        HBox topBar = new HBox();
         topBar.getStyleClass().add("top-bar");
 
         // Make window dragable.
@@ -132,17 +129,19 @@ public class PairSelectControl extends Stage {
 
         heading = new Label();
         Region region = new Region();
-        buildCancel();
 
 
         topBar.getChildren().add(heading);
         topBar.getChildren().add(region);
         HBox.setHgrow(region, Priority.ALWAYS);
-        topBar.getChildren().add(cancel);
+        topBar.getChildren().add(buildCancel());
+
+
+        return topBar;
     }
 
-    private void loadOptions() {
-        options = new HBox();
+    private HBox buildOptions() {
+        HBox options = new HBox();
         options.setSpacing(10);
         options.setPadding(new Insets(10.0));
 
@@ -167,10 +166,12 @@ public class PairSelectControl extends Stage {
         options.getChildren().add(region);
         HBox.setHgrow(region, Priority.ALWAYS);
         options.getChildren().add(done);
+
+        return options;
     }
 
-    private void loadSelection() {
-        selection = new HBox();
+    private HBox buildSelected() {
+        HBox selection = new HBox();
         // selection.setSpacing(10);
         selection.setPadding(new Insets(0.0, 10.0, 0.0, 10.0));
 
@@ -180,6 +181,8 @@ public class PairSelectControl extends Stage {
 
         HBox.setHgrow(field, Priority.ALWAYS);
         selection.getChildren().add(field);
+
+        return selection;
     }
 
     private void init() {
@@ -192,11 +195,8 @@ public class PairSelectControl extends Stage {
         root.setSpacing(10);
         root.setPadding(new Insets(0, 1.0, 0, 0));
 
-        loadTopBar();
-        root.getChildren().add(topBar);
 
         pairSelect = new PairSelect(plugboard);
-        root.getChildren().add(pairSelect);
 
         pairSelect.addEventHandler(SelectEvent.LINK_CHANGE, 
             new EventHandler<SelectEvent>() {
@@ -205,11 +205,11 @@ public class PairSelectControl extends Stage {
                 }
         });
 
-        loadSelection();
-        root.getChildren().add(selection);
 
-        loadOptions();
-        root.getChildren().add(options);
+        root.getChildren().add(buildTopBar());
+        root.getChildren().add(pairSelect);
+        root.getChildren().add(buildSelected());
+        root.getChildren().add(buildOptions());
 
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("PairSelect.css").toExternalForm());
