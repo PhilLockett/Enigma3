@@ -27,6 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -52,15 +53,13 @@ public class PairSelectControl extends Stage {
     private Label heading;
     private PairSelect pairSelect;
     private TextField field;
+    private HBox selection;
     private HBox options;
 
     private Button done;
     private Button clear;
-    private Region region;
 
     private Pane cancel;
-    private Line cancelLine1;
-    private Line cancelLine2;
     private double cancelPadding = 0.3;
     private double iconSize = 28.0;
 
@@ -96,17 +95,17 @@ public class PairSelectControl extends Stage {
 
         double a = iconSize * cancelPadding;
         double b = iconSize - a;
-        cancelLine1 = new Line(a, a, b, b);
-        cancelLine1.setStroke(Color.WHITE);
-        cancelLine1.setStrokeWidth(4.0);
-        cancelLine1.setStrokeLineCap(StrokeLineCap.ROUND);
+        Line line1 = new Line(a, a, b, b);
+        line1.setStroke(Color.WHITE);
+        line1.setStrokeWidth(4.0);
+        line1.setStrokeLineCap(StrokeLineCap.ROUND);
 
-        cancelLine2 = new Line(a, b, b, a);
-        cancelLine2.setStroke(Color.WHITE);
-        cancelLine2.setStrokeWidth(4.0);
-        cancelLine2.setStrokeLineCap(StrokeLineCap.ROUND);
+        Line line2 = new Line(a, b, b, a);
+        line2.setStroke(Color.WHITE);
+        line2.setStrokeWidth(4.0);
+        line2.setStrokeLineCap(StrokeLineCap.ROUND);
 
-        cancel.getChildren().addAll(cancelLine1, cancelLine2);
+        cancel.getChildren().addAll(line1, line2);
 
         cancel.setOnMouseClicked(event -> {
             restoreSnapshot();
@@ -132,7 +131,7 @@ public class PairSelectControl extends Stage {
         });
 
         heading = new Label();
-        region = new Region();
+        Region region = new Region();
         buildCancel();
 
 
@@ -142,16 +141,13 @@ public class PairSelectControl extends Stage {
         topBar.getChildren().add(cancel);
     }
 
-    public void setHeading(String title) {
-        heading.setText(" " + title);
-    }
-
     private void loadOptions() {
         options = new HBox();
         options.setSpacing(10);
         options.setPadding(new Insets(10.0));
 
         done = new Button("Done");
+        Region region = new Region();
         clear = new Button("Clear");
     
         done.setOnAction(event -> {
@@ -164,11 +160,27 @@ public class PairSelectControl extends Stage {
             syncUI();
         });
 
-        
-        options.getChildren().add(done);
+        done.setTooltip(new Tooltip("Click when all pairs have been entered"));
+        clear.setTooltip(new Tooltip("Click to delete all entered pairs"));
+
         options.getChildren().add(clear);
+        options.getChildren().add(region);
+        HBox.setHgrow(region, Priority.ALWAYS);
+        options.getChildren().add(done);
     }
 
+    private void loadSelection() {
+        selection = new HBox();
+        // selection.setSpacing(10);
+        selection.setPadding(new Insets(0.0, 10.0, 0.0, 10.0));
+
+        field = new TextField();
+        field.setEditable(false);
+        field.setFocusTraversable(false);
+
+        HBox.setHgrow(field, Priority.ALWAYS);
+        selection.getChildren().add(field);
+    }
 
     private void init() {
         resizableProperty().setValue(false);
@@ -193,11 +205,8 @@ public class PairSelectControl extends Stage {
                 }
         });
 
-
-        field = new TextField();
-        field.setEditable(false);
-        field.setFocusTraversable(false);
-        root.getChildren().add(field);
+        loadSelection();
+        root.getChildren().add(selection);
 
         loadOptions();
         root.getChildren().add(options);
@@ -218,6 +227,7 @@ public class PairSelectControl extends Stage {
     public boolean isValid(int index) { return pairSelect.isValid(index); }
     public void clear() { pairSelect.clear(); }
     public void setLinks(ArrayList<String> links) { pairSelect.setLinks(links); }
+    public void setHeading(String title) { heading.setText(" " + title); }
 
     public void defaultSettings() {
         ArrayList<String> links = new ArrayList<String>();
