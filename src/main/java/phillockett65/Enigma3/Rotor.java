@@ -162,4 +162,7 @@ public class Rotor extends RotorData {
             "]";
     }
 
+    public void dumpLeftMap() { dumpMapping(leftMap); }
+    public void dumpRightMap() { dumpMapping(rightMap); }
+
 }
