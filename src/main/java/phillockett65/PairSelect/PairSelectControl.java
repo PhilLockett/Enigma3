@@ -63,6 +63,20 @@ public class PairSelectControl extends Stage {
 
     private boolean plugboard = false;
     private boolean result = false;
+    private boolean launched = false;
+
+    private static final double ERRPOS = -200.0;
+
+    public void setPos(double x, double y) {
+        if ((x == ERRPOS) && (y == ERRPOS)) {
+            return;
+        }
+
+        this.setX(x);
+        this.setY(y);
+    }
+    public double getXPos() { if (launched) return this.getX(); return ERRPOS; }
+    public double getYPos() { if (launched) return this.getY(); return ERRPOS; }
 
     private void syncDoneButton() {
         boolean disabled = !plugboard;
@@ -269,6 +283,7 @@ public class PairSelectControl extends Stage {
 
 
     public boolean showControl() {
+        launched = true;
         takeSnapshot();
         syncUI();
         this.showAndWait();

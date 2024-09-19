@@ -35,6 +35,13 @@ import java.util.ArrayList;
 public class DataStore implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private double mainX;
+    private double mainY;
+    private double reflectorX;
+    private double reflectorY;
+    private double plugboardX;
+    private double plugboardY;
+
     private String reflectorChoice;
     private ArrayList<String> pairs = new ArrayList<String>();
 
@@ -58,6 +65,13 @@ public class DataStore implements Serializable {
      */
     public boolean pull(Model model) {
         boolean success = true;
+
+        mainX = model.getMainXPos();
+        mainY = model.getMainYPos();
+        reflectorX = model.getReflectorXPos();
+        reflectorY = model.getReflectorYPos();
+        plugboardX = model.getPlugboardXPos();
+        plugboardY = model.getPlugboardYPos();
 
         reflectorChoice = model.getReflectorChoice();
 
@@ -86,6 +100,10 @@ public class DataStore implements Serializable {
      */
     public boolean push(Model model) {
         boolean success = true;
+
+        model.setMainPos(mainX, mainY);
+        model.setReflectorPos(reflectorX, reflectorY);
+        model.setPlugboardPos(plugboardX, plugboardY);
 
         model.initReflectorChoice(reflectorChoice);
 

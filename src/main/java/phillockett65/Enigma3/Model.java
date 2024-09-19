@@ -49,6 +49,26 @@ public class Model {
     private static final int REFLECT = 5;
     private static final int MAPPER_COUNT = 6;
 
+    private boolean defaulted = false;
+
+    public boolean isDefaulted() { return defaulted; }
+
+    private static final double ERRPOS = -200.0;
+    private double mainX = ERRPOS;
+    private double mainY = ERRPOS;
+
+    public void setMainPos(double x, double y) { mainX = x; mainY = y; }
+    public double getMainXPos() { return mainX; }
+    public double getMainYPos() { return mainY; }
+
+    public void setReflectorPos(double x, double y) { reflectorControl.setPos(x, y); }
+    public double getReflectorXPos() { return reflectorControl.getXPos(); }
+    public double getReflectorYPos() { return reflectorControl.getYPos(); }
+
+    public void setPlugboardPos(double x, double y) { plugboardControl.setPos(x, y); }
+    public double getPlugboardXPos() { return plugboardControl.getXPos(); }
+    public double getPlugboardYPos() { return plugboardControl.getYPos(); }
+
 
     /************************************************************************
      * General support code.
@@ -114,6 +134,8 @@ public class Model {
      * Set all attributes to the default values.
      */
     public void defaultSettings() {
+        defaulted = true;
+
         initReflectorChoice("Reflector B");
 
         reflectorControl.defaultSettings();
