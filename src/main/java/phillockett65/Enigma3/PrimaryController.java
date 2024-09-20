@@ -46,7 +46,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
@@ -184,20 +185,21 @@ public class PrimaryController {
         double centre = iconSize / 2;
         double radius = centre * 0.7;
 
-        Circle circle = new Circle(centre, centre, radius);
-        circle.setFill(Color.TRANSPARENT);
-        circle.getStyleClass().add(TOPBARICON);
-        circle.setStrokeWidth(cancelStroke);
+        Arc arc = new Arc(centre, centre, radius, radius, 120.0, 300.0);
+        arc.setStroke(Color.WHITE);
+        arc.getStyleClass().add(TOPBARICON);
+        arc.setStrokeWidth(cancelStroke);
+        arc.setFill(Color.TRANSPARENT);
+        arc.setType(ArcType.OPEN);
 
-        double length = radius * 0.6;
-        double a = centre + length;
-        double b = centre - length;
-        Line line = new Line(centre, a, centre, b);
+        double a = centre - (radius * 1.2);
+        Line line = new Line(centre, a, centre, centre);
+        line.setStroke(Color.WHITE);
         line.getStyleClass().add(TOPBARICON);
         line.setStrokeWidth(cancelStroke);
         line.setStrokeLineCap(StrokeLineCap.ROUND);
 
-        cancel.getChildren().addAll(circle, line);
+        cancel.getChildren().addAll(arc, line);
 
         cancel.setOnMouseClicked(event -> {
             stage.close();
