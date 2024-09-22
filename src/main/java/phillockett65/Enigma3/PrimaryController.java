@@ -107,9 +107,7 @@ public class PrimaryController {
         this.stage = stage;
         model.init();
         syncUI();
-        if (model.isDefaulted()) {
-            model.setMainPos(stage.getX(), stage.getY());
-        } else {
+        if (!model.isDefaulted()) {
             stage.setX(model.getMainXPos());
             stage.setY(model.getMainYPos());
         }
@@ -119,6 +117,8 @@ public class PrimaryController {
      * Called by Application on shutdown.
      */
     public void saveState() {
+        // Only save window position just before saving state.
+        model.setMainPos(stage.getX(), stage.getY());
         DataStore.writeData(model);
     }
 
@@ -169,7 +169,6 @@ public class PrimaryController {
     void topBarOnMouseDragged(MouseEvent event) {
         stage.setX(event.getScreenX() - x);
         stage.setY(event.getScreenY() - y);
-        model.setMainPos(stage.getX(), stage.getY());
     }
  
  
