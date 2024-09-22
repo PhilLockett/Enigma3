@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.stage.Stage;
 import phillockett65.PairSelect.PairSelectControl;
 
 public class Model {
@@ -50,16 +51,12 @@ public class Model {
     private static final int MAPPER_COUNT = 6;
 
     private boolean defaulted = false;
-
     public boolean isDefaulted() { return defaulted; }
-
-    private static final double ERRPOS = -200.0;
-    private double mainX = ERRPOS;
-    private double mainY = ERRPOS;
-
-    public void setMainPos(double x, double y) { mainX = x; mainY = y; }
-    public double getMainXPos() { return mainX; }
-    public double getMainYPos() { return mainY; }
+    
+    private Stage stage;
+    public void setMainPos(double x, double y) { stage.setX(x); stage.setY(y); }
+    public double getMainXPos() { return stage.getX(); }
+    public double getMainYPos() { return stage.getY(); }
 
     public void setReflectorPos(double x, double y) { reflectorControl.setPos(x, y); }
     public double getReflectorXPos() { return reflectorControl.getXPos(); }
@@ -103,25 +100,16 @@ public class Model {
 
 
     /**
-     * Called by the controller after the constructor to initialise any 
-     * objects after the controls have been initialised.
+     * Called by the controller after the stage has been set. Completes any 
+     * initialization dependent on other components being initialized.
      */
-    public void initialize() {
-        // System.out.println("Model initialized.");
-
+    public void init(Stage stage) {
+        // System.out.println("Model init.");
+        this.stage = stage;
         if (!DataStore.readData(this))
             defaultSettings();
 
         initializeEncipher();
-        setRotorControlsSpacing(8);
-    }
-
-    /**
-     * Called by the controller after the stage has been set. Completes any 
-     * initialization dependent on other components being initialized.
-     */
-    public void init() {
-        // System.out.println("Model init.");
 
         // Initialize "Rotor Control" listeners that fire rotor change events.
         for (RotorControl rotor : rotorControls) {
@@ -142,9 +130,9 @@ public class Model {
 
         initFourthWheel(false);
         setRotorState(SLOW, "I", 0, 0);
-        setRotorState(LEFT, "IV", 15, 12);
-        setRotorState(MIDDLE, "II", 23, 19);
-        setRotorState(RIGHT, "V", 26, 1);
+        setRotorState(LEFT, "IV", 14, 11);
+        setRotorState(MIDDLE, "II", 22, 18);
+        setRotorState(RIGHT, "V", 25, 0);
 
         setUseNumbers(false);
         setShow(false);
@@ -363,11 +351,6 @@ public class Model {
             rotor.setLockDown(selected);
     }
 
-    public void setRotorControlsSpacing(double value) {
-        for (RotorControl rotor : rotorControls)
-            rotor.setSpacing(value);
-    }
-
 
     private RotorControl getState(int index) { return rotorControls.get(index); }
 
@@ -387,6 +370,7 @@ public class Model {
         for (int i = 0; i < ROTOR_COUNT; ++i) {
             RotorControl rotorControl = new RotorControl();
             rotorControl.init(i, wheelList);
+            rotorControl.setSpacing(8);
 
             rotorControl.addEventHandler(RotorEvent.WHEEL_CHOICE, 
                 new EventHandler<RotorEvent>() {

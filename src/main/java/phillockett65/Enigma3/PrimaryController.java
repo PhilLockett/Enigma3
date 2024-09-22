@@ -66,7 +66,6 @@ public class PrimaryController {
 
 
 
-
     /************************************************************************
      * Support code for the Initialization of the Controller.
      */
@@ -89,8 +88,6 @@ public class PrimaryController {
      */
     @FXML public void initialize() {
         // System.out.println("PrimaryController initialized.");
-        model.initialize();
-
         initializeTopBar();
         initializeReflector();
         initializeRotorSetup();
@@ -105,7 +102,7 @@ public class PrimaryController {
     public void init(Stage stage) {
         // System.out.println("PrimaryController init.");
         this.stage = stage;
-        model.init();
+        model.init(stage);
         syncUI();
         if (!model.isDefaulted()) {
             stage.setX(model.getMainXPos());
