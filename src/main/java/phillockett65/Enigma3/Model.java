@@ -100,6 +100,14 @@ public class Model {
 
 
     /**
+     * Called by the controller after the constructor to initialise any 
+     * objects after the controls have been initialised.
+     */
+    public void initialize() {
+        // System.out.println("Model initialized.");
+    }
+
+    /**
      * Called by the controller after the stage has been set. Completes any 
      * initialization dependent on other components being initialized.
      */

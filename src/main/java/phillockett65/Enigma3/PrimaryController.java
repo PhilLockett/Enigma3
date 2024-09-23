@@ -88,6 +88,8 @@ public class PrimaryController {
      */
     @FXML public void initialize() {
         // System.out.println("PrimaryController initialized.");
+        model.initialize();
+
         initializeTopBar();
         initializeReflector();
         initializeRotorSetup();
