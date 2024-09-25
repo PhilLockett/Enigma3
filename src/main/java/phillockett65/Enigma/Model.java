@@ -154,8 +154,8 @@ public class Model {
      * Support code for Rotor definitions.
      */
 
-    ObservableList<RotorData> rotors = FXCollections.observableArrayList();
-    ObservableList<RotorData> reflectors = FXCollections.observableArrayList();
+    private ObservableList<RotorData> rotors = FXCollections.observableArrayList();
+    private ObservableList<RotorData> reflectors = FXCollections.observableArrayList();
 
     private static final RotorData[] rotorData = {
 
@@ -224,7 +224,7 @@ public class Model {
      * Support code for "Reflector Set-Up" panel.
      */
 
-    ObservableList<String> reflectorList = FXCollections.observableArrayList();
+    private ObservableList<String> reflectorList = FXCollections.observableArrayList();
     private String reflectorChoice;
     private boolean reconfigurable = false;
     
