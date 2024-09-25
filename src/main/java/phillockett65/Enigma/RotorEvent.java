@@ -20,7 +20,7 @@
 
 /*
  */
-package phillockett65.Enigma3;
+package phillockett65.Enigma;
 
 import javafx.event.Event;
 import javafx.event.EventTarget;
