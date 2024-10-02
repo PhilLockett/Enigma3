@@ -308,7 +308,6 @@ public class Model {
 
     private boolean fourthWheel = false;
     private boolean useNumbers = false;
-    private boolean show = false;
 
 
     public ObservableList<String> getWheelList() { return wheelList; }
@@ -346,9 +345,6 @@ public class Model {
 
     public boolean isUseNumbers() { return useNumbers; }
     
-    public boolean isShow() { return show; }
-    public void setShow(boolean state) { show = state; }
-
 
     public void setRotorState(int index, String wheelChoice, int ringIndex, int rotorIndex) { 
         getState(index).set(wheelChoice, ringIndex, rotorIndex); 
@@ -456,6 +452,12 @@ public class Model {
     /************************************************************************
      * Support code for "Translation" panel.
      */
+
+    private boolean show = false;
+
+    public boolean isShow() { return show; }
+    public void setShow(boolean state) { show = state; }
+
 
     private ArrayList<Translation> pipeline = new ArrayList<Translation>(9);
 
