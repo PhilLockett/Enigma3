@@ -42,12 +42,12 @@ public class Rotor extends RotorData {
      */
 
     /**
-     * Convert a String representation of the map to an integer array of 
-     * indices (numerical equivalent of the letter).
+     * Constructor.
+     * @param id of this mapping.
      * @param cipher String representation of the mapping.
-     * @return array of indices.
-     * @param turnovers String representation of the turnover points.
-     * @return array of flags indicating turnover points.
+     * @param date rotor was introduced (for reference purposes).
+     * @param name of rotor group (for reference purposes).
+     * @param turnover list of letters
      */
     public Rotor(String id, String cipher, String date, String name, String turnover) {
         super(id, cipher, date, name, turnover);

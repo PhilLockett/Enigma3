@@ -52,6 +52,9 @@ public class RotorControl extends VBox {
     private SpinnerValueFactory<String> ringSettingSVF;
     private SpinnerValueFactory<String> rotorOffsetSVF;
 
+    /**
+     * Constructor.
+     */
     public RotorControl() {
         super();
         // System.out.println("CustomRotorControl()");

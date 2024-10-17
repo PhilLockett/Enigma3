@@ -87,8 +87,7 @@ public class Model {
      */
 
     /**
-     * Responsible for constructing the Model and any local objects. Called by 
-     * the controller.
+     * Constructor.
      */
     public Model() {
         initRotorWiring();

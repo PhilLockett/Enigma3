@@ -49,17 +49,18 @@ class RotorEvent extends Event {
         new EventType<>(Event.ANY, "ROTOR_OFFSET");
 
     /**
-     * Creates a new {@code SelectEvent} with an event type of {@code ANY}.
+     * Creates a new {@code RotorEvent} with an event type of {@code ANY}.
      * The source and target of the event is set to {@code NULL_SOURCE_TARGET}.
      */
     public RotorEvent() { super(ANY); }
 
     /**
-     * Construct a new {@code SelectEvent} with the specified event source and target.
+     * Construct a new {@code RotorEvent} with the specified event source and target.
      *
      * @param source    the event source which sent the event
      * @param target    the event target to associate with the event
      * @param type      the event type of the event
+     * @param index     the id of the event
      */
     public RotorEvent(Object source, EventTarget target, EventType<RotorEvent> type, int index) {
         super(source, target, type);

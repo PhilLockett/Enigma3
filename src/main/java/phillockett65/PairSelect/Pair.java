@@ -38,6 +38,12 @@ public class Pair {
     public String getTip() { return PairSelect.indexToLetter(first) + "-" + PairSelect.indexToLetter(second); }
     public int getFirst() { return first; }
     public int getSecond() { return second; }
+
+    /**
+     * Check if the Pair includes the specified index (Plug). 
+     * @param index to check for.
+     * @return The "position" of the index if found or 0 otherwise.
+     */
     public int gotIndex(int index) {
         if (getFirst() == index)
             return 1;
