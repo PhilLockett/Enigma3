@@ -319,8 +319,7 @@ public class Model {
     public void setFourthWheel(boolean state) {
         initFourthWheel(state);
 
-        setPipelineItemActive(SLOW, Mapper.RIGHT_TO_LEFT, fourthWheel);
-        setPipelineItemActive(SLOW, Mapper.LEFT_TO_RIGHT, fourthWheel);
+        setPipelineItemActive(SLOW, fourthWheel);
     }
 
     public boolean isFourthWheel() { return fourthWheel; }
@@ -454,6 +453,8 @@ public class Model {
         private int first = 0;
         private int second = 0;
 
+        public Couple(int index) { setFirst(index); setSecond(index); }
+
         public int getFirst() { return first; }
         public int getSecond() { return second; }
 
@@ -468,7 +469,7 @@ public class Model {
      */
     private void buildPipelineIndices() {
         for (int i = 0; i < MAPPER_COUNT; ++i) {
-            pipelineIndices.add(new Couple());
+            pipelineIndices.add(new Couple(i));
         }
     }
 
@@ -477,10 +478,6 @@ public class Model {
             return pipelineIndices.get(id).getFirst();
             
         return pipelineIndices.get(id).getSecond();
-    }
-
-    private Translation getTranslation(int id, int dir) {
-        return pipeline.get(getPipelineIndex(id, dir));
     }
 
     private void setPipelineIndex(int id, int dir, int val) {
@@ -492,6 +489,10 @@ public class Model {
 
 
     private ArrayList<Translation> pipeline = new ArrayList<Translation>(9);
+
+    private Translation getTranslation(int id, int dir) {
+        return pipeline.get(getPipelineIndex(id, dir));
+    }
 
     /**
      * Find a Rotor with the given id in the given list,
@@ -667,8 +668,9 @@ public class Model {
         return (Rotor)getTranslation(id, Mapper.RIGHT_TO_LEFT).getMapper();
     }
 
-    private void setPipelineItemActive(int id, int dir, boolean val) {
-        getTranslation(id, dir).setActive(val);
+    private void setPipelineItemActive(int id, boolean val) {
+        getTranslation(id, Mapper.RIGHT_TO_LEFT).setActive(val);
+        getTranslation(id, Mapper.LEFT_TO_RIGHT).setActive(val);
     }
 
 
@@ -705,8 +707,7 @@ public class Model {
         addToPipeline(PLUGS, plugboard, Mapper.LEFT_TO_RIGHT);
 
         // Enable / disable the Fourth rotor as requested.
-        setPipelineItemActive(SLOW, Mapper.RIGHT_TO_LEFT, fourthWheel);
-        setPipelineItemActive(SLOW, Mapper.LEFT_TO_RIGHT, fourthWheel);
+        setPipelineItemActive(SLOW, fourthWheel);
     }
 
 
