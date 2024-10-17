@@ -445,6 +445,52 @@ public class Model {
     public void setShow(boolean state) { show = state; }
 
 
+    /**
+     * Class to map from a Mapper (Rotor) to a position in the pipeline. Note
+     * that Mappers are directional and can appear twice in the pipeline, right
+     * to left first, then left to right. 
+     */
+    private class Couple {
+        private int first = 0;
+        private int second = 0;
+
+        public int getFirst() { return first; }
+        public int getSecond() { return second; }
+
+        public void setFirst(int value) { first = value; }
+        public void setSecond(int value) { second = value; }
+    };
+
+    private ArrayList<Couple> pipelineIndices = new ArrayList<Couple>();
+
+    /**
+     * Fill in the pipelineIndices ArrayList with place holders.
+     */
+    private void buildPipelineIndices() {
+        for (int i = 0; i < MAPPER_COUNT; ++i) {
+            pipelineIndices.add(new Couple());
+        }
+    }
+
+    private int getPipelineIndex(int id, int dir) {
+        if (dir == Mapper.RIGHT_TO_LEFT)
+            return pipelineIndices.get(id).getFirst();
+            
+        return pipelineIndices.get(id).getSecond();
+    }
+
+    private Translation getTranslation(int id, int dir) {
+        return pipeline.get(getPipelineIndex(id, dir));
+    }
+
+    private void setPipelineIndex(int id, int dir, int val) {
+        if (dir == Mapper.RIGHT_TO_LEFT)
+            pipelineIndices.get(id).setFirst(val);
+        else
+            pipelineIndices.get(id).setSecond(val);
+    }
+
+
     private ArrayList<Translation> pipeline = new ArrayList<Translation>(9);
 
     /**
@@ -600,7 +646,7 @@ public class Model {
     }
 
     private void updatePipeline(int id, Mapper mapper, int dir) {
-        pipeline.get(getPipelineIndex(id, dir)).setMapper(mapper);
+        getTranslation(id, dir).setMapper(mapper);
     }
 
     private void updatePipeline(int id, Mapper mapper) {
@@ -618,12 +664,13 @@ public class Model {
     }
 
     private Rotor getRotorFromPipeline(int id) {
-        return (Rotor)pipeline.get(getPipelineIndex(id, Mapper.RIGHT_TO_LEFT)).getMapper();
+        return (Rotor)getTranslation(id, Mapper.RIGHT_TO_LEFT).getMapper();
     }
 
     private void setPipelineItemActive(int id, int dir, boolean val) {
-        pipeline.get(getPipelineIndex(id, dir)).setActive(val);
+        getTranslation(id, dir).setActive(val);
     }
+
 
     /**
      * Build the pipeline of Mappers (Rotors) including the identifiers for 
@@ -660,48 +707,6 @@ public class Model {
         // Enable / disable the Fourth rotor as requested.
         setPipelineItemActive(SLOW, Mapper.RIGHT_TO_LEFT, fourthWheel);
         setPipelineItemActive(SLOW, Mapper.LEFT_TO_RIGHT, fourthWheel);
-    }
-
-
-    /**
-     * Class to map from a Mapper (Rotor) to a position in the pipeline. Note
-     * that Mappers are directional and can appear twice in the pipeline, right
-     * to left first, then left to right. 
-     */
-    private class Couple {
-        private int first = 0;
-        private int second = 0;
-
-        public int getFirst() { return first; }
-        public int getSecond() { return second; }
-
-        public void setFirst(int value) { first = value; }
-        public void setSecond(int value) { second = value; }
-    };
-
-    private ArrayList<Couple> pipelineIndices = new ArrayList<Couple>();
-
-    /**
-     * Fill in the pipelineIndices ArrayList with place holders.
-     */
-    private void buildPipelineIndices() {
-        for (int i = 0; i < MAPPER_COUNT; ++i) {
-            pipelineIndices.add(new Couple());
-        }
-    }
-
-    private int getPipelineIndex(int id, int dir) {
-        if (dir == Mapper.RIGHT_TO_LEFT)
-            return pipelineIndices.get(id).getFirst();
-            
-        return pipelineIndices.get(id).getSecond();
-    }
-
-    private void setPipelineIndex(int id, int dir, int val) {
-        if (dir == Mapper.RIGHT_TO_LEFT)
-            pipelineIndices.get(id).setFirst(val);
-        else
-            pipelineIndices.get(id).setSecond(val);
     }
 
 
