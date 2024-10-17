@@ -19,10 +19,11 @@
  */
 
 /*
+ * Plug is a class that is associated with a letter ("label") and can either be
+ * available or in use.
  */
 package phillockett65.PairSelect;
 
-import javafx.geometry.Point2D;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -53,6 +54,11 @@ class Plug extends Circle {
     public boolean isUsed() { return used; }
 
 
+    /**
+     * Change the state of the Plug. 
+     * @param using the plug now.
+     * @param hovering over the plug.
+     */
     public void stateChange(boolean using, boolean hovering) {
         String newStyle;
         Color colour;
@@ -84,15 +90,20 @@ class Plug extends Circle {
         used = using;
     }
 
+    /**
+     * Position the plug.
+     * @param x value of centre point.
+     * @param y value of centre point.
+     */
     public void setCentre(double x, double y) {
         this.setCenterX(x);
         this.setCenterY(y);
     }
 
-    public void setCentre(Point2D centre) {
-        setCentre(centre.getX(), centre.getY());
-    }
-
+    /**
+     * Replace the default tooltip.
+     * @param newTip Replacement tooltip
+     */
     public void replaceTooltip(String newTip) {
         Tooltip tip = new Tooltip(label);
         Tooltip.uninstall(this, tip);
@@ -102,6 +113,9 @@ class Plug extends Circle {
         Tooltip.install(this, tip);
     }
 
+    /**
+     * Set the tooltip to the default value.
+     */
     public void resetTooltip() {
         Tooltip tip = new Tooltip(replacementTip);
         Tooltip.uninstall(this, tip);

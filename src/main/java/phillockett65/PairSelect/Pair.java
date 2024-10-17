@@ -57,11 +57,17 @@ public class Pair {
         return line;
     }
 
+    /**
+     * Reset the tooltips for both letters to the default values.
+     */
     public void resetTips() {
         button1.resetTooltip();
         button2.resetTooltip();
     }
 
+    /**
+     * Set the tooltips for both letters to the link value.
+     */
     public void setTips() {
         final String tip = getTip();
         button1.replaceTooltip(tip);

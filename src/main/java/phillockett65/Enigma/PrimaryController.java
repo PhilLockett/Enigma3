@@ -171,6 +171,10 @@ public class PrimaryController {
     }
  
  
+    /**
+     * Builds the cancel button as a Pane and includes the mouse click handler.
+     * @return the Pane that represents the cancel button.
+     */
     private Pane buildCancel() {
         final double iconSize = 28.0;
         final double cancelStroke = 2.5;

@@ -19,7 +19,8 @@
  */
 
 /*
- * Boilerplate code responsible for launching the JavaFX application. 
+ * Embedded control to capture a rotors settings. This includes the rotor 
+ * name, the ring setting and the rotor offset. 
  */
 package phillockett65.Enigma;
 
@@ -72,6 +73,11 @@ public class RotorControl extends VBox {
         }
     }
 
+    /**
+     * Initialise the rotor.
+     * @param i rotor identifier.
+     * @param wheelList list of rotor names.
+     */
     public void init(int i, ObservableList<String> wheelList) {
         // System.out.println("init()");
 
@@ -98,6 +104,9 @@ public class RotorControl extends VBox {
 
     }
 
+    /**
+     * Initialise the change event listeners.
+     */
     public void initListeners() {
         // System.out.println("initListeners()");
 
@@ -119,11 +128,6 @@ public class RotorControl extends VBox {
 
     private int valueToIndex(String s) { return useNumbers ? Mapper.numberToIndex(s) : Mapper.letterToIndex(s); }
 
-    public ChoiceBox<String> getWheelChoicebox() { return wheelChoicebox; }
-    
-    public Spinner<String> getRotorOffsetSpinner() { return rotorOffsetSpinner; };
-    
-    public Spinner<String> getRingSettingSpinner() { return ringSettingSpinner; }
 
     /**
      * Display Numbers or Letters on rotor (spinner).
@@ -166,15 +170,6 @@ public class RotorControl extends VBox {
         setWheelChoice(wheel);
         setRingIndex(ringIndex);
         setRotorIndex(rotorIndex);
-    }
-
-    /**
-     * Lock down current settings.
-     * @param state locked down if true, editable if false.
-     */
-    public void setLockDown(boolean state) {
-        wheelChoicebox.setDisable(state);
-        ringSettingSpinner.setDisable(state);
     }
 
 }

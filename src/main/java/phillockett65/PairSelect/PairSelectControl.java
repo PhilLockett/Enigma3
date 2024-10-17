@@ -17,6 +17,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with CustomRotorController.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+/*
+ * Pop-up window that contains control buttons for the cancel, done and clear 
+ * buttons and the PairSelect object.
+ */
 package phillockett65.PairSelect;
 
 import java.util.ArrayList;
@@ -67,6 +72,11 @@ public class PairSelectControl extends Stage {
 
     private static final double ERRPOS = -200.0;
 
+    /**
+     * Set the position of the window.
+     * @param x co-ordinate.
+     * @param y co-ordinate.
+     */
     public void setPos(double x, double y) {
         if ((x == ERRPOS) && (y == ERRPOS)) {
             return;
@@ -97,6 +107,10 @@ public class PairSelectControl extends Stage {
     }
 
 
+    /**
+     * Builds the cancel button as a Pane and includes the mouse click handler.
+     * @return the Pane that represents the cancel button.
+     */
     private Pane buildCancel() {
         final double cancelPadding = 0.3;
         final double iconSize = 28.0;
@@ -129,6 +143,11 @@ public class PairSelectControl extends Stage {
         return cancel;
     }
 
+    /**
+     * Builds the top-bar as a HBox and includes the cancel button the mouse 
+     * press and drag handlers.
+     * @return the HBox that represents the top-bar.
+     */
     private HBox buildTopBar() {
         HBox topBar = new HBox();
         topBar.getStyleClass().add("top-bar");
@@ -157,6 +176,11 @@ public class PairSelectControl extends Stage {
         return topBar;
     }
 
+    /**
+     * Builds the options buttons as a HBox and includes the action event 
+     * handlers for both the done and clear buttons.
+     * @return the HBox that represents the options buttons.
+     */
     private HBox buildOptions() {
         HBox options = new HBox();
         options.setSpacing(10);
@@ -187,6 +211,10 @@ public class PairSelectControl extends Stage {
         return options;
     }
 
+    /**
+     * Builds the selected pairs display as a HBox.
+     * @return the HBox that represents the selected pairs display.
+     */
     private HBox buildSelected() {
         HBox selection = new HBox();
         // selection.setSpacing(10);
@@ -241,11 +269,13 @@ public class PairSelectControl extends Stage {
     public boolean hasLinks() { return pairSelect.hasPairs(); }
     public int[] getMap() { return pairSelect.getMap(); }
     public boolean isValid() { return pairSelect.isValid(); }
-    public boolean isValid(int index) { return pairSelect.isValid(index); }
     public void clear() { pairSelect.clear(); }
     public void setLinks(ArrayList<String> links) { pairSelect.setLinks(links); }
     public void setHeading(String title) { heading.setText(" " + title); }
 
+    /**
+     * Fabricate default pair values.
+     */
     public void defaultSettings() {
         ArrayList<String> links = new ArrayList<String>();
         for (int i = 0; i  < 12; ++i) {
@@ -283,6 +313,10 @@ public class PairSelectControl extends Stage {
     }
 
 
+    /**
+     * Launch the Pair Select Control and wait for user input.
+     * @return true if the control was updated, false if cancelled.
+     */
     public boolean showControl() {
         positioned = true;
         takeSnapshot();

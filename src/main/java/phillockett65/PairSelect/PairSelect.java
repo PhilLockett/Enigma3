@@ -19,7 +19,8 @@
  */
 
 /*
- * Boilerplate code responsible for launching the JavaFX application. 
+ * PairSelect is a class that captures a connection between multiple pairs of 
+ * letters.
  */
 package phillockett65.PairSelect;
 
@@ -241,11 +242,12 @@ public class PairSelect extends AnchorPane {
 
     private void positionPlugboardButton(int index) {
         Point2D point = points[index];
-        Plug button = buttons.get(index);
-        button.setCentre(point);
-
         final double x = point.getX();
         final double y = point.getY();
+
+        Plug button = buttons.get(index);
+        button.setCentre(x, y);
+
         Text text = labels.get(index);
         text.setX(x-4);
         text.setY(y-20);
@@ -314,12 +316,8 @@ public class PairSelect extends AnchorPane {
     }
 
 
-    public boolean isValid(int index) {
-        return index < pairList.size();
-    }
-
     /**
-     * Determine if the reflector is valid.
+     * Determine if the reflector (or plugboard) is valid.
      * @return true if the reflector is valid, false otherwise.
      */
     public boolean isValid() {
@@ -331,6 +329,10 @@ public class PairSelect extends AnchorPane {
         return true;
     }
 
+    /**
+     * Construct the Map represntation of the Pair set.
+     * @return the Map represntation.
+     */
     public int[] getMap() {
         int[] map = new int[26];
 
@@ -369,6 +371,9 @@ public class PairSelect extends AnchorPane {
         return map;
     }
 
+    /**
+     * Clear the state of all sub-objects.
+     */
     public void clear() {
         for (Pair pair : pairList) {
             this.getChildren().remove(pair.getLine());
@@ -421,6 +426,10 @@ public class PairSelect extends AnchorPane {
     }
 
 
+    /**
+     * Construct a String represntation of the Pair set.
+     * @return the String represntation.
+     */
     public String getPairString() {
         // System.out.println("getPairString()");
 
@@ -432,6 +441,10 @@ public class PairSelect extends AnchorPane {
         return to;
     }
 
+    /**
+     * Construct an ArrayList of Strings represntation of the Pair set.
+     * @return the ArrayList of Strings represntation.
+     */
     public ArrayList<String> getLinks() {
         // System.out.println("getList()");
 
@@ -460,6 +473,10 @@ public class PairSelect extends AnchorPane {
         return pair;
     }
 
+    /**
+     * Initialise pairList with the given ArrayList of Strings represntation.
+     * @param links ArrayList of Strings.
+     */
     public void setLinks(ArrayList<String> links) {
         // System.out.println("setLinks()");
         clear();
