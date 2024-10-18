@@ -541,32 +541,23 @@ public class Model {
      * to maintain direction and helps manage the offsets of the Rotors.
      */
     private class Translation {
-        private final int pos;
         private Mapper mapper;
         private final int dir;
         private boolean active;
 
-        public Translation(int id, Mapper mapper, int dir) {
-            this.pos = id;
+        public Translation(Mapper mapper, int dir) {
             this.mapper = mapper;
             this.dir = dir;
             this.active = true;
         }
 
         /**
-         * Update the offset of this mapper only if target matches pos.
-         * @param target position to match with this pos.
-         * @param offset to set this offset to.
-         * @return true if the offset is updated, false otherwise.
+         * Update the offset of the associated Rotor.
+         * @param offset to set this Rotor to.
          */
-        public boolean conditionallyUpdate(int target, int offset) {
-            if (target == pos) {
+        public void updateOffset(int offset) {
+            if (active)
                 mapper.setOffset(offset);
-
-                return true;
-            }
-
-            return false;
         }
     
         /**
@@ -614,11 +605,8 @@ public class Model {
         advanceRotors();
 
         for (int i = 0; i < ROTOR_COUNT; ++i) {
-            final int offset = getRotorIndex(i);
-
-            for (Translation translator : pipeline)
-                if (translator.conditionallyUpdate(i, offset))
-                    break;
+            Translation translator = getTranslation(i, Mapper.RIGHT_TO_LEFT);
+            translator.updateOffset(getRotorIndex(i));
         }
     }
 
@@ -643,7 +631,7 @@ public class Model {
     private void addToPipeline(int id, Mapper mapper, int dir) {
         setPipelineIndex(id, dir, pipeline.size());
 
-        pipeline.add(new Translation(id, mapper, dir));
+        pipeline.add(new Translation(mapper, dir));
     }
 
     private void updatePipeline(int id, Mapper mapper, int dir) {
