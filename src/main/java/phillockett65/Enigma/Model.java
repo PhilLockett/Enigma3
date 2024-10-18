@@ -46,9 +46,11 @@ public class Model {
     private static final int LEFT = 1;
     private static final int MIDDLE = 2;
     private static final int RIGHT = 3;
-    private static final int PLUGS = 4;
-    private static final int REFLECT = 5;
-    private static final int MAPPER_COUNT = 6;
+    private static final int KEYS = 4;
+    private static final int PLUGS = 5;
+    private static final int REFLECT = 6;
+    private static final int LAMPS = 7;
+    private static final int MAPPER_COUNT = 8;
 
     private boolean defaulted = false;
     public boolean isDefaulted() { return defaulted; }
@@ -586,14 +588,11 @@ public class Model {
      * @return the translated index.
      */
     private int translatePipeline(int index) {
-        if (isShow())
-            System.out.print("Key: " + Mapper.indexToLetter(index) + "  ");
-
         for (Translation translator : pipeline)
             index = translator.translate(index);
 
         if (isShow())
-            System.out.println("Lamp: " + Mapper.indexToLetter(index));
+            System.out.println();
 
         return index;
     }
@@ -661,6 +660,13 @@ public class Model {
         getTranslation(id, Mapper.LEFT_TO_RIGHT).setActive(val);
     }
 
+    private Mapper buildDirectMapper(String label) {
+        
+        RotorData rotor = getRotorData(rotors, "ETW");
+        int[] reflectorMap = rotor.getMap();
+
+        return new Mapper(label, reflectorMap);
+    }
 
     /**
      * Build the pipeline of Mappers (Rotors) including the identifiers for 
@@ -669,8 +675,10 @@ public class Model {
     private void buildPipeline() {
 
         // Build all the Mappers.
+        Mapper keyboard = buildDirectMapper("Key");
         Mapper plugboard = buildNewPlugboard();
         Mapper reflector = buildNewReconfigurable();
+        Mapper lampboard = buildDirectMapper("Lamp");
 
         Rotor slow = buildNewRotor(SLOW);
         Rotor left = buildNewRotor(LEFT);
@@ -678,6 +686,7 @@ public class Model {
         Rotor right = buildNewRotor(RIGHT);
 
         // Add the Mappers to the pipeline and log the index.
+        addToPipeline(KEYS, keyboard, Mapper.RIGHT_TO_LEFT);
         addToPipeline(PLUGS, plugboard, Mapper.RIGHT_TO_LEFT);
 
         addToPipeline(RIGHT, right, Mapper.RIGHT_TO_LEFT);
@@ -693,6 +702,7 @@ public class Model {
         addToPipeline(RIGHT, right, Mapper.LEFT_TO_RIGHT);
 
         addToPipeline(PLUGS, plugboard, Mapper.LEFT_TO_RIGHT);
+        addToPipeline(LAMPS, lampboard, Mapper.LEFT_TO_RIGHT);
 
         // Enable / disable the Fourth rotor as requested.
         setPipelineItemActive(SLOW, fourthWheel);
