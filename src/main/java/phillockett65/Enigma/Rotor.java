@@ -56,7 +56,7 @@ public class Rotor extends RotorData {
         leftMap = new int[26];
 
         setRingSetting(0);
-        offset = 0;
+        setOffset(0);
     }
 
     public Rotor(RotorData rhs, int ring) {
@@ -66,7 +66,7 @@ public class Rotor extends RotorData {
         leftMap = new int[26];
 
         setRingSetting(ring);
-        offset = 0;
+        setOffset(0);
     }
 
 
@@ -86,7 +86,10 @@ public class Rotor extends RotorData {
      * Setters support code.
      */
 
-    public void setOffset(int value) { offset = value; }
+    public void setOffset(int value) { 
+        // System.out.println("setOffset(" + getId() + " " + value + ")");
+        offset = value; 
+    }
 
     /**
      * Translates (swaps) an index (numerical equivalent of the letter) to 
@@ -128,7 +131,7 @@ public class Rotor extends RotorData {
      * @param index of the required ring setting.
      */
     public void setRingSetting(int index) {
-        // System.out.println("setRingSetting(" + index + ")");
+        // System.out.println("setRingSetting(" + getId() + " " + index + ")");
 
         ringSetting = index;
 
