@@ -46,11 +46,6 @@ public class Model {
     private static final int LEFT = 1;
     private static final int MIDDLE = 2;
     private static final int RIGHT = 3;
-    private static final int KEYS = 4;
-    private static final int PLUGS = 5;
-    private static final int REFLECT = 6;
-    private static final int LAMPS = 7;
-    private static final int MAPPER_COUNT = 8;
 
     private boolean defaulted = false;
     public boolean isDefaulted() { return defaulted; }
@@ -230,6 +225,7 @@ public class Model {
     private boolean reconfigurable = false;
     
     private PairSelectControl reflectorControl;
+    private Mapper reflector;
 
     public ObservableList<String> getReflectorList()   { return reflectorList; }
     public String getReflectorChoice()   { return reflectorChoice; }
@@ -243,7 +239,7 @@ public class Model {
         updatePipelineReflector();
     }
 
-    private Mapper buildNewReconfigurable() {
+    private Mapper buildNewReflector() {
         int[] reflectorMap;
 
         if (reconfigurable) {
@@ -257,7 +253,7 @@ public class Model {
     }
 
     private void updatePipelineReflector() {
-        updatePipeline(REFLECT, buildNewReconfigurable(), Mapper.RIGHT_TO_LEFT);
+        reflector = buildNewReflector();
     }
 
     public boolean isReconfigurable() { return reconfigurable; }
@@ -303,6 +299,7 @@ public class Model {
     private ObservableList<String> wheelList = FXCollections.observableArrayList();
 
     private ArrayList<RotorControl> rotorControls = new ArrayList<RotorControl>(ROTOR_COUNT);
+    private ArrayList<Rotor> activeRotors = new ArrayList<Rotor>(ROTOR_COUNT);
 
     private boolean fourthWheel = false;
     private boolean useNumbers = false;
@@ -320,8 +317,6 @@ public class Model {
 
     public void setFourthWheel(boolean state) {
         initFourthWheel(state);
-
-        setPipelineItemActive(SLOW, fourthWheel);
     }
 
     public boolean isFourthWheel() { return fourthWheel; }
@@ -343,18 +338,22 @@ public class Model {
     public boolean isUseNumbers() { return useNumbers; }
     
 
+    private RotorControl getState(int index) { return rotorControls.get(index); }
+
     public void setRotorState(int index, String wheelChoice, int ringIndex, int rotorIndex) { 
         getState(index).set(wheelChoice, ringIndex, rotorIndex); 
     }
-
-
-    private RotorControl getState(int index) { return rotorControls.get(index); }
 
     public String getWheelChoice(int index) { return getState(index).getWheelChoice(); }
     public int getRingIndex(int index) { return getState(index).getRingIndex(); }
     public int getRotorIndex(int index) { return getState(index).getRotorIndex(); }
     private void incrementRotorOffset(int index, int step) { getState(index).increment(step); }
 
+    private Rotor getActiveRotor(int id) { return activeRotors.get(id); }
+
+    private void updatetActiveRotorEntry(int id) { activeRotors.set(id, buildNewRotor(id)); }
+    private void setActiveRotorRingSetting(int id) { getActiveRotor(id).setRingSetting(getRingIndex(id)); }
+    private void setActiveRotorOffset(int id) { getActiveRotor(id).setOffset(getRotorIndex(id)); }
 
     /**
      * Initialize "Rotor Set-Up".
@@ -370,7 +369,7 @@ public class Model {
                 new EventHandler<RotorEvent>() {
                     @Override public void handle(RotorEvent event) {
                         final int id = event.getId();
-                        updatePipeline(id);
+                        updatetActiveRotorEntry(id);
                         // System.out.println("WHEEL_CHOICE[" + id + "] = " + getWheelChoice(id));
                     }
             });
@@ -379,7 +378,7 @@ public class Model {
                 new EventHandler<RotorEvent>() {
                     @Override public void handle(RotorEvent event) {
                         final int id = event.getId();
-                        updatePipeline(id);
+                        setActiveRotorRingSetting(id);
                         // System.out.println("RING_SETTING[" + id + "] = " + getRingIndex(id));
                     }
             });
@@ -395,6 +394,7 @@ public class Model {
      */
     
     private PairSelectControl plugboardControl;
+    private Mapper plugboard;
 
     private Mapper buildNewPlugboard() {
         int[] plugboardMap = plugboardControl.getMap();
@@ -418,7 +418,7 @@ public class Model {
 
     public boolean launchPlugboard() {
         if (plugboardControl.showControl()) {
-            updatePipeline(PLUGS, buildNewPlugboard());
+            plugboard = buildNewPlugboard();
 
             return true;
         }
@@ -445,56 +445,8 @@ public class Model {
     public boolean isShow() { return show; }
     public void setShow(boolean state) { show = state; }
 
-
-    /**
-     * Class to map from a Mapper (Rotor) to a position in the pipeline. Note
-     * that Mappers are directional and can appear twice in the pipeline, right
-     * to left first, then left to right. 
-     */
-    private class Couple {
-        private int first = 0;
-        private int second = 0;
-
-        public Couple(int index) { setFirst(index); setSecond(index); }
-
-        public int getFirst() { return first; }
-        public int getSecond() { return second; }
-
-        public void setFirst(int value) { first = value; }
-        public void setSecond(int value) { second = value; }
-    };
-
-    private ArrayList<Couple> pipelineIndices = new ArrayList<Couple>();
-
-    /**
-     * Fill in the pipelineIndices ArrayList with place holders.
-     */
-    private void buildPipelineIndices() {
-        for (int i = 0; i < MAPPER_COUNT; ++i) {
-            pipelineIndices.add(new Couple(i));
-        }
-    }
-
-    private int getPipelineIndex(int id, int dir) {
-        if (dir == Mapper.RIGHT_TO_LEFT)
-            return pipelineIndices.get(id).getFirst();
-            
-        return pipelineIndices.get(id).getSecond();
-    }
-
-    private void setPipelineIndex(int id, int dir, int val) {
-        if (dir == Mapper.RIGHT_TO_LEFT)
-            pipelineIndices.get(id).setFirst(val);
-        else
-            pipelineIndices.get(id).setSecond(val);
-    }
-
-
-    private ArrayList<Translation> pipeline = new ArrayList<Translation>(9);
-
-    private Translation getTranslation(int id, int dir) {
-        return pipeline.get(getPipelineIndex(id, dir));
-    }
+    private Mapper keyboard;
+    private Mapper lampboard;
 
     /**
      * Find a Rotor with the given id in the given list,
@@ -521,7 +473,7 @@ public class Model {
         // Normal step of the spinner of the right rotor.
         incrementRotorOffset(RIGHT, 1);
 
-        Rotor rotor = getRotorFromPipeline(MIDDLE);
+        Rotor rotor = getActiveRotor(MIDDLE);
         if (rotor.isNotchPoint(getRotorIndex(MIDDLE))) {
             // Double step of the spinner of the middle rotor, normal step of 
             // the spinner of the left rotor.
@@ -529,7 +481,7 @@ public class Model {
             incrementRotorOffset(LEFT, 1);
         }
 
-        rotor = getRotorFromPipeline(RIGHT);
+        rotor = getActiveRotor(RIGHT);
         if (rotor.isTurnoverPoint(getRotorIndex(RIGHT))) {
             // The right rotor takes the spinner of the middle rotor one step 
             // further.
@@ -538,58 +490,41 @@ public class Model {
     }
 
 
-    /**
-     * Translation is a class that is used in the construction of the pipeline 
-     * to maintain direction and helps manage the offsets of the Rotors.
-     */
-    private class Translation {
-        private Mapper mapper;
-        private final int dir;
-        private boolean active;
-
-        public Translation(Mapper mapper, int dir) {
-            this.mapper = mapper;
-            this.dir = dir;
-            this.active = true;
-        }
-
-        /**
-         * Update the offset of the associated Rotor.
-         * @param offset to set this Rotor to.
-         */
-        public void updateOffset(int offset) {
-            if (active)
-                mapper.setOffset(offset);
-        }
-    
-        /**
-         * Translates an index (numerical equivalent of the letter) to another 
-         * using this directional Mapper (Rotor).
-         * @param index to translate.
-         * @return the translated index.
-         */
-        public int translate(int index) {
-            if (!active)
-                return index;
-
-            return mapper.swap(dir, index, isShow());
-        }
-
-        public void setActive(boolean active) { this.active = active; }
-        public void setMapper(Mapper mapper) { this.mapper = mapper; }
-        public Mapper getMapper() { return mapper; }
-
+    private int mapperTranslate(int index, Mapper mapper, int dir) {
+        return mapper.swap(dir, index, isShow());
+    }
+    private int mapperTranslate(int index, int id, int dir) {
+        return getActiveRotor(id).swap(dir, index, isShow());
     }
 
     /**
      * Translates an index (numerical equivalent of the letter) to another for 
-     * every Mapper in the pipeline.
+     * every active Mapper.
      * @param index to translate.
      * @return the translated index.
      */
-    private int translatePipeline(int index) {
-        for (Translation translator : pipeline)
-            index = translator.translate(index);
+    private int translateIndex(int index) {
+        index = mapperTranslate(index, keyboard, Mapper.RIGHT_TO_LEFT);
+        index = mapperTranslate(index, plugboard, Mapper.RIGHT_TO_LEFT);
+
+        index = mapperTranslate(index, RIGHT, Mapper.RIGHT_TO_LEFT);
+        index = mapperTranslate(index, MIDDLE, Mapper.RIGHT_TO_LEFT);
+        index = mapperTranslate(index, LEFT, Mapper.RIGHT_TO_LEFT);
+
+        if (fourthWheel)
+            index = mapperTranslate(index, SLOW, Mapper.RIGHT_TO_LEFT);
+
+        index = mapperTranslate(index, reflector, Mapper.RIGHT_TO_LEFT);
+
+        if (fourthWheel)
+            index = mapperTranslate(index, SLOW, Mapper.LEFT_TO_RIGHT);
+
+        index = mapperTranslate(index, LEFT, Mapper.LEFT_TO_RIGHT);
+        index = mapperTranslate(index, MIDDLE, Mapper.LEFT_TO_RIGHT);
+        index = mapperTranslate(index, RIGHT, Mapper.LEFT_TO_RIGHT);
+
+        index = mapperTranslate(index, plugboard, Mapper.LEFT_TO_RIGHT);
+        index = mapperTranslate(index, lampboard, Mapper.LEFT_TO_RIGHT);
 
         if (isShow())
             System.out.println();
@@ -598,16 +533,14 @@ public class Model {
     }
 
     /**
-     * Advance the Rotor Spinners then update the Rotors to match.
+     * Update the Rotor Offsets.
      */
-    private void updatePipeline() {
-        advanceRotors();
-
+    private void updateRotorOffseta() {
         for (int i = 0; i < ROTOR_COUNT; ++i) {
-            Translation translator = getTranslation(i, Mapper.RIGHT_TO_LEFT);
-            translator.updateOffset(getRotorIndex(i));
+            setActiveRotorOffset(i);
         }
     }
+
 
     /**
      * Advance the Rotors and translate an index (numerical equivalent of the 
@@ -616,96 +549,32 @@ public class Model {
      * @return the translated index.
      */
     public int translate(int index) {
-        updatePipeline();
-        return translatePipeline(index);
+        advanceRotors();
+        updateRotorOffseta();
+        return translateIndex(index);
     }
 
-    /**
-     * Make a note of the pipeline index then add a new Translation object to 
-     * the pipeline.
-     * @param id of the mapper.
-     * @param mapper object doing the mapping.
-     * @param dir direction of translation.
-     */
-    private void addToPipeline(int id, Mapper mapper, int dir) {
-        setPipelineIndex(id, dir, pipeline.size());
-
-        pipeline.add(new Translation(mapper, dir));
-    }
-
-    private void updatePipeline(int id, Mapper mapper, int dir) {
-        getTranslation(id, dir).setMapper(mapper);
-    }
-
-    private void updatePipeline(int id, Mapper mapper) {
-        updatePipeline(id, mapper, Mapper.RIGHT_TO_LEFT);
-        updatePipeline(id, mapper, Mapper.LEFT_TO_RIGHT);
-    }
-
-    private void updatePipeline(int id) {
-        Rotor rotor = buildNewRotor(id);
-        updatePipeline(id, rotor);
-    }
 
     private Rotor buildNewRotor(int id) {
         return new Rotor(getRotorData(rotors, getWheelChoice(id)), getRingIndex(id));
     }
 
-    private Rotor getRotorFromPipeline(int id) {
-        return (Rotor)getTranslation(id, Mapper.RIGHT_TO_LEFT).getMapper();
-    }
-
-    private void setPipelineItemActive(int id, boolean val) {
-        getTranslation(id, Mapper.RIGHT_TO_LEFT).setActive(val);
-        getTranslation(id, Mapper.LEFT_TO_RIGHT).setActive(val);
-    }
-
     private Mapper buildDirectMapper(String label) {
-        
-        RotorData rotor = getRotorData(rotors, "ETW");
-        int[] reflectorMap = rotor.getMap();
+        final RotorData rotor = getRotorData(rotors, "ETW");
 
-        return new Mapper(label, reflectorMap);
+        return new Mapper(label, rotor.getMap());
     }
 
-    /**
-     * Build the pipeline of Mappers (Rotors) including the identifiers for 
-     * offset updates and the direction of translation.
-     */
-    private void buildPipeline() {
+    private void buildTheMappers() {
+        keyboard = buildDirectMapper("Key");
+        plugboard = buildNewPlugboard();
+        reflector = buildNewReflector();
+        lampboard = buildDirectMapper("Lamp");
 
-        // Build all the Mappers.
-        Mapper keyboard = buildDirectMapper("Key");
-        Mapper plugboard = buildNewPlugboard();
-        Mapper reflector = buildNewReconfigurable();
-        Mapper lampboard = buildDirectMapper("Lamp");
-
-        Rotor slow = buildNewRotor(SLOW);
-        Rotor left = buildNewRotor(LEFT);
-        Rotor middle = buildNewRotor(MIDDLE);
-        Rotor right = buildNewRotor(RIGHT);
-
-        // Add the Mappers to the pipeline and log the index.
-        addToPipeline(KEYS, keyboard, Mapper.RIGHT_TO_LEFT);
-        addToPipeline(PLUGS, plugboard, Mapper.RIGHT_TO_LEFT);
-
-        addToPipeline(RIGHT, right, Mapper.RIGHT_TO_LEFT);
-        addToPipeline(MIDDLE, middle, Mapper.RIGHT_TO_LEFT);
-        addToPipeline(LEFT, left, Mapper.RIGHT_TO_LEFT);
-        addToPipeline(SLOW, slow, Mapper.RIGHT_TO_LEFT);
-
-        addToPipeline(REFLECT, reflector, Mapper.RIGHT_TO_LEFT);
-
-        addToPipeline(SLOW, slow, Mapper.LEFT_TO_RIGHT);
-        addToPipeline(LEFT, left, Mapper.LEFT_TO_RIGHT);
-        addToPipeline(MIDDLE, middle, Mapper.LEFT_TO_RIGHT);
-        addToPipeline(RIGHT, right, Mapper.LEFT_TO_RIGHT);
-
-        addToPipeline(PLUGS, plugboard, Mapper.LEFT_TO_RIGHT);
-        addToPipeline(LAMPS, lampboard, Mapper.LEFT_TO_RIGHT);
-
-        // Enable / disable the Fourth rotor as requested.
-        setPipelineItemActive(SLOW, fourthWheel);
+        for (int i = 0; i < ROTOR_COUNT; ++i) {
+            activeRotors.add(buildNewRotor(i));
+            setActiveRotorOffset(i);
+        }
     }
 
 
@@ -713,8 +582,7 @@ public class Model {
      * Initialize "Translation" panel.
      */
     private void initializeEncipher() {
-        buildPipelineIndices();
-        buildPipeline();
+        buildTheMappers();
     }
 
 
@@ -730,8 +598,10 @@ public class Model {
     }
 
     public int test1(char key) {
-        updatePipeline();
-        return translatePipeline(Rotor.charToIndex(key));
+        advanceRotors();
+        return translateIndex(key);
+        // updatePipeline();
+        // return translatePipeline(Rotor.charToIndex(key));
         // return translate(Rotor.charToIndex(key));
     }
 
