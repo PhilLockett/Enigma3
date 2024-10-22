@@ -349,8 +349,13 @@ public class Model {
     public int getRotorIndex(int index) { return getState(index).getRotorIndex(); }
     private void incrementRotorOffset(int index, int step) { getState(index).increment(step); }
 
+    private Rotor buildNewRotor(int id) {
+        return new Rotor(getRotorData(rotors, getWheelChoice(id)), getRingIndex(id));
+    }
+
     private Rotor getActiveRotor(int id) { return activeRotors.get(id); }
 
+    private void addActiveRotorEntry(int id) { activeRotors.add(buildNewRotor(id)); }
     private void updatetActiveRotorEntry(int id) { activeRotors.set(id, buildNewRotor(id)); }
     private void setActiveRotorRingSetting(int id) { getActiveRotor(id).setRingSetting(getRingIndex(id)); }
     private void setActiveRotorOffset(int id) { getActiveRotor(id).setOffset(getRotorIndex(id)); }
@@ -489,6 +494,15 @@ public class Model {
         }
     }
 
+    /**
+     * Update the Rotor Offsets.
+     */
+    private void updateRotorOffseta() {
+        for (int i = 0; i < ROTOR_COUNT; ++i) {
+            setActiveRotorOffset(i);
+        }
+    }
+
 
     private int mapperTranslate(int index, Mapper mapper, int dir) {
         return mapper.swap(dir, index, isShow());
@@ -532,15 +546,6 @@ public class Model {
         return index;
     }
 
-    /**
-     * Update the Rotor Offsets.
-     */
-    private void updateRotorOffseta() {
-        for (int i = 0; i < ROTOR_COUNT; ++i) {
-            setActiveRotorOffset(i);
-        }
-    }
-
 
     /**
      * Advance the Rotors and translate an index (numerical equivalent of the 
@@ -555,10 +560,6 @@ public class Model {
     }
 
 
-    private Rotor buildNewRotor(int id) {
-        return new Rotor(getRotorData(rotors, getWheelChoice(id)), getRingIndex(id));
-    }
-
     private Mapper buildDirectMapper(String label) {
         final RotorData rotor = getRotorData(rotors, "ETW");
 
@@ -572,7 +573,7 @@ public class Model {
         lampboard = buildDirectMapper("Lamp");
 
         for (int i = 0; i < ROTOR_COUNT; ++i) {
-            activeRotors.add(buildNewRotor(i));
+            addActiveRotorEntry(i);
             setActiveRotorOffset(i);
         }
     }
