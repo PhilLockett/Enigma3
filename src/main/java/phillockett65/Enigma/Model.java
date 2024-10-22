@@ -356,7 +356,7 @@ public class Model {
     private Rotor getActiveRotor(int id) { return activeRotors.get(id); }
 
     private void addActiveRotorEntry(int id) { activeRotors.add(buildNewRotor(id)); }
-    private void updatetActiveRotorEntry(int id) { activeRotors.set(id, buildNewRotor(id)); }
+    private void updateActiveRotorEntry(int id) { activeRotors.set(id, buildNewRotor(id)); }
     private void setActiveRotorRingSetting(int id) { getActiveRotor(id).setRingSetting(getRingIndex(id)); }
     private void setActiveRotorOffset(int id) { getActiveRotor(id).setOffset(getRotorIndex(id)); }
 
@@ -374,7 +374,7 @@ public class Model {
                 new EventHandler<RotorEvent>() {
                     @Override public void handle(RotorEvent event) {
                         final int id = event.getId();
-                        updatetActiveRotorEntry(id);
+                        updateActiveRotorEntry(id);
                         // System.out.println("WHEEL_CHOICE[" + id + "] = " + getWheelChoice(id));
                     }
             });
@@ -454,10 +454,10 @@ public class Model {
     private Mapper lampboard;
 
     /**
-     * Find a Rotor with the given id in the given list,
+     * Find a RotorData with the given id in the given list,
      * @param list of Rotors to search.
      * @param target id of Rotor.
-     * @return Rotor with matching id if found, null otherwise.
+     * @return RotorData with matching id if found, entry 0 otherwise.
      */
     private RotorData getRotorData(ObservableList<RotorData> list, String target) {
         for (RotorData rotor : list)
@@ -497,7 +497,7 @@ public class Model {
     /**
      * Update the Rotor Offsets.
      */
-    private void updateRotorOffseta() {
+    private void updateRotorOffsets() {
         for (int i = 0; i < ROTOR_COUNT; ++i) {
             setActiveRotorOffset(i);
         }
@@ -555,7 +555,7 @@ public class Model {
      */
     public int translate(int index) {
         advanceRotors();
-        updateRotorOffseta();
+        updateRotorOffsets();
         return translateIndex(index);
     }
 
