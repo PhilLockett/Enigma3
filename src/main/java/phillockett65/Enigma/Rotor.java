@@ -36,6 +36,7 @@ public class Rotor extends Mapper {
 
     private int ringSetting;
     private int offset;
+    private int back;       // Inverse of offset.
 
 
     /************************************************************************
@@ -80,7 +81,8 @@ public class Rotor extends Mapper {
 
     public void setOffset(int value) { 
         // System.out.println("setOffset(" + getId() + " " + value + ")");
-        offset = value; 
+        offset = value % 26;
+        back = 26 - offset;
     }
 
     /**
@@ -97,6 +99,8 @@ public class Rotor extends Mapper {
         return leftToRight(index);
     }
 
+    private int shift(int index, int offset) { return (index + offset) % 26; }
+
     /**
      * Translates (swaps) an index (numerical equivalent of the letter) to 
      * another using the map.
@@ -106,10 +110,9 @@ public class Rotor extends Mapper {
      * @return the translated index.
      */
     public int swap(int direction, int index, boolean show) {
-        final int shift = (index + offset) % 26;
 
-        int output = swap(direction, shift);
-        output = (output + 26 - offset) % 26;
+        int output = swap(direction, shift(index, offset));
+        output = shift(output, back);
 
         if (show)
             System.out.print(getId() + "[" + indexToLetter(offset) + "](" + indexToLetter(index) + "->" + indexToLetter(output) + ")  ");
