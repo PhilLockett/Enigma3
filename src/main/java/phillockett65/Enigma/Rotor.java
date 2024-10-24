@@ -99,7 +99,13 @@ public class Rotor extends Mapper {
         return leftToRight(index);
     }
 
-    private int shift(int index, int offset) { return (index + offset) % 26; }
+    /**
+     * Rotate an index by offset.
+     * @param index (0..25) to rotate.
+     * @param offset (0..25) amount to rotate.
+     * @return rotated index.
+     */
+    private int rotate(int index, int offset) { return (index + offset) % 26; }
 
     /**
      * Translates (swaps) an index (numerical equivalent of the letter) to 
@@ -111,8 +117,8 @@ public class Rotor extends Mapper {
      */
     public int swap(int direction, int index, boolean show) {
 
-        int output = swap(direction, shift(index, offset));
-        output = shift(output, back);
+        int output = swap(direction, rotate(index, offset));
+        output = rotate(output, back);
 
         if (show)
             System.out.print(getId() + "[" + indexToLetter(offset) + "](" + indexToLetter(index) + "->" + indexToLetter(output) + ")  ");
@@ -131,7 +137,7 @@ public class Rotor extends Mapper {
         ringSetting = index;
 
         for (int i = 0; i < getMapLength(); ++i)
-            rightMap[(i + index) % 26] = (getMapItem(i) + index) % 26;
+            rightMap[rotate(i, index)] = rotate(getMapItem(i), index);
 
         for (int i = 0; i < getMapLength(); ++i)
             leftMap[rightMap[i]] = i;
