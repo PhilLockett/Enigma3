@@ -43,14 +43,20 @@ public class RotorControl extends VBox {
     private Spinner<String> rotorOffsetSpinner;
 
     private ObservableList<String> wheelList = FXCollections.observableArrayList();
-    private ObservableList<String> letters = FXCollections.observableArrayList();
-    private ObservableList<String> numbers = FXCollections.observableArrayList();
     private ObservableList<String> ringList = FXCollections.observableArrayList();
-    private boolean useNumbers = false;
     private int id = 0;
 
     private SpinnerValueFactory<String> ringSettingSVF;
     private SpinnerValueFactory<String> rotorOffsetSVF;
+
+    private String padding(int index) {
+        String result = "  ";
+
+        if (index < 9)
+            result = "   ";
+
+        return result;
+    }
 
     /**
      * Constructor.
@@ -66,13 +72,10 @@ public class RotorControl extends VBox {
 
         getChildren().addAll(wheelChoicebox, ringSettingSpinner, rotorOffsetSpinner);
 
-        // Initialize "letters", "numbers" and "ringList" ObservableList.
+        // Initialize "ringList" ObservableList.
         for (int i = 0; i < 26; ++i) {
-            final String letter = Rotor.indexToLetter(i);
-            letters.add(letter);
+            final String letter = Rotor.indexToLetter(i) + padding(i) + String.valueOf(i + 1);
             ringList.add(letter);
-
-            numbers.add(String.valueOf(i + 1));
         }
     }
 
@@ -129,25 +132,7 @@ public class RotorControl extends VBox {
         });
     }
 
-    private int valueToIndex(String s) { return useNumbers ? Mapper.numberToIndex(s) : Mapper.letterToIndex(s); }
-
-
-    /**
-     * Display Numbers or Letters on rotor (spinner).
-     * @param state show numbers if true, letters if false.
-     */
-    public void setUseNumbers(boolean state) {
-        if (useNumbers == state)
-            return;
-
-        useNumbers = state;
-        if (useNumbers)
-            ringList.setAll(numbers);
-        else
-            ringList.setAll(letters);
-    }
-
-    public boolean isUseNumbers() { return useNumbers; }
+    private int valueToIndex(String s) { return Mapper.letterToIndex(s); }
 
     public String getWheelChoice() { return wheelChoicebox.getValue(); }
     public void setWheelChoice(String value) { wheelChoicebox.setValue(value); }

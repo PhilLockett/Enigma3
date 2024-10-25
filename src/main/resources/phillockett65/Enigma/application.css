@@ -59,6 +59,7 @@
 .text-field{
     -fx-text-fill: black;
     -fx-font-weight: bold;
+    -fx-font-family: monospace;
     -fx-background-color: #c0c0c0;
 }
 

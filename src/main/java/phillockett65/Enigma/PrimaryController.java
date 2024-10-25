@@ -109,6 +109,8 @@ public class PrimaryController {
             stage.setX(model.getMainXPos());
             stage.setY(model.getMainYPos());
         }
+
+        headingLabel.setText(model.getTitle());
     }
 
     /**
@@ -133,7 +135,6 @@ public class PrimaryController {
         }
 
         fourthWheelCheckbox.setSelected(model.isFourthWheel());
-        useNumbersCheckbox.setSelected(model.isUseNumbers());
         showStepsCheckbox.setSelected(model.isShow());
 
         for (int i = 0; i < plugs.size(); ++i) {
@@ -354,16 +355,8 @@ public class PrimaryController {
     private MFXToggleButton fourthWheelCheckbox;
 
     @FXML
-    private MFXToggleButton useNumbersCheckbox;
-
-    @FXML
     void fourthWheelCheckboxActionPerformed(ActionEvent event) {
         model.setFourthWheel(fourthWheelCheckbox.isSelected());
-    }
-
-    @FXML
-    void useNumbersCheckboxActionPerformed(ActionEvent event) {
-        model.setUseNumbers(useNumbersCheckbox.isSelected());
     }
 
     /**
@@ -374,7 +367,6 @@ public class PrimaryController {
 
         rotorSetUpTitledPane.setTooltip(new Tooltip("Select and set up the Rotors (wheels / drums)"));
         fourthWheelCheckbox.setTooltip(new Tooltip("Select to use a fourth Rotor"));
-        useNumbersCheckbox.setTooltip(new Tooltip("Select to use Numbers on the Rotors instead of Letters"));
     }
 
 

@@ -95,7 +95,6 @@
                         <HBox>
                            <children>
                               <MFXToggleButton fx:id="fourthWheelCheckbox" gap="4.0" graphicTextGap="0.0" onAction="#fourthWheelCheckboxActionPerformed" text="Use Fourth Rotor" />
-                              <MFXToggleButton fx:id="useNumbersCheckbox" gap="4.0" graphicTextGap="0.0" onAction="#useNumbersCheckboxActionPerformed" text="Use Numbers" />
                            </children>
                         </HBox>
                      </children>

@@ -122,6 +122,8 @@ public class Model {
         updatePipelineReflector();
     }
 
+    public String getTitle() { return stage.getTitle(); }
+
     /**
      * Set all attributes to the default values.
      */
@@ -138,7 +140,6 @@ public class Model {
         setRotorState(MIDDLE, "II", 22, 18);
         setRotorState(RIGHT, "V", 25, 0);
 
-        setUseNumbers(false);
         setShow(false);
 
         plugboardControl.clear();
@@ -302,7 +303,6 @@ public class Model {
     private ArrayList<Rotor> activeRotors = new ArrayList<Rotor>(ROTOR_COUNT);
 
     private boolean fourthWheel = false;
-    private boolean useNumbers = false;
 
 
     public ObservableList<String> getWheelList() { return wheelList; }
@@ -321,22 +321,6 @@ public class Model {
 
     public boolean isFourthWheel() { return fourthWheel; }
 
-    /**
-     * Update useNumbers and synchronise the ring setting and rotor offset 
-     * Spinners.
-     * @param state assigned to useNumbers;
-     */
-    public void setUseNumbers(boolean state) {
-        if (useNumbers == state)
-            return;
-
-        useNumbers = state;
-        for (RotorControl rotor : rotorControls)
-            rotor.setUseNumbers(useNumbers);
-    }
-
-    public boolean isUseNumbers() { return useNumbers; }
-    
 
     private RotorControl getState(int index) { return rotorControls.get(index); }
 

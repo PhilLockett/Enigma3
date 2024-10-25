@@ -63,12 +63,8 @@ letters._
 
 ### Rotor Set-Up
 By default, Enigma3 functions as a 3 Rotor machine, allowing the Left, Middle 
-and Right Rotors to be defined.
+and Right Rotors to be configured.
 The 'Use Fourth Rotor' toggle, when selected, brings in the Fourth Rotor.
-
-Some machines use letters on the Rotors, whereas some use numbers. 
-The 'Use Numbers' toggle switches between these characters on the 'Ring 
-Settings' and Rotor 'Offsets' spinners for convenience.
 
 #### Rotor Selection
 The 'Rotor' choice box allows different Rotors to be selected for each of the 
