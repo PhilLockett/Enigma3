@@ -120,7 +120,7 @@ public class Model {
         for (RotorControl rotor : rotorControls) {
             rotor.initListeners();
         }
-        updatePipelineReflector();
+        updateReflector();
     }
 
     public String getTitle() { return stage.getTitle(); }
@@ -238,7 +238,7 @@ public class Model {
 
     public void setReflectorChoice(String choice)   {
         initReflectorChoice(choice);
-        updatePipelineReflector();
+        updateReflector();
     }
 
     private Mapper buildNewReflector() {
@@ -254,7 +254,7 @@ public class Model {
         return new Mapper("Reflector", reflectorMap);
     }
 
-    private void updatePipelineReflector() {
+    private void updateReflector() {
         reflector = buildNewReflector();
     }
 
@@ -277,7 +277,7 @@ public class Model {
 
     public boolean launchReflector() {
         if (reflectorControl.showControl()) {
-            updatePipelineReflector();
+            updateReflector();
 
             return true;
         }
@@ -391,6 +391,10 @@ public class Model {
         return new Mapper("Plugboard", plugboardMap);
     }
 
+    private void updatePlugboard() {
+        plugboard = buildNewPlugboard();
+    }
+
     // Called by DataStore on start up.
     public void initPlugText(ArrayList<String> links) {
         plugboardControl.setLinks(links);
@@ -408,7 +412,7 @@ public class Model {
 
     public boolean launchPlugboard() {
         if (plugboardControl.showControl()) {
-            plugboard = buildNewPlugboard();
+            updatePlugboard();
 
             return true;
         }
@@ -437,6 +441,20 @@ public class Model {
 
     private Mapper keyboard;
     private Mapper lampboard;
+
+    private Mapper buildDirectMapper(String label) {
+        final RotorData rotor = getRotorData(rotors, "ETW");
+
+        return new Mapper(label, rotor.getMap());
+    }
+
+    private void updateKeyboard() {
+        keyboard = buildDirectMapper("Key");
+    }
+
+    private void updateLampboard() {
+        lampboard = buildDirectMapper("Lamp");
+    }
 
     /**
      * Find a RotorData with the given id in the given list,
@@ -541,17 +559,11 @@ public class Model {
     }
 
 
-    private Mapper buildDirectMapper(String label) {
-        final RotorData rotor = getRotorData(rotors, "ETW");
-
-        return new Mapper(label, rotor.getMap());
-    }
-
     private void buildTheMappers() {
-        keyboard = buildDirectMapper("Key");
-        plugboard = buildNewPlugboard();
-        reflector = buildNewReflector();
-        lampboard = buildDirectMapper("Lamp");
+        updateKeyboard();
+        updatePlugboard();
+        updateReflector();
+        updateLampboard();
 
         for (int i = 0; i < ROTOR_COUNT; ++i) {
             addActiveRotorEntry(i);
