@@ -38,10 +38,48 @@ public class Rotor extends Mapper {
     private int offset;
     private int back;       // Inverse of offset.
 
+    private final boolean[] turnover;
+    private final boolean[] notches;
 
     /************************************************************************
      * Initialization support code.
      */
+
+    /**
+     * Convert a String representing 1 or more turnover points into an array 
+     * of flags.
+     * @param turnovers String representation of the turnover points.
+     * @return array of flags indicating turnover points.
+     */
+    private boolean[] buildTurnover(String turnovers) {
+        boolean [] mathison = new boolean[26];
+
+        for (int i = 0; i < mathison.length; ++i)
+            mathison[i] = false;
+
+        for (int i = 0; i < turnovers.length(); ++i) {
+            final int c = charToIndex(turnovers.charAt(i));
+            mathison[c] = true;
+        }
+
+        return mathison;
+    }
+
+    /**
+     * Translate the turnover points to notch points which occur 1 letter 
+     * before the turnover point.
+     * @return array of flags indicating notch points.
+     */
+    private boolean[] buildNotches() {
+        boolean [] turing = new boolean[26];
+
+        for (int i = 1; i < turnover.length; ++i)
+            turing[i - 1] = turnover[i];
+
+        turing[turnover.length - 1] = turnover[0];
+
+        return turing;
+    }
 
     /**
      * Constructor.
@@ -57,6 +95,9 @@ public class Rotor extends Mapper {
 
         setRingSetting(ring);
         setOffset(0);
+
+        turnover = buildTurnover(rd.getTurnovers());
+        notches = buildNotches();
     }
 
 
@@ -64,8 +105,8 @@ public class Rotor extends Mapper {
      * Getters support code.
      */
 
-    public boolean isTurnoverPoint(int index) { return data.isTurnoverPoint(index); }
-    public boolean isNotchPoint(int index) { return data.isNotchPoint(index); }
+    public boolean isTurnoverPoint(int index) { return turnover[index]; }
+    public boolean isNotchPoint(int index) { return notches[index]; }
 
     public int getRingSetting()	{ return ringSetting; }
 
@@ -141,11 +182,6 @@ public class Rotor extends Mapper {
 
         for (int i = 0; i < getMapLength(); ++i)
             leftMap[rightMap[i]] = i;
-
-        // System.out.print("rightMap = ");
-        // dumpRightMap();
-        // System.out.print("leftMap  = ");
-        // dumpLeftMap();
     }
 
 
@@ -166,7 +202,16 @@ public class Rotor extends Mapper {
             "]";
     }
 
+    public void dumpFlags(boolean[] flags) {
+        for (int i = 0; i < flags.length; ++i)
+            System.out.print(flags[i] ? "1" : "0");
+
+        System.out.println();
+    }
+
     public void dumpLeftMap() { dumpMapping(leftMap); }
     public void dumpRightMap() { dumpMapping(rightMap); }
+    public void dumpTurnover() { dumpFlags(turnover); }
+    public void dumpNotches() { dumpFlags(notches); }
 
 }
