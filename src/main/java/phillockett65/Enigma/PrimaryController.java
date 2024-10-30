@@ -485,7 +485,7 @@ public class PrimaryController {
     private MFXToggleButton showStepsCheckbox;
 
     @FXML
-    private Button resetButton;
+    private ChoiceBox<Integer> settingsChoicebox;
 
     @FXML
     private HBox mainIO;
@@ -504,18 +504,20 @@ public class PrimaryController {
         model.setShow(showStepsCheckbox.isSelected());
     }
 
-    @FXML
-    void resetButtonActionPerformed(ActionEvent event) {
-        model.defaultSettings();
-        syncUI();
-    }
 
     /**
      * Initialize "Translation" panel.
      */
     private void initializeEncipher() {
+        settingsChoicebox.setItems(model.getSettingsList());
+
+        settingsChoicebox.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
+            model.dailySettings(newValue);
+            syncUI();
+        });
+
         showStepsCheckbox.setTooltip(new Tooltip("Select to show each translation step on the command line"));
-        resetButton.setTooltip(new Tooltip("Click to return all settings to the default values"));
+        settingsChoicebox.setTooltip(new Tooltip("Select a settings entry from the Luftwaffe Enigma key list number 649"));
 
         final char arrow = '\u2799';
         labelIO.setText("" + arrow);

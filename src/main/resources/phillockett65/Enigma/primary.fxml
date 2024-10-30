@@ -144,7 +144,8 @@
                            <children>
                               <MFXToggleButton fx:id="showStepsCheckbox" gap="4.0" graphicTextGap="0.0" onAction="#showStepsCheckboxActionPerformed" text="Show Translation" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button fx:id="resetButton" mnemonicParsing="false" onAction="#resetButtonActionPerformed" text="Default Settings" />
+                              <Label text="Default Settings: " />
+                              <ChoiceBox fx:id="settingsChoicebox" prefWidth="50.0" />
                            </children>
                         </HBox>
                         <HBox fx:id="mainIO" prefWidth="200.0">

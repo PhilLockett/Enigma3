@@ -54,7 +54,7 @@
 .text-field:readonly{
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-color: #808080;
+    -fx-background-color: #505050;
 }
 .text-field{
     -fx-text-fill: black;

@@ -34,7 +34,6 @@ public class Rotor extends Mapper {
     private int[] leftMap;
     private int[] rightMap;
 
-    private int ringSetting;
     private int offset;
     private int back;       // Inverse of offset.
 
@@ -108,10 +107,6 @@ public class Rotor extends Mapper {
     public boolean isTurnoverPoint(int index) { return turnover[index]; }
     public boolean isNotchPoint(int index) { return notches[index]; }
 
-    public int getRingSetting()	{ return ringSetting; }
-
-    public int getOffset() { return offset; }
-
     private int leftToRight(int index) { return leftMap[index]; }
     private int rightToLeft(int index) { return rightMap[index]; }
 
@@ -168,14 +163,11 @@ public class Rotor extends Mapper {
     }
 
     /**
-     * Set the ring setting and update the left and right mappings using the
-     * map and ring setting.
+     * Update the left and right mappings using the map and ring setting.
      * @param index of the required ring setting.
      */
     public void setRingSetting(int index) {
         // System.out.println("setRingSetting(" + getId() + " " + index + ")");
-
-        ringSetting = index;
 
         for (int i = 0; i < getMapLength(); ++i)
             rightMap[rotate(i, index)] = rotate(getMapItem(i), index);

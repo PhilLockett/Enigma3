@@ -95,8 +95,13 @@ Select the 'Show Translation' toggle to see all the individual translation
 steps displayed on the command line.
 
 #### Default Settings
-The 'Default Settings' button returns all settings to the original values 
-including clearing all the text boxes.
+The 'Default Settings' choice box allows pre-configured settings from the 
+Luftwaffe Enigma key list number 649 to be selected. 
+The details of these settings can be found [here](https://en.wikipedia.org/wiki/Enigma_machine#Details). 
+
+Selecting one of these entries will override the: 'Wheel order' (rotor), 'Ring 
+settings', 'Plugboard connections', 'Reconfigurable reflector wiring' and the 
+'Indicator groups' (using the first indicator group for the rotor offset).
 
 ## Points of interest
 This code has the following points of interest:
