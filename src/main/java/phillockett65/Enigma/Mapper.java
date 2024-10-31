@@ -22,8 +22,8 @@
  * Mapper is a class that captures a directional mapping. For example, for 
  * Rotor I from Enigma I, the letter A maps to E, but E maps to L. The A to E
  * mapping is classed a RIGHT_TO_LEFT mapping. The E to L mapping is classed a 
- * LEFT_TO_RIGHT mapping. If these are the same then it is a Reflector mapping 
- * and isReflector() returns true.
+ * LEFT_TO_RIGHT mapping. If these mappings were to mirror each other then it 
+ * is a Reflector mapping and isReflector() returns true.
  */
 package phillockett65.Enigma;
 

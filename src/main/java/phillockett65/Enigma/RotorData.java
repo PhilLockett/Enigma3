@@ -19,10 +19,8 @@
  */
 
 /*
- * Rotor is a class that extends Mapper and captures the details of a rotor 
- * including the ring setting which is set post instantiation and the rotation
- * (offset) which is dynamically updated in normal use. Note, the turnover point
- * immediately follows the notch point.
+ * Rotor is a class that extends Mapper and captures the static rotor information 
+ * including the cipher string and the turnover points.
  */
 package phillockett65.Enigma;
 

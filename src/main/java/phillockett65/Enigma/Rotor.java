@@ -20,7 +20,7 @@
 
 /*
  * Rotor is a class that extends Mapper and captures the details of a rotor 
- * including the ring setting which is set post instantiation and the rotation
+ * including the ring setting which is set at instantiation and the rotation
  * (offset) which is dynamically updated in normal use. Note, the turnover point
  * immediately follows the notch point.
  */
