@@ -40,6 +40,7 @@ public class Rotor extends Mapper {
     private final boolean[] turnover;
     private final boolean[] notches;
 
+
     /************************************************************************
      * Initialization support code.
      */
@@ -51,17 +52,17 @@ public class Rotor extends Mapper {
      * @return array of flags indicating turnover points.
      */
     private boolean[] buildTurnover(String turnovers) {
-        boolean [] mathison = new boolean[26];
+        boolean [] output = new boolean[26];
 
-        for (int i = 0; i < mathison.length; ++i)
-            mathison[i] = false;
+        for (int i = 0; i < output.length; ++i)
+            output[i] = false;
 
         for (int i = 0; i < turnovers.length(); ++i) {
             final int c = charToIndex(turnovers.charAt(i));
-            mathison[c] = true;
+            output[c] = true;
         }
 
-        return mathison;
+        return output;
     }
 
     /**
@@ -70,14 +71,14 @@ public class Rotor extends Mapper {
      * @return array of flags indicating notch points.
      */
     private boolean[] buildNotches() {
-        boolean [] turing = new boolean[26];
+        boolean [] output = new boolean[26];
 
         for (int i = 1; i < turnover.length; ++i)
-            turing[i - 1] = turnover[i];
+            output[i - 1] = turnover[i];
 
-        turing[turnover.length - 1] = turnover[0];
+        output[turnover.length - 1] = turnover[0];
 
-        return turing;
+        return output;
     }
 
     /**
@@ -186,11 +187,9 @@ public class Rotor extends Mapper {
         return "Rotor [" + 
             "id=" + getId() + 
             ", map=" + Arrays.toString(getMap()) + 
-            // ", cipher=" + cipher + 
             ", name=" + data.getName() + 
             ", reflect=" + isReflector() + 
             ", offset=" + offset + 
-            // ", date=" + date + 
             "]";
     }
 

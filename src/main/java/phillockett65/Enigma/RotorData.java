@@ -74,10 +74,11 @@ public class RotorData extends Mapper {
         return "Rotor [" + 
             "id=" + getId() + 
             ", map=" + Arrays.toString(getMap()) + 
-            // ", cipher=" + cipher + 
+            ", cipher=" + cipher + 
             ", name=" + name + 
             ", reflect=" + isReflector() + 
-            // ", date=" + date + 
+            ", date=" + date + 
+            ", turnovers=" + turnovers + 
             "]";
     }
 
