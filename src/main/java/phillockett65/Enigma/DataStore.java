@@ -200,7 +200,6 @@ public class DataStore implements Serializable {
         // System.out.println("pairs = " + pairs);
 
         // System.out.println("fourthWheel = " + fourthWheel);
-        // System.out.println("useNumbers = " + useNumbers);
  
         // System.out.println("wheels = " + wheels);
         // System.out.println("ringSettings = " + ringSettings);
