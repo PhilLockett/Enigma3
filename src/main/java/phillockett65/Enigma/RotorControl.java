@@ -50,12 +50,10 @@ public class RotorControl extends VBox {
     private SpinnerValueFactory<String> rotorOffsetSVF;
 
     private String padding(int index) {
-        String result = "  ";
-
         if (index < 9)
-            result = "   ";
+            return "   ";
 
-        return result;
+        return "  ";
     }
 
     /**
@@ -74,8 +72,8 @@ public class RotorControl extends VBox {
 
         // Initialize "ringList" ObservableList.
         for (int i = 0; i < 26; ++i) {
-            final String letter = Rotor.indexToLetter(i) + padding(i) + String.valueOf(i + 1);
-            ringList.add(letter);
+            final String display = Rotor.indexToLetter(i) + padding(i) + String.valueOf(i + 1);
+            ringList.add(display);
         }
     }
 
@@ -107,7 +105,6 @@ public class RotorControl extends VBox {
         rotorOffsetSpinner.setValueFactory(rotorOffsetSVF);
         rotorOffsetSpinner.getValueFactory().wrapAroundProperty().set(true);
         rotorOffsetSpinner.setTooltip(new Tooltip("Select offset for the " + name + " Rotor"));
-
     }
 
     /**
