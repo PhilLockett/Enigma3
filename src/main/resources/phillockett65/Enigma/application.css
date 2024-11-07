@@ -35,6 +35,18 @@
     -fx-font-weight: bold;
 }
 
+.check-box .box, .check-box .mark{
+    -fx-background-color: #9B4642;
+}
+
+.check-box:selected .box{
+    -fx-background-color: white;
+}
+
+.check-box:selected .mark{
+    -fx-background-color: #7B2622;
+}
+
 .titled-pane{
     -fx-text-fill: #e8e8e8;
 }
