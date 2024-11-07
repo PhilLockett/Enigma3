@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -94,7 +94,7 @@
                         </HBox>
                         <HBox>
                            <children>
-                              <MFXToggleButton fx:id="fourthWheelCheckbox" gap="4.0" graphicTextGap="0.0" onAction="#fourthWheelCheckboxActionPerformed" text="Use Fourth Rotor" />
+                              <CheckBox fx:id="fourthWheelCheckbox" mnemonicParsing="false" onAction="#fourthWheelCheckboxActionPerformed" text="Use Fourth Rotor" />
                            </children>
                         </HBox>
                      </children>
@@ -142,7 +142,7 @@
                      <children>
                         <HBox alignment="CENTER">
                            <children>
-                              <MFXToggleButton fx:id="showStepsCheckbox" gap="4.0" graphicTextGap="0.0" onAction="#showStepsCheckboxActionPerformed" text="Show Translation" />
+                              <CheckBox fx:id="showStepsCheckbox" mnemonicParsing="false" onAction="#showStepsCheckboxActionPerformed" text="Show Translation" />
                               <Region HBox.hgrow="ALWAYS" />
                               <Label text="Default Settings: " />
                               <ChoiceBox fx:id="settingsChoicebox" prefWidth="50.0" />

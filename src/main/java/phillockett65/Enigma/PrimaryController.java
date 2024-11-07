@@ -29,13 +29,12 @@
  */
 package phillockett65.Enigma;
 
-import io.github.palexdev.materialfx.controls.MFXToggleButton;
-
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -352,7 +351,7 @@ public class PrimaryController {
     private HBox rotorSetUpHBox;
 
     @FXML
-    private MFXToggleButton fourthWheelCheckbox;
+    private CheckBox fourthWheelCheckbox;
 
     @FXML
     void fourthWheelCheckboxActionPerformed(ActionEvent event) {
@@ -482,7 +481,7 @@ public class PrimaryController {
     private int currentKey = -1;
 
     @FXML
-    private MFXToggleButton showStepsCheckbox;
+    private CheckBox showStepsCheckbox;
 
     @FXML
     private ChoiceBox<Integer> settingsChoicebox;
