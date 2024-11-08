@@ -31,12 +31,16 @@
     -fx-font-weight: bold;
 }
 .check-box, .radio-button{
-    -fx-text-fill: #bbbbbb;
+    -fx-text-fill: #888888;
     -fx-font-weight: bold;
 }
 
 .check-box .box, .check-box .mark{
-    -fx-background-color: #9B4642;
+    -fx-background-color: #BB6662;
+}
+
+.check-box .box{
+    -fx-background-radius: 8;
 }
 
 .check-box:selected .box{
