@@ -29,7 +29,6 @@ import java.util.HashMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import phillockett65.PairSelect.PairSelectControl;
 
