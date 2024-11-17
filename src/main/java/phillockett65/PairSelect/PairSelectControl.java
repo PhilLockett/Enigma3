@@ -26,7 +26,6 @@ package phillockett65.PairSelect;
 
 import java.util.ArrayList;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -240,16 +239,9 @@ public class PairSelectControl extends Stage {
         root.setSpacing(10);
         root.setPadding(new Insets(0, 1.0, 0, 0));
 
-
         pairSelect = new PairSelect(plugboard);
 
-        pairSelect.addEventHandler(SelectEvent.LINK_CHANGE, 
-            new EventHandler<SelectEvent>() {
-                @Override public void handle(SelectEvent event) {
-                    syncUI();
-                }
-        });
-
+        root.addEventHandler(SelectEvent.LINK_CHANGE, this::handleSelectEvent);
 
         root.getChildren().add(buildTopBar());
         root.getChildren().add(pairSelect);
@@ -262,6 +254,9 @@ public class PairSelectControl extends Stage {
         this.setScene(scene);
     }
 
+    public void handleSelectEvent(SelectEvent event) {
+        syncUI();
+    }
 
     public ArrayList<String> getLinks() { return pairSelect.getLinks(); }
     public String getText(int index) { return pairSelect.getText(index); }

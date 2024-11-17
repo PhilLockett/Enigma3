@@ -37,8 +37,12 @@ class SelectEvent extends Event {
     /**
      * The only valid EventTypes for the SelectEvent.
      */
+    public static final EventType<SelectEvent> SELECT_LINK =
+        new EventType<>(Event.ANY, "SELECT_LINK");
+    public static final EventType<SelectEvent> ANY = SELECT_LINK;
+
     public static final EventType<SelectEvent> LINK_CHANGE =
-        new EventType<>(Event.ANY, "LINK_CHANGE");
+        new EventType<>(SelectEvent.ANY, "LINK_CHANGE");
 
     /**
      * Creates a new {@code SelectEvent} with an event type of {@code ANY}.
@@ -47,14 +51,14 @@ class SelectEvent extends Event {
     public SelectEvent() { super(ANY); }
 
     /**
-     * Construct a new {@code SelectEvent} with the specified event source and target.
+     * Construct a new {@code SelectEvent} with the specified event type.
      *
-     * @param source    the event source which sent the event
-     * @param target    the event target to associate with the event
+     * @param eventType this event represents.
      */
-    public SelectEvent(Object source, EventTarget target) {
-        super(source, target, LINK_CHANGE);
+    public SelectEvent(EventType<? extends Event> eventType) {
+        super(eventType);
     }
+
 
     @Override
     public SelectEvent copyFor(Object newSource, EventTarget newTarget) {

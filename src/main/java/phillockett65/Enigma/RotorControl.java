@@ -115,17 +115,17 @@ public class RotorControl extends VBox {
 
         wheelChoicebox.valueProperty().addListener( (v, oldValue, newValue) -> {
             // System.out.println("wheelChoicebox[" + id + "] = " + newValue);
-            wheelChoicebox.fireEvent(new RotorEvent(this, wheelChoicebox, RotorEvent.WHEEL_CHOICE, id));
+            wheelChoicebox.fireEvent(new RotorEvent(RotorEvent.WHEEL_CHOICE, id));
         });
 
         ringSettingSpinner.valueProperty().addListener( (v, oldValue, newValue) -> {
             // System.out.println("ringSettingSpinner[" + id + "] = " + newValue);
-            ringSettingSpinner.fireEvent(new RotorEvent(this, ringSettingSpinner, RotorEvent.RING_SETTING, id));
+            ringSettingSpinner.fireEvent(new RotorEvent(RotorEvent.RING_SETTING, id));
         });
 
         rotorOffsetSpinner.valueProperty().addListener( (v, oldValue, newValue) -> {
             // System.out.println("rotorOffsetSpinner[" + id + "] = " + newValue);
-            rotorOffsetSpinner.fireEvent(new RotorEvent(this, rotorOffsetSpinner, RotorEvent.ROTOR_OFFSET, id));
+            rotorOffsetSpinner.fireEvent(new RotorEvent(RotorEvent.ROTOR_OFFSET, id));
         });
     }
 

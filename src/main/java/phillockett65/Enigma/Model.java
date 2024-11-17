@@ -440,25 +440,22 @@ public class Model {
             rotorControl.init(i, wheelList);
             rotorControl.setSpacing(8);
 
-            rotorControl.addEventHandler(RotorEvent.WHEEL_CHOICE, 
-                new EventHandler<RotorEvent>() {
-                    @Override public void handle(RotorEvent event) {
-                        final int id = event.getId();
-                        updateActiveRotorEntry(id);
-                        // System.out.println("WHEEL_CHOICE[" + id + "] = " + getWheelChoice(id));
-                    }
-            });
-
-            rotorControl.addEventHandler(RotorEvent.RING_SETTING, 
-                new EventHandler<RotorEvent>() {
-                    @Override public void handle(RotorEvent event) {
-                        final int id = event.getId();
-                        setActiveRotorRingSetting(id);
-                        // System.out.println("RING_SETTING[" + id + "] = " + getRingIndex(id));
-                    }
-            });
+            rotorControl.addEventHandler(RotorEvent.ANY, this::handleRotorEvent);
 
             rotorControls.add(rotorControl);
+        }
+    }
+
+    public void handleRotorEvent(RotorEvent event) {
+        final int id = event.getId();
+
+        if (event.getEventType() == RotorEvent.WHEEL_CHOICE) {
+            // System.out.println("WHEEL_CHOICE[" + id + "] = " + getWheelChoice(id));
+            updateActiveRotorEntry(id);
+        } else
+        if (event.getEventType() == RotorEvent.RING_SETTING) {
+            // System.out.println("RING_SETTING[" + id + "] = " + getRingIndex(id));
+            setActiveRotorRingSetting(id);
         }
     }
 

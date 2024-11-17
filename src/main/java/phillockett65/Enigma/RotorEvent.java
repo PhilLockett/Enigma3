@@ -39,34 +39,40 @@ class RotorEvent extends Event {
     public int getId() { return id; }
 
     /**
-     * The only valid EventTypes for the SelectEvent.
+     * The only valid EventTypes for the RotorEvent.
      */
+    public static final EventType<RotorEvent> SELECT_ROTOR =
+        new EventType<>(Event.ANY, "SELECT_ROTOR");
+    public static final EventType<RotorEvent> ANY = SELECT_ROTOR;
+
     public static final EventType<RotorEvent> WHEEL_CHOICE =
-        new EventType<>(Event.ANY, "WHEEL_CHOICE");
+        new EventType<>(RotorEvent.ANY, "WHEEL_CHOICE");
     public static final EventType<RotorEvent> RING_SETTING =
-        new EventType<>(Event.ANY, "RING_SETTING");
+        new EventType<>(RotorEvent.ANY, "RING_SETTING");
     public static final EventType<RotorEvent> ROTOR_OFFSET =
-        new EventType<>(Event.ANY, "ROTOR_OFFSET");
+        new EventType<>(RotorEvent.ANY, "ROTOR_OFFSET");
 
     /**
      * Creates a new {@code RotorEvent} with an event type of {@code ANY}.
      * The source and target of the event is set to {@code NULL_SOURCE_TARGET}.
      */
-    public RotorEvent() { super(ANY); }
+    public RotorEvent() {
+        super(ANY);
+        id = 0;
+    }
 
     /**
-     * Construct a new {@code RotorEvent} with the specified event source and target.
+     * Construct a new {@code RotorEvent} with the specified event type and 
+     * rotor id.
      *
-     * @param source    the event source which sent the event
-     * @param target    the event target to associate with the event
-     * @param type      the event type of the event
-     * @param index     the id of the event
+     * @param eventType this event represents.
+     * @param index     the id of the rotor.
      */
-    public RotorEvent(Object source, EventTarget target, EventType<RotorEvent> type, int index) {
-        super(source, target, type);
-
+    public RotorEvent(EventType<? extends Event> eventType, int index) {
+        super(eventType);
         id = index;
     }
+
 
     @Override
     public RotorEvent copyFor(Object newSource, EventTarget newTarget) {

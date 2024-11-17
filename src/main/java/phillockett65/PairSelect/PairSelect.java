@@ -176,7 +176,7 @@ public class PairSelect extends AnchorPane {
 
         guide.setVisible(false);
 
-        button.fireEvent(new SelectEvent(this, this));
+        button.fireEvent(new SelectEvent(SelectEvent.LINK_CHANGE));
     }
 
     private void removeLink(Plug button, int index) {
@@ -198,7 +198,7 @@ public class PairSelect extends AnchorPane {
             pairList.remove(pair);
 
             setLineColours();
-            button.fireEvent(new SelectEvent(this, this));
+            button.fireEvent(new SelectEvent(SelectEvent.LINK_CHANGE));
 
             break;
         }
