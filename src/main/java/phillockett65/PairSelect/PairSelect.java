@@ -27,6 +27,9 @@ package phillockett65.PairSelect;
 
 import java.util.ArrayList;
 
+import javafx.event.Event;
+import javafx.event.EventTarget;
+import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -503,4 +506,52 @@ public class PairSelect extends AnchorPane {
         init();
     }
 
+
+
+    /**
+     * PairSelect Event class.
+     */
+    public static class PairEvent extends Event {
+
+        private static final long serialVersionUID = 202408191851L;
+    
+        /**
+         * The only valid EventTypes for the SelectEvent.
+         */
+        public static final EventType<PairEvent> SELECT_LINK =
+            new EventType<>(Event.ANY, "SELECT_LINK");
+        public static final EventType<PairEvent> ANY = SELECT_LINK;
+    
+        public static final EventType<PairEvent> LINK_CHANGE =
+            new EventType<>(PairEvent.ANY, "LINK_CHANGE");
+    
+        /**
+         * Creates a new {@code SelectEvent} with an event type of {@code ANY}.
+         * The source and target of the event is set to {@code NULL_SOURCE_TARGET}.
+         */
+        public PairEvent() { super(ANY); }
+    
+        /**
+         * Construct a new {@code SelectEvent} with the specified event type.
+         *
+         * @param eventType this event represents.
+         */
+        public PairEvent(EventType<? extends Event> eventType) {
+            super(eventType);
+        }
+    
+    
+        @Override
+        public PairEvent copyFor(Object newSource, EventTarget newTarget) {
+            return (PairEvent) super.copyFor(newSource, newTarget);
+        }
+    
+        @SuppressWarnings("unchecked")
+        @Override
+        public EventType<? extends PairEvent> getEventType() {
+            return (EventType<? extends PairEvent>) super.getEventType();
+        }
+    
+    }
+    
 }
