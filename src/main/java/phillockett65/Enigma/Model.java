@@ -30,6 +30,7 @@ import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import phillockett65.Enigma.RotorControl.RotorEvent;
 import phillockett65.PairSelect.PairSelectControl;
 
 public class Model {

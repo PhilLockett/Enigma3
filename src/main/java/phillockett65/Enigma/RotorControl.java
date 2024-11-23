@@ -27,6 +27,9 @@ package phillockett65.Enigma;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventTarget;
+import javafx.event.EventType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -155,6 +158,68 @@ public class RotorControl extends VBox {
         setWheelChoice(wheel);
         setRingIndex(ringIndex);
         setRotorIndex(rotorIndex);
+    }
+
+
+
+    /**
+     * RotorControl Event class.
+     */
+    public static class RotorEvent extends Event {
+
+        private static final long serialVersionUID = 202409111243L;
+
+        private final int id;
+
+        public int getId() { return id; }
+
+        /**
+         * The only valid EventTypes for the RotorEvent.
+         */
+        public static final EventType<RotorEvent> SELECT_ROTOR =
+            new EventType<>(Event.ANY, "SELECT_ROTOR");
+        public static final EventType<RotorEvent> ANY = SELECT_ROTOR;
+
+        public static final EventType<RotorEvent> WHEEL_CHOICE =
+            new EventType<>(RotorEvent.ANY, "WHEEL_CHOICE");
+        public static final EventType<RotorEvent> RING_SETTING =
+            new EventType<>(RotorEvent.ANY, "RING_SETTING");
+        public static final EventType<RotorEvent> ROTOR_OFFSET =
+            new EventType<>(RotorEvent.ANY, "ROTOR_OFFSET");
+
+        /**
+         * Creates a new {@code RotorEvent} with an event type of {@code ANY}.
+         * The source and target of the event is set to {@code NULL_SOURCE_TARGET}.
+         */
+        public RotorEvent() {
+            super(ANY);
+            id = 0;
+        }
+
+        /**
+         * Construct a new {@code RotorEvent} with the specified event type and 
+         * rotor id.
+         *
+         * @param eventType this event represents.
+         * @param index     the id of the rotor.
+         */
+        public RotorEvent(EventType<? extends Event> eventType, int index) {
+            super(eventType);
+            id = index;
+        }
+
+
+        @Override
+        public RotorEvent copyFor(Object newSource, EventTarget newTarget) {
+            return (RotorEvent) super.copyFor(newSource, newTarget);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public EventType<? extends RotorEvent> getEventType() {
+            return (EventType<? extends RotorEvent>) super.getEventType();
+        }
+
     }
 
 }
