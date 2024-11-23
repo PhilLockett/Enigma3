@@ -241,7 +241,7 @@ public class PairSelectControl extends Stage {
 
         pairSelect = new PairSelect(plugboard);
 
-        root.addEventHandler(SelectEvent.LINK_CHANGE, this::handleSelectEvent);
+        root.addEventHandler(PairEvent.LINK_CHANGE, this::handleSelectEvent);
 
         root.getChildren().add(buildTopBar());
         root.getChildren().add(pairSelect);
@@ -254,7 +254,7 @@ public class PairSelectControl extends Stage {
         this.setScene(scene);
     }
 
-    public void handleSelectEvent(SelectEvent event) {
+    public void handleSelectEvent(PairEvent event) {
         syncUI();
     }
 

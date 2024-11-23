@@ -30,45 +30,45 @@ import javafx.event.EventType;
  *
  * @author Phil
  */
-class SelectEvent extends Event {
+class PairEvent extends Event {
 
     private static final long serialVersionUID = 202408191851L;
 
     /**
      * The only valid EventTypes for the SelectEvent.
      */
-    public static final EventType<SelectEvent> SELECT_LINK =
+    public static final EventType<PairEvent> SELECT_LINK =
         new EventType<>(Event.ANY, "SELECT_LINK");
-    public static final EventType<SelectEvent> ANY = SELECT_LINK;
+    public static final EventType<PairEvent> ANY = SELECT_LINK;
 
-    public static final EventType<SelectEvent> LINK_CHANGE =
-        new EventType<>(SelectEvent.ANY, "LINK_CHANGE");
+    public static final EventType<PairEvent> LINK_CHANGE =
+        new EventType<>(PairEvent.ANY, "LINK_CHANGE");
 
     /**
      * Creates a new {@code SelectEvent} with an event type of {@code ANY}.
      * The source and target of the event is set to {@code NULL_SOURCE_TARGET}.
      */
-    public SelectEvent() { super(ANY); }
+    public PairEvent() { super(ANY); }
 
     /**
      * Construct a new {@code SelectEvent} with the specified event type.
      *
      * @param eventType this event represents.
      */
-    public SelectEvent(EventType<? extends Event> eventType) {
+    public PairEvent(EventType<? extends Event> eventType) {
         super(eventType);
     }
 
 
     @Override
-    public SelectEvent copyFor(Object newSource, EventTarget newTarget) {
-        return (SelectEvent) super.copyFor(newSource, newTarget);
+    public PairEvent copyFor(Object newSource, EventTarget newTarget) {
+        return (PairEvent) super.copyFor(newSource, newTarget);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public EventType<? extends SelectEvent> getEventType() {
-        return (EventType<? extends SelectEvent>) super.getEventType();
+    public EventType<? extends PairEvent> getEventType() {
+        return (EventType<? extends PairEvent>) super.getEventType();
     }
 
 }
