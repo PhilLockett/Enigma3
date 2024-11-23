@@ -199,13 +199,14 @@ public class RotorControl extends VBox {
         /**
          * Construct a new {@code RotorEvent} with the specified event type and 
          * rotor id.
+         * The source and target of the event are set to {@code NULL_SOURCE_TARGET}.
          *
          * @param eventType this event represents.
-         * @param index     the id of the rotor.
+         * @param id        of the rotor.
          */
-        public RotorEvent(EventType<? extends Event> eventType, int index) {
+        public RotorEvent(EventType<? extends Event> eventType, int id) {
             super(eventType);
-            id = index;
+            this.id = id;
         }
 
 

@@ -526,13 +526,14 @@ public class PairSelect extends AnchorPane {
             new EventType<>(PairEvent.ANY, "LINK_CHANGE");
     
         /**
-         * Creates a new {@code SelectEvent} with an event type of {@code ANY}.
-         * The source and target of the event is set to {@code NULL_SOURCE_TARGET}.
+         * Creates a new {@code PairEvent} with an event type of {@code ANY}.
+         * The source and target of the event are set to {@code NULL_SOURCE_TARGET}.
          */
         public PairEvent() { super(ANY); }
     
         /**
-         * Construct a new {@code SelectEvent} with the specified event type.
+         * Construct a new {@code PairEvent} with the specified event type.
+         * The source and target of the event are set to {@code NULL_SOURCE_TARGET}.
          *
          * @param eventType this event represents.
          */
