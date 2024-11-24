@@ -5,8 +5,8 @@
 **USE AT OWN RISK.**
 
 ## Overview
-'Enigma3' is set up as a Maven project that uses JavaFX, MaterialFX, FXML and 
-CSS to render the GUI. 
+'Enigma3' is set up as a Maven project that uses JavaFX, FXML and CSS to render 
+the GUI. 
 Maven can be run from the command line as shown below.
 Maven resolves dependencies and builds the application independently of an IDE.
 
@@ -108,7 +108,7 @@ This code has the following points of interest:
 
   * Enigma3 simulates the behaviour of the [Enigma](https://en.wikipedia.org/wiki/Enigma_machine) machine.
   * Enigma3 is an updated version of [Enigma2](https://github.com/PhilLockett/Enigma2).
-  * Enigma3 is a Maven project that uses JavaFX, MaterialFX, FXML and CSS.
+  * Enigma3 is a Maven project that uses JavaFX, FXML and CSS.
   * Uses a custom controller, "RotorControl", to represent rotor settings.
   * Uses a custom controller, "PairSelect", to represent reflector and plugboard settings.
   * Uses subtle linear and radial colour gradients on controls.
