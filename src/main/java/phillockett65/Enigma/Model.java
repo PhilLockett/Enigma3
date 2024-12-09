@@ -120,7 +120,7 @@ public class Model {
     public void init(Stage stage) {
         // System.out.println("Model init.");
         this.stage = stage;
-        if (!DataStore.readData())
+        if (readData() == false)
             defaultSettings();
 
         initializeEncipher();
@@ -172,6 +172,24 @@ public class Model {
         list = Mapper.splitWords(settings.getPlugboard());
         initPlugText(list);
         updatePlugboard();
+    }
+
+
+
+    /************************************************************************
+     * Support code for state persistence.
+     */
+
+    /**
+     * Call the static DataStore1 method, to read the data from disc.
+     * @return true if data successfully read from disc, false otherwise.
+     */
+    private boolean readData() {
+        if (DataStore1.readData() == true) {
+            return true;
+        }
+
+        return false;
     }
 
 

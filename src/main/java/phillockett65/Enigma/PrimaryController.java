@@ -118,7 +118,9 @@ public class PrimaryController {
     public void saveState() {
         // Only save window position just before saving state.
         model.setMainPos(stage.getX(), stage.getY());
-        DataStore.writeData();
+
+        // Write current state to disc using the latest version of DataStore.
+        DataStore1.writeData();
     }
 
     /**
