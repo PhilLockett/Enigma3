@@ -47,6 +47,8 @@ public class Model {
     private static final int RIGHT = 3;
     private static final int ROTOR_COUNT = 4;
 
+    private static Model model = new Model();
+
     private boolean defaulted = false;
     public boolean isDefaulted() { return defaulted; }
     
@@ -84,16 +86,17 @@ public class Model {
      */
 
     /**
-     * Constructor.
+     * Private default constructor - part of the Singleton Design Pattern.
+     * Called at initialization only, constructs the single private instance.
      */
-    public Model() {
-        initRotorWiring();
-        initDefaultSettings();
-
-        initializeReflector();
-        initializeRotorSetup();
-        initializePlugboardConnections();
+    private Model() {
     }
+
+    /**
+     * Singleton implementation.
+     * @return the only instance of the model.
+     */
+    public static Model getInstance() { return model; }
 
 
     /**
@@ -102,6 +105,12 @@ public class Model {
      */
     public void initialize() {
         // System.out.println("Model initialized.");
+        initRotorWiring();
+        initDefaultSettings();
+
+        initializeReflector();
+        initializeRotorSetup();
+        initializePlugboardConnections();
     }
 
     /**
@@ -111,7 +120,7 @@ public class Model {
     public void init(Stage stage) {
         // System.out.println("Model init.");
         this.stage = stage;
-        if (!DataStore.readData(this))
+        if (!DataStore.readData())
             defaultSettings();
 
         initializeEncipher();

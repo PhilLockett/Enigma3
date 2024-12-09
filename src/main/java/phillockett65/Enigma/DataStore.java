@@ -129,15 +129,15 @@ public class DataStore implements Serializable {
     /**
      * Static method that instantiates a DataStore, populates it from the 
      * model and writes it to disc.
-     * @param model contains the data.
      * @return true if data successfully written to disc, false otherwise.
      */
-    public static boolean writeData(Model model) {
+    public static boolean writeData() {
         boolean success = false;
+        Model model = Model.getInstance();
 
         DataStore dataStore = new DataStore();
         dataStore.pull(model);
-        dataStore.dump();
+        // dataStore.dump();
 
         ObjectOutputStream objectOutputStream;
         try {
@@ -156,11 +156,11 @@ public class DataStore implements Serializable {
     /**
      * Static method that instantiates a DataStore, populates it from disc 
      * and writes it to the model.
-     * @param model contains the data.
      * @return true if data successfully read from disc, false otherwise.
      */
-    public static boolean readData(Model model) {
+    public static boolean readData() {
         boolean success = false;
+        Model model = Model.getInstance();
 
         ObjectInputStream objectInputStream;
         try {
@@ -168,7 +168,7 @@ public class DataStore implements Serializable {
 
             DataStore dataStore = (DataStore)objectInputStream.readObject();
             success = dataStore.push(model);
-            dataStore.dump();
+            // dataStore.dump();
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -189,25 +189,25 @@ public class DataStore implements Serializable {
       * Print data store on the command line.
       */
     private void dump() {
-        // System.out.println("mainX = " + mainX);
-        // System.out.println("mainY = " + mainY);
-        // System.out.println("reflectorX = " + reflectorX);
-        // System.out.println("reflectorY = " + reflectorY);
-        // System.out.println("plugboardX = " + plugboardX);
-        // System.out.println("plugboardY = " + plugboardY);
+        System.out.println("mainX = " + mainX);
+        System.out.println("mainY = " + mainY);
+        System.out.println("reflectorX = " + reflectorX);
+        System.out.println("reflectorY = " + reflectorY);
+        System.out.println("plugboardX = " + plugboardX);
+        System.out.println("plugboardY = " + plugboardY);
 
-        // System.out.println("reflectorChoice = " + reflectorChoice);
-        // System.out.println("pairs = " + pairs);
+        System.out.println("reflectorChoice = " + reflectorChoice);
+        System.out.println("pairs = " + pairs);
 
-        // System.out.println("fourthWheel = " + fourthWheel);
+        System.out.println("fourthWheel = " + fourthWheel);
  
-        // System.out.println("wheels = " + wheels);
-        // System.out.println("ringSettings = " + ringSettings);
-        // System.out.println("rotorOffsets = " + rotorOffsets);
+        System.out.println("wheels = " + wheels);
+        System.out.println("ringSettings = " + ringSettings);
+        System.out.println("rotorOffsets = " + rotorOffsets);
  
-        // System.out.println("plugs = " + plugs);
+        System.out.println("plugs = " + plugs);
  
-        // System.out.println("show = " + show);
+        System.out.println("show = " + show);
     }
 
 }

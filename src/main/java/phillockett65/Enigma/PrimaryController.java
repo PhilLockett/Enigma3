@@ -77,7 +77,7 @@ public class PrimaryController {
      */
     public PrimaryController() {
         // System.out.println("PrimaryController constructed.");
-        model = new Model();
+        model = Model.getInstance();
     }
 
     /**
@@ -118,7 +118,7 @@ public class PrimaryController {
     public void saveState() {
         // Only save window position just before saving state.
         model.setMainPos(stage.getX(), stage.getY());
-        DataStore.writeData(model);
+        DataStore.writeData();
     }
 
     /**
