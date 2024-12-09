@@ -1,21 +1,21 @@
-/*  FXMLCustomControler2 - a JavaFX based enigma machine simulator.
+/*  CustomRotorController - a JavaFX based Custom Controller representing a Rotor.
  *
  *  Copyright 2024 Philip Lockett.
  *
- *  This file is part of FXMLCustomControler2.
+ *  This file is part of CustomRotorController.
  *
- *  FXMLCustomControler2 is free software: you can redistribute it and/or modify
+ *  CustomRotorController is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  FXMLCustomControler2 is distributed in the hope that it will be useful,
+ *  CustomRotorController is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with FXMLCustomControler2.  If not, see <https://www.gnu.org/licenses/>.
+ *  along with CustomRotorController.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 /*
