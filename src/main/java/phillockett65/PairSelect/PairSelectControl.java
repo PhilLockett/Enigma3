@@ -183,8 +183,6 @@ public class PairSelectControl extends Stage {
      */
     private HBox buildOptions() {
         HBox options = new HBox();
-        options.setSpacing(10);
-        options.setPadding(new Insets(10.0));
 
         done = new Button("Done");
         Region region = new Region();
@@ -217,8 +215,6 @@ public class PairSelectControl extends Stage {
      */
     private HBox buildSelected() {
         HBox selection = new HBox();
-        // selection.setSpacing(10);
-        selection.setPadding(new Insets(0.0, 10.0, 0.0, 10.0));
 
         field = new TextField();
         field.setEditable(false);
@@ -230,24 +226,36 @@ public class PairSelectControl extends Stage {
         return selection;
     }
 
-    private void init() {
-        resizableProperty().setValue(false);
-        // setOnCloseRequest(e -> Platform.exit());
-        initStyle(StageStyle.UNDECORATED);
-        initModality(Modality.APPLICATION_MODAL);
+    /**
+     * Builds the User controls as a VBox.
+     * @return the VBox that captures the User controls.
+     */
+    private VBox buildControlPanel() {
+        VBox panel = new VBox();
 
-        root = new VBox();
-        root.setSpacing(10);
-        root.setPadding(new Insets(0, 1.0, 0, 0));
+        panel.setSpacing(10);
+        panel.setPadding(new Insets(10.0));
 
         pairSelect = new PairSelect(plugboard);
+
+        panel.getChildren().add(pairSelect);
+        panel.getChildren().add(buildSelected());
+        panel.getChildren().add(buildOptions());
+
+        return panel;
+    }
+
+    private void init() {
+        this.resizableProperty().setValue(false);
+        this.initStyle(StageStyle.UNDECORATED);
+        this.initModality(Modality.APPLICATION_MODAL);
+
+        root = new VBox();
 
         root.addEventHandler(PairEvent.LINK_CHANGE, this::handleSelectEvent);
 
         root.getChildren().add(buildTopBar());
-        root.getChildren().add(pairSelect);
-        root.getChildren().add(buildSelected());
-        root.getChildren().add(buildOptions());
+        root.getChildren().add(buildControlPanel());
 
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("PairSelect.css").toExternalForm());
