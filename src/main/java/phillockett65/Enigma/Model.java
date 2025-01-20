@@ -35,7 +35,7 @@ import phillockett65.PairSelect.PairSelectControl;
 
 public class Model {
 
-    private final static String DATAFILE = "Settings.dat";
+    public final static String DATAFILE = "Settings.dat";
     private final static String CONFIGURABLE = "CONFIGURABLE";
 
     public final static int FULL_COUNT = 13;
@@ -71,13 +71,6 @@ public class Model {
      */
 
     private int idToIndex(String id) { return Integer.valueOf(id); }
-
-    /**
-     * @return the file path of the settings data file.
-     */
-    public String getSettingsFile() {
-        return DATAFILE;
-    }
 
 
 

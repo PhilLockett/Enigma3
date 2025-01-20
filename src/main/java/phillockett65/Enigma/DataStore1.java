@@ -77,7 +77,8 @@ public class DataStore1 extends DataStore {
      * @param model contains the data.
      * @return true if data successfully pulled from the model, false otherwise.
      */
-    public boolean pull(Model model) {
+    public boolean pull() {
+        Model model = Model.getInstance();
         boolean success = true;
 
         mainX = model.getMainXPos();
@@ -111,7 +112,8 @@ public class DataStore1 extends DataStore {
      * @param model contains the data.
      * @return true if data successfully pushed to the model, false otherwise.
      */
-    public boolean push(Model model) {
+    public boolean push() {
+        Model model = Model.getInstance();
         boolean success = true;
 
         model.setMainPos(mainX, mainY);
@@ -148,15 +150,14 @@ public class DataStore1 extends DataStore {
      */
     public static boolean writeData() {
         boolean success = false;
-        Model model = Model.getInstance();
 
         DataStore1 store = new DataStore1();
-        store.pull(model);
+        store.pull();
         // dataStore.dump();
 
         ObjectOutputStream objectOutputStream;
         try {
-            objectOutputStream = new ObjectOutputStream(new FileOutputStream(model.getSettingsFile()));
+            objectOutputStream = new ObjectOutputStream(new FileOutputStream(Model.DATAFILE));
 
             objectOutputStream.writeObject(store);
             success = true;
@@ -175,11 +176,10 @@ public class DataStore1 extends DataStore {
      */
     public static boolean readData() {
         boolean success = false;
-        Model model = Model.getInstance();
 
         ObjectInputStream objectInputStream;
         try {
-            objectInputStream = new ObjectInputStream(new FileInputStream(model.getSettingsFile()));
+            objectInputStream = new ObjectInputStream(new FileInputStream(Model.DATAFILE));
 
             DataStore base = (DataStore)objectInputStream.readObject();
             long SVUID = ObjectStreamClass.lookup(base.getClass()).getSerialVersionUID();
@@ -187,7 +187,7 @@ public class DataStore1 extends DataStore {
             DataStore1 store = null;
             if (SVUID == 1) {
                 store = (DataStore1)base;
-                success = store.push(model);
+                success = store.push();
                 // store.dump();
             }
 
