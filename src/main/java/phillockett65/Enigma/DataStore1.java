@@ -153,7 +153,7 @@ public class DataStore1 extends DataStore {
 
         DataStore1 store = new DataStore1();
         store.pull();
-        // dataStore.dump();
+        store.dump();
 
         ObjectOutputStream objectOutputStream;
         try {
@@ -188,7 +188,7 @@ public class DataStore1 extends DataStore {
             if (SVUID == 1) {
                 store = (DataStore1)base;
                 success = store.push();
-                // store.dump();
+                store.dump();
             }
 
         } catch (IOException e) {
@@ -210,25 +210,25 @@ public class DataStore1 extends DataStore {
       * Print data store on the command line.
       */
     private void dump() {
-        System.out.println("mainX = " + mainX);
-        System.out.println("mainY = " + mainY);
-        System.out.println("reflectorX = " + reflectorX);
-        System.out.println("reflectorY = " + reflectorY);
-        System.out.println("plugboardX = " + plugboardX);
-        System.out.println("plugboardY = " + plugboardY);
+        // System.out.println("mainX = " + mainX);
+        // System.out.println("mainY = " + mainY);
+        // System.out.println("reflectorX = " + reflectorX);
+        // System.out.println("reflectorY = " + reflectorY);
+        // System.out.println("plugboardX = " + plugboardX);
+        // System.out.println("plugboardY = " + plugboardY);
 
-        System.out.println("reflectorChoice = " + reflectorChoice);
-        System.out.println("pairs = " + pairs);
+        // System.out.println("reflectorChoice = " + reflectorChoice);
+        // System.out.println("pairs = " + pairs);
 
-        System.out.println("fourthWheel = " + fourthWheel);
+        // System.out.println("fourthWheel = " + fourthWheel);
  
-        System.out.println("wheels = " + wheels);
-        System.out.println("ringSettings = " + ringSettings);
-        System.out.println("rotorOffsets = " + rotorOffsets);
+        // System.out.println("wheels = " + wheels);
+        // System.out.println("ringSettings = " + ringSettings);
+        // System.out.println("rotorOffsets = " + rotorOffsets);
  
-        System.out.println("plugs = " + plugs);
+        // System.out.println("plugs = " + plugs);
  
-        System.out.println("show = " + show);
+        // System.out.println("show = " + show);
     }
 
 }
