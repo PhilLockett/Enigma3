@@ -35,7 +35,7 @@ import phillockett65.PairSelect.PairSelectControl;
 
 public class Model {
 
-    public final static String DATAFILE = "Settings.dat";
+    public final static String DATAFILE = "Settings.ser";
     private final static String CONFIGURABLE = "CONFIGURABLE";
 
     public final static int FULL_COUNT = 13;
