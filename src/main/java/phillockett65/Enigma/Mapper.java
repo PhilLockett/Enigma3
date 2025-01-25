@@ -30,6 +30,7 @@ package phillockett65.Enigma;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.util.Pair;
 import phillockett65.Debug.Debug;
 
 public class Mapper {
@@ -165,7 +166,7 @@ public class Mapper {
      * @param index to translate.
      * @return the translated index.
      */
-    private int swap(int direction, int index) {
+    private int swapWorker(int direction, int index) {
         if (direction == RIGHT_TO_LEFT) 
             return rightToLeft(index);
 
@@ -177,17 +178,14 @@ public class Mapper {
      * another using the map.
      * @param direction of mapping.
      * @param index to translate.
-     * @param show the translation step on the command line.
-     * @return the translated index.
+     * @return the translated index AND the translation String.
      */
-    public int swap(int direction, int index, boolean show) {
-        final int output = swap(direction, index);
+    public Pair<Integer, String> swap(int direction, int index) {
+        final int output = swapWorker(direction, index);
 
-        if (show) {
-            System.out.print(id + "(" + indexToLetter(index) + "->" + indexToLetter(output) + ")  ");
-        }
+        final String message = "" + id + "(" + indexToLetter(index) + "->" + indexToLetter(output) + ")  ";
 
-        return output;
+        return new Pair<Integer, String>(output, message);
     }
 
 

@@ -30,6 +30,7 @@ import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import phillockett65.Debug.Debug;
 import phillockett65.Enigma.RotorControl.RotorEvent;
 import phillockett65.PairSelect.PairSelectControl;
@@ -613,10 +614,20 @@ public class Model {
 
 
     private int mapperTranslate(int index, Mapper mapper, int dir) {
-        return mapper.swap(dir, index, isShow());
+        Pair<Integer, String> result = mapper.swap(dir, index);
+        if (isShow()) {
+            System.out.print(result.getValue());
+        }
+
+        return result.getKey();
     }
     private int mapperTranslate(int index, int id, int dir) {
-        return getActiveRotor(id).swap(dir, index, isShow());
+        Pair<Integer, String> result = getActiveRotor(id).swap(dir, index);
+        if (isShow()) {
+            System.out.print(result.getValue());
+        }
+
+        return result.getKey();
     }
 
     /**

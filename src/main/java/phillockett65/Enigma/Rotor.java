@@ -28,6 +28,7 @@ package phillockett65.Enigma;
 
 import java.util.Arrays;
 
+import javafx.util.Pair;
 import phillockett65.Debug.Debug;
 
 public class Rotor extends Mapper {
@@ -134,7 +135,7 @@ public class Rotor extends Mapper {
      * @param index to translate.
      * @return the translated index.
      */
-    private int swap(int direction, int index) {
+    private int swapWorker(int direction, int index) {
         if (direction == RIGHT_TO_LEFT) 
             return rightToLeft(index);
 
@@ -154,19 +155,15 @@ public class Rotor extends Mapper {
      * another using the map.
      * @param direction of mapping. Eg A may map to J, but J may not map to A.
      * @param index to translate.
-     * @param show the translation step on the command line.
-     * @return the translated index.
+     * @return the translated index AND the translation String.
      */
-    public int swap(int direction, int index, boolean show) {
-
-        int output = swap(direction, rotate(index, offset));
+    public Pair<Integer, String> swap(int direction, int index) {
+        int output = swapWorker(direction, rotate(index, offset));
         output = rotate(output, back);
 
-        if (show) {
-            System.out.print(getId() + "[" + indexToLetter(offset) + "](" + indexToLetter(index) + "->" + indexToLetter(output) + ")  ");
-        }
+        final String message = "" + getId() + "[" + indexToLetter(offset) + "](" + indexToLetter(index) + "->" + indexToLetter(output) + ")  ";
 
-        return output;
+        return new Pair<Integer, String>(output, message);
     }
 
     /**
