@@ -96,7 +96,7 @@ public class PairSelect extends AnchorPane {
     public static final double pi = Math.acos(-1);
     public static final double STEP = (pi / STEPS);
 
-    private ArrayList<Pair> pairList;
+    private ArrayList<Connect> pairList;
 
     private ArrayList<Plug> buttons;
     private ArrayList<Text> labels;
@@ -173,7 +173,7 @@ public class PairSelect extends AnchorPane {
         button.stateChange(true, false);
 
         Plug currentButton = buttons.get(currentIndex);
-        Pair pair = new Pair(currentButton, button);
+        Connect pair = new Connect(currentButton, button);
 
         pairList.add(pair);
         Line line = pair.getLine();
@@ -188,7 +188,7 @@ public class PairSelect extends AnchorPane {
 
     private void removeLink(Plug button, int index) {
 
-        for (Pair pair : pairList)
+        for (Connect pair : pairList)
         {
             int gotIndex = pair.gotIndex(index);
             if (gotIndex == 0)
@@ -349,7 +349,7 @@ public class PairSelect extends AnchorPane {
         if (!isValid())
             return map;
 
-        for (Pair pair : pairList) {
+        for (Connect pair : pairList) {
             final int a = pair.getFirst();
             final int b = pair.getSecond();
             map[a] = b;
@@ -382,7 +382,7 @@ public class PairSelect extends AnchorPane {
      * Clear the state of all sub-objects.
      */
     public void clear() {
-        for (Pair pair : pairList) {
+        for (Connect pair : pairList) {
             this.getChildren().remove(pair.getLine());
             pair.resetTips();
         }
@@ -395,7 +395,7 @@ public class PairSelect extends AnchorPane {
 
     private void init() {
 
-        pairList = new ArrayList<Pair>();
+        pairList = new ArrayList<Connect>();
         buttons = new ArrayList<Plug>();
         labels = new ArrayList<Text>();
 
@@ -463,13 +463,13 @@ public class PairSelect extends AnchorPane {
         return to;
     }
 
-    private Pair addLink(int index1, int index2) {
+    private Connect addLink(int index1, int index2) {
 
         Plug button1 = buttons.get(index1);
         Plug button2 = buttons.get(index2);
         button1.stateChange(true, false);
         button2.stateChange(true, false);
-        Pair pair = new Pair(button1, button2);
+        Connect pair = new Connect(button1, button2);
 
         pairList.add(pair);
         Line line = pair.getLine();

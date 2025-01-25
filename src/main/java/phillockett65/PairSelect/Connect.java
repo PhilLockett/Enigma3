@@ -19,14 +19,14 @@
  */
 
 /*
- * Pair is a class that captures a connection between two letters.
+ * Connect is a class that captures a connection between two letters.
  */
 package phillockett65.PairSelect;
 
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 
-public class Pair {
+public class Connect {
     private final int first;
     private final int second;
     private Line line;
@@ -83,7 +83,7 @@ public class Pair {
     /**
      * Constructor.
      */
-    public Pair(Plug b1, Plug b2) {
+    public Connect(Plug b1, Plug b2) {
 
         final int v1 = PairSelect.letterToIndex(b1.getId());
         final int v2 = PairSelect.letterToIndex(b2.getId());
