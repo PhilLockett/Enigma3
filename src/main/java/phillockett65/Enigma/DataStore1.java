@@ -32,8 +32,13 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
 import java.util.ArrayList;
 
+import phillockett65.Debug.Debug;
+
 public class DataStore1 extends DataStore {
     private static final long serialVersionUID = 1L;
+
+    // Debug delta used to adjust the local logging level.
+    private static final int DD = 0;
 
     private double mainX;
     private double mainY;
@@ -162,8 +167,8 @@ public class DataStore1 extends DataStore {
             objectOutputStream.writeObject(store);
             success = true;
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+            // e.printStackTrace();
+            Debug.critical(DD, e.getMessage());
         }
 
         return success;
@@ -192,9 +197,9 @@ public class DataStore1 extends DataStore {
             }
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Debug.critical(DD, e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            Debug.critical(DD, e.getMessage());
         }
 
         return success;
@@ -210,25 +215,27 @@ public class DataStore1 extends DataStore {
       * Print data store on the command line.
       */
     private void dump() {
-        // System.out.println("mainX = " + mainX);
-        // System.out.println("mainY = " + mainY);
-        // System.out.println("reflectorX = " + reflectorX);
-        // System.out.println("reflectorY = " + reflectorY);
-        // System.out.println("plugboardX = " + plugboardX);
-        // System.out.println("plugboardY = " + plugboardY);
-
-        // System.out.println("reflectorChoice = " + reflectorChoice);
-        // System.out.println("pairs = " + pairs);
-
-        // System.out.println("fourthWheel = " + fourthWheel);
- 
-        // System.out.println("wheels = " + wheels);
-        // System.out.println("ringSettings = " + ringSettings);
-        // System.out.println("rotorOffsets = " + rotorOffsets);
- 
-        // System.out.println("plugs = " + plugs);
- 
-        // System.out.println("show = " + show);
+        Debug.info(DD, "");
+        Debug.info(DD, "mainX = " + mainX);
+        Debug.info(DD, "mainY = " + mainY);
+        Debug.info(DD, "reflectorX = " + reflectorX);
+        Debug.info(DD, "reflectorY = " + reflectorY);
+        Debug.info(DD, "plugboardX = " + plugboardX);
+        Debug.info(DD, "plugboardY = " + plugboardY);
+        Debug.info(DD, "");
+        Debug.info(DD, "reflectorChoice = " + reflectorChoice);
+        Debug.info(DD, "pairs = " + pairs);
+        Debug.info(DD, "");
+        Debug.info(DD, "fourthWheel = " + fourthWheel);
+        Debug.info(DD, "");
+        Debug.info(DD, "wheels = " + wheels);
+        Debug.info(DD, "ringSettings = " + ringSettings);
+        Debug.info(DD, "rotorOffsets = " + rotorOffsets);
+        Debug.info(DD, "");
+        Debug.info(DD, "plugs = " + plugs);
+        Debug.info(DD, "");
+        Debug.info(DD, "show = " + show);
+        Debug.info(DD, "");
     }
 
 }

@@ -30,7 +30,12 @@ package phillockett65.Enigma;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import phillockett65.Debug.Debug;
+
 public class Mapper {
+
+    // Debug delta used to adjust the local logging level.
+    private static final int DD = 0;
 
     public final static int RIGHT_TO_LEFT = 1;
     public final static int LEFT_TO_RIGHT = 2;
@@ -178,8 +183,9 @@ public class Mapper {
     public int swap(int direction, int index, boolean show) {
         final int output = swap(direction, index);
 
-        if (show)
+        if (show) {
             System.out.print(id + "(" + indexToLetter(index) + "->" + indexToLetter(output) + ")  ");
+        }
 
         return output;
     }
@@ -339,10 +345,11 @@ public class Mapper {
     }
 
     protected void dumpMapping(int[] map) {
-        for (int i = 0; i < map.length; ++i)
-            System.out.print(indexToLetter(map[i]));
-
-        System.out.println();
+        String output = "";
+        for (int i = 0; i < map.length; ++i) {
+            output += indexToLetter(map[i]);
+        }
+        Debug.info(DD, output);
     }
 
     public void dumpMap() { dumpMapping(map); }

@@ -50,8 +50,12 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
+import phillockett65.Debug.Debug;
 
 public class PrimaryController {
+
+    // Debug delta used to adjust the local logging level.
+    private static final int DD = 0;
 
     private Model model;
 
@@ -76,7 +80,7 @@ public class PrimaryController {
      * Constructor.
      */
     public PrimaryController() {
-        // System.out.println("PrimaryController constructed.");
+        Debug.trace(DD, "PrimaryController constructed.");
         model = Model.getInstance();
     }
 
@@ -85,7 +89,7 @@ public class PrimaryController {
      * the constructor to initialise all the controls.
      */
     @FXML public void initialize() {
-        // System.out.println("PrimaryController initialized.");
+        Debug.trace(DD, "PrimaryController initialized.");
         model.initialize();
 
         initializeTopBar();
@@ -100,7 +104,7 @@ public class PrimaryController {
      * initialization dependent on other components being initialized.
      */
     public void init(Stage stage) {
-        // System.out.println("PrimaryController init.");
+        Debug.trace(DD, "PrimaryController init.");
         this.stage = stage;
         model.init(stage);
         syncUI();

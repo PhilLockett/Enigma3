@@ -35,9 +35,13 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
+import phillockett65.Debug.Debug;
 
 
 public class RotorControl extends VBox {
+
+    // Debug delta used to adjust the local logging level.
+    private static final int DD = 0;
 
     private final static String[] names = { "fourth", "left", "middle", "right" };
 
@@ -64,7 +68,7 @@ public class RotorControl extends VBox {
      */
     public RotorControl() {
         super();
-        // System.out.println("CustomRotorControl()");
+        Debug.trace(DD, "CustomRotorControl()");
 
         setSpacing(8);
         wheelChoicebox = new ChoiceBox<String>();
@@ -86,7 +90,7 @@ public class RotorControl extends VBox {
      * @param wheelList list of rotor names.
      */
     public void init(int i, ObservableList<String> wheelList) {
-        // System.out.println("init()");
+        Debug.trace(DD, "init()");
 
         id = i;
         String name = names[id];
@@ -114,20 +118,20 @@ public class RotorControl extends VBox {
      * Initialise the change event listeners.
      */
     public void initListeners() {
-        // System.out.println("initListeners()");
+        Debug.trace(DD, "initListeners()");
 
         wheelChoicebox.valueProperty().addListener( (v, oldValue, newValue) -> {
-            // System.out.println("wheelChoicebox[" + id + "] = " + newValue);
+            Debug.trace(DD, "wheelChoicebox[" + id + "] = " + newValue);
             wheelChoicebox.fireEvent(new RotorEvent(RotorEvent.WHEEL_CHOICE, id));
         });
 
         ringSettingSpinner.valueProperty().addListener( (v, oldValue, newValue) -> {
-            // System.out.println("ringSettingSpinner[" + id + "] = " + newValue);
+            Debug.trace(DD, "ringSettingSpinner[" + id + "] = " + newValue);
             ringSettingSpinner.fireEvent(new RotorEvent(RotorEvent.RING_SETTING, id));
         });
 
         rotorOffsetSpinner.valueProperty().addListener( (v, oldValue, newValue) -> {
-            // System.out.println("rotorOffsetSpinner[" + id + "] = " + newValue);
+            Debug.trace(DD, "rotorOffsetSpinner[" + id + "] = " + newValue);
             rotorOffsetSpinner.fireEvent(new RotorEvent(RotorEvent.ROTOR_OFFSET, id));
         });
     }

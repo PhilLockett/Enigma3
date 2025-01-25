@@ -33,6 +33,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import phillockett65.Debug.Debug;
 
 import java.io.IOException;
 
@@ -40,6 +41,9 @@ import java.io.IOException;
  * JavaFX App
  */
 public class App extends Application {
+
+    // Debug delta used to adjust the local logging level.
+    private static final int DD = 0;
 
     PrimaryController controller;
 
@@ -64,7 +68,7 @@ public class App extends Application {
             @Override
             public void handle(KeyEvent event) {
                 final KeyCode keyCode = event.getCode();
-                // System.out.println("stage.addEventFilter(KeyEvent.KEY_PRESSED, " + keyCode + ", " + event.getCharacter() + ").");
+                Debug.trace(DD, "stage.addEventFilter(KeyEvent.KEY_PRESSED, " + keyCode + ", " + event.getCharacter() + ").");
                 if (keyCode.isLetterKey())
                     controller.keyPress(keyCode);
             }
@@ -74,7 +78,7 @@ public class App extends Application {
             @Override
             public void handle(KeyEvent event) {
                 final KeyCode keyCode = event.getCode();
-                // System.out.println("stage.addEventFilter(KeyEvent.KEY_RELEASED, " + keyCode + ", " + event.getCharacter() + ").");
+                Debug.trace(DD, "stage.addEventFilter(KeyEvent.KEY_RELEASED, " + keyCode + ", " + event.getCharacter() + ").");
                 if (keyCode.isLetterKey())
                     controller.keyRelease(keyCode);
             }

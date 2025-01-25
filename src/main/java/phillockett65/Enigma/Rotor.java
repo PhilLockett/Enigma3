@@ -28,7 +28,12 @@ package phillockett65.Enigma;
 
 import java.util.Arrays;
 
+import phillockett65.Debug.Debug;
+
 public class Rotor extends Mapper {
+
+    // Debug delta used to adjust the local logging level.
+    private static final int DD = 0;
 
     private final RotorData data;
     private int[] leftMap;
@@ -117,7 +122,7 @@ public class Rotor extends Mapper {
      */
 
     public void setOffset(int value) { 
-        // System.out.println("setOffset(" + getId() + " " + value + ")");
+        Debug.trace(DD, "setOffset(" + getId() + " " + value + ")");
         offset = value % 26;
         back = 26 - offset;
     }
@@ -157,8 +162,9 @@ public class Rotor extends Mapper {
         int output = swap(direction, rotate(index, offset));
         output = rotate(output, back);
 
-        if (show)
+        if (show) {
             System.out.print(getId() + "[" + indexToLetter(offset) + "](" + indexToLetter(index) + "->" + indexToLetter(output) + ")  ");
+        }
 
         return output;
     }
@@ -168,7 +174,7 @@ public class Rotor extends Mapper {
      * @param index of the required ring setting.
      */
     public void setRingSetting(int index) {
-        // System.out.println("setRingSetting(" + getId() + " " + index + ")");
+        Debug.trace(DD, "setRingSetting(" + getId() + " " + index + ")");
 
         for (int i = 0; i < getMapLength(); ++i)
             rightMap[rotate(i, index)] = rotate(getMapItem(i), index);
@@ -194,10 +200,11 @@ public class Rotor extends Mapper {
     }
 
     public void dumpFlags(boolean[] flags) {
-        for (int i = 0; i < flags.length; ++i)
-            System.out.print(flags[i] ? "1" : "0");
-
-        System.out.println();
+        String output = "";
+        for (int i = 0; i < flags.length; ++i) {
+            output += flags[i] ? "1" : "0";
+        }
+        Debug.info(DD, output);
     }
 
     public void dumpLeftMap() { dumpMapping(leftMap); }

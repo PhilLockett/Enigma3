@@ -26,7 +26,12 @@ package phillockett65.Enigma;
 
 import java.util.Arrays;
 
+import phillockett65.Debug.Debug;
+
 public class RotorData extends Mapper {
+
+    // Debug delta used to adjust the local logging level.
+    private static final int DD = 0;
 
     private final String cipher;
     private final String date;
@@ -82,6 +87,6 @@ public class RotorData extends Mapper {
             "]";
     }
 
-    public void dumpCipher() { System.out.println(cipher); }
+    public void dumpCipher() { Debug.info(DD, cipher); }
 
 }

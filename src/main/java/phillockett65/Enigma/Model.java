@@ -30,10 +30,14 @@ import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import phillockett65.Debug.Debug;
 import phillockett65.Enigma.RotorControl.RotorEvent;
 import phillockett65.PairSelect.PairSelectControl;
 
 public class Model {
+
+    // Debug delta used to adjust the local logging level.
+    private static final int DD = 0;
 
     public final static String DATAFILE = "Settings.ser";
     private final static String CONFIGURABLE = "CONFIGURABLE";
@@ -97,7 +101,7 @@ public class Model {
      * objects after the controls have been initialised.
      */
     public void initialize() {
-        // System.out.println("Model initialized.");
+        Debug.trace(DD, "Model initialized.");
         initRotorWiring();
         initDefaultSettings();
 
@@ -111,7 +115,7 @@ public class Model {
      * initialization dependent on other components being initialized.
      */
     public void init(Stage stage) {
-        // System.out.println("Model init.");
+        Debug.trace(DD, "Model init.");
         this.stage = stage;
         if (readData() == false)
             defaultSettings();
@@ -470,11 +474,11 @@ public class Model {
         final int id = event.getId();
 
         if (event.getEventType() == RotorEvent.WHEEL_CHOICE) {
-            // System.out.println("WHEEL_CHOICE[" + id + "] = " + getWheelChoice(id));
+            Debug.trace(DD, "WHEEL_CHOICE[" + id + "] = " + getWheelChoice(id));
             updateActiveRotorEntry(id);
         } else
         if (event.getEventType() == RotorEvent.RING_SETTING) {
-            // System.out.println("RING_SETTING[" + id + "] = " + getRingIndex(id));
+            Debug.trace(DD, "RING_SETTING[" + id + "] = " + getRingIndex(id));
             setActiveRotorRingSetting(id);
         }
     }
@@ -644,8 +648,9 @@ public class Model {
         index = mapperTranslate(index, plugboard, Mapper.LEFT_TO_RIGHT);
         index = mapperTranslate(index, lampboard, Mapper.LEFT_TO_RIGHT);
 
-        if (isShow())
+        if (isShow()) {
             System.out.println();
+        }
 
         return index;
     }
@@ -700,9 +705,10 @@ public class Model {
      */
 
     public void dumpRotorWiring() {
-        for (RotorData rotor : rotorData)
-            System.out.println(rotor.toString());
-        System.out.println();
+        for (RotorData rotor : rotorData) {
+            Debug.info(DD, rotor.toString());
+        }
+        Debug.info(DD, "");
     }
 
     public int test1(char key) {

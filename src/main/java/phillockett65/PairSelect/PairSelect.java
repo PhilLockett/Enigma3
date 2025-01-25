@@ -37,9 +37,13 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
+import phillockett65.Debug.Debug;
 
 
 public class PairSelect extends AnchorPane {
+
+    // Debug delta used to adjust the local logging level.
+    private static final int DD = 0;
 
     private static final int PAIR_COUNT = 12;
     private static final int WIRE_COUNT = 10;
@@ -434,7 +438,7 @@ public class PairSelect extends AnchorPane {
      * @return the String represntation.
      */
     public String getPairString() {
-        // System.out.println("getPairString()");
+        Debug.trace(DD, "getPairString()");
 
         String to = "";
         final int MAX = size();
@@ -449,7 +453,7 @@ public class PairSelect extends AnchorPane {
      * @return the ArrayList of Strings represntation.
      */
     public ArrayList<String> getLinks() {
-        // System.out.println("getList()");
+        Debug.trace(DD, "getList()");
 
         ArrayList<String> to = new ArrayList<String>();
         final int MAX = size();
@@ -481,7 +485,7 @@ public class PairSelect extends AnchorPane {
      * @param links ArrayList of Strings.
      */
     public void setLinks(ArrayList<String> links) {
-        // System.out.println("setLinks()");
+        Debug.trace(DD, "setLinks()");
         clear();
         if (links == null)
             return;
