@@ -116,3 +116,4 @@ This code has the following points of interest:
   * Uses custom top-bars on all windows.
   * Rotor combinations can be selected that may not be available on the real machine.
   * Data is persisted from one session to the next.
+  * A `static` Debug object helps control diagnostic output.
