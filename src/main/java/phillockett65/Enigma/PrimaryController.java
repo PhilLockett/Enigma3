@@ -528,7 +528,7 @@ public class PrimaryController {
         final char arrow = '\u2799';
         labelIO.setText("" + arrow);
 
-        Circle circle = new Circle(50);
+        Circle circle = new Circle(25);
         keyIO.setShape(circle);
         lampIO.setShape(circle);
     }
