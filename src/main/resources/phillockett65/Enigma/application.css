@@ -36,11 +36,11 @@
 }
 
 .check-box .box, .check-box .mark{
-    -fx-background-color: #BB6662;
+    -fx-background-color: #888888;
 }
 
 .check-box .box{
-    -fx-background-radius: 8;
+    -fx-background-radius: 5;
 }
 
 .check-box:selected .box{
@@ -92,7 +92,7 @@
     -fx-background-color: linear-gradient(to bottom, #BB6662, #7B2622);
     -fx-text-fill: #e8e8e8;
     -fx-font-weight: bold;
-    -fx-background-radius: 12;
+    -fx-background-radius: 6;
 }
 .context-menu{
     -fx-background-color: #9B4642;
@@ -103,7 +103,7 @@
     -fx-background-color: linear-gradient(to bottom, #DB8682, #9B4642);
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-radius: 12;
+    -fx-background-radius: 6;
 }
 
 .toggle-button:selected{
@@ -117,22 +117,22 @@
 
 
 .increment-arrow-button{
-    -fx-background-radius: 0 12 0 0;
+    -fx-background-radius: 0 6 0 0;
     -fx-background-color: linear-gradient(to bottom, #BB6662, #9B4642);
 }
 .decrement-arrow-button{
-    -fx-background-radius: 0 0 12 0;
+    -fx-background-radius: 0 0 6 0;
     -fx-background-color: linear-gradient(to bottom, #9B4642, #7B2622);
 }
 .increment-arrow, .decrement-arrow, .arrow{
     -fx-background-color: #e8e8e8;
 }
 .increment-arrow-button:hover{
-    -fx-background-radius: 0 12 0 0;
+    -fx-background-radius: 0 6 0 0;
     -fx-background-color: linear-gradient(to bottom, #DB8682, #AB6662);
 }
 .decrement-arrow-button:hover{
-    -fx-background-radius: 0 0 12 0;
+    -fx-background-radius: 0 0 6 0;
     -fx-background-color: linear-gradient(to bottom, #AB6662, #9B4642);
 }
 
@@ -147,7 +147,6 @@
     -fx-background-color: black;
     -fx-border-color: silver;
     -fx-border-width: 2;
-    -fx-shape: "M50 0 A1 1, 0, 0 0, 50 50 A1 1, 0, 0 0, 50 0";
 }
 
 .lamp-text-field:readonly{
@@ -157,6 +156,5 @@
     -fx-background-color: white;
     -fx-border-color: silver;
     -fx-border-width: 2;
-    -fx-shape: "M50 0 A1 1, 0, 0 0, 50 50 A1 1, 0, 0 0, 50 0";
 }
 

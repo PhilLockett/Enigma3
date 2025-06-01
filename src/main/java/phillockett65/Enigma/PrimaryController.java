@@ -47,6 +47,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
@@ -526,6 +527,10 @@ public class PrimaryController {
 
         final char arrow = '\u2799';
         labelIO.setText("" + arrow);
+
+        Circle circle = new Circle(50);
+        keyIO.setShape(circle);
+        lampIO.setShape(circle);
     }
 
 
@@ -551,6 +556,8 @@ public class PrimaryController {
         final int index = Mapper.letterToIndex(keyCode.getChar());
         if (currentKey == index) {
             currentKey = -1;
+            keyIO.setText("");
+            lampIO.setText("");
         }
     }
 
