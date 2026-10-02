@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -52,6 +51,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
 import phillockett65.Debug.Debug;
+import phillockett65.Enigma.SwitchControl.SwitchEvent;
 
 public class PrimaryController {
 
@@ -140,8 +140,8 @@ public class PrimaryController {
             pair.setText(model.getPairText(i));
         }
 
-        fourthWheelCheckbox.setSelected(model.isFourthWheel());
-        showStepsCheckbox.setSelected(model.isShow());
+        fourthWheelControl.setSelected(model.isFourthWheel());
+        showStepsControl.setSelected(model.isShow());
 
         for (int i = 0; i < plugs.size(); ++i) {
             TextField plug = plugs.get(i);
@@ -358,23 +358,31 @@ public class PrimaryController {
     private HBox rotorSetUpHBox;
 
     @FXML
-    private CheckBox fourthWheelCheckbox;
+    private HBox fourthWheelHBox;
 
-    @FXML
-    void fourthWheelCheckboxActionPerformed(ActionEvent event) {
-        model.setFourthWheel(fourthWheelCheckbox.isSelected());
-    }
+    private SwitchControl fourthWheelControl;
 
     /**
      * Initialize "Rotor Set-Up".
      */
     private void initializeRotorSetup() {
+        fourthWheelControl = new SwitchControl("Use Fourth Rotor");
+        fourthWheelHBox.getChildren().add(fourthWheelControl);
+        fourthWheelHBox.addEventFilter(SwitchEvent.ANY, this::handleFourthWheelEvent);
+
         rotorSetUpHBox.getChildren().addAll(model.getRotorControls());
 
         rotorSetUpTitledPane.setTooltip(new Tooltip("Select and set up the Rotors (wheels / drums)"));
-        fourthWheelCheckbox.setTooltip(new Tooltip("Select to use a fourth Rotor"));
+        fourthWheelControl.setTooltip("Select to use a fourth Rotor");
     }
 
+    public void handleFourthWheelEvent(SwitchEvent event) {
+        Debug.trace(DD, "handleFourthWheelEvent() " + event.isOn());
+
+        if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {
+            model.setFourthWheel(event.isOn());
+        }
+    }
 
 
     /************************************************************************
@@ -488,7 +496,9 @@ public class PrimaryController {
     private int currentKey = -1;
 
     @FXML
-    private CheckBox showStepsCheckbox;
+    private HBox showStepsHBox;
+
+    private SwitchControl showStepsControl;
 
     @FXML
     private ChoiceBox<Integer> settingsChoicebox;
@@ -505,16 +515,15 @@ public class PrimaryController {
     @FXML
     private TextField lampIO;
 
-    @FXML
-    void showStepsCheckboxActionPerformed(ActionEvent event) {
-        model.setShow(showStepsCheckbox.isSelected());
-    }
-
 
     /**
      * Initialize "Translation" panel.
      */
     private void initializeEncipher() {
+        showStepsControl = new SwitchControl("Show Translation");
+        showStepsHBox.getChildren().add(showStepsControl);
+        showStepsHBox.addEventFilter(SwitchEvent.ANY, this::handleShowStepsEvent);
+
         settingsChoicebox.setItems(model.getSettingsList());
 
         settingsChoicebox.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
@@ -522,7 +531,7 @@ public class PrimaryController {
             syncUI();
         });
 
-        showStepsCheckbox.setTooltip(new Tooltip("Select to show each translation step on the command line"));
+        showStepsControl.setTooltip("Select to show each translation step on the command line");
         settingsChoicebox.setTooltip(new Tooltip("Select a settings entry from the Luftwaffe Enigma key list number 649"));
 
         final char arrow = '\u2799';
@@ -558,6 +567,14 @@ public class PrimaryController {
             currentKey = -1;
             keyIO.setText("");
             lampIO.setText("");
+        }
+    }
+
+    public void handleShowStepsEvent(SwitchEvent event) {
+        Debug.trace(DD, "handleShowStepsEvent() " + event.isOn());
+
+        if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {
+            model.setShow(event.isOn());
         }
     }
 
