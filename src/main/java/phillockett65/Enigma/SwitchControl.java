@@ -35,6 +35,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Paint;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
@@ -42,11 +43,16 @@ import javafx.scene.shape.Rectangle;
 public class SwitchControl extends HBox {
 
     private static final String STYLESHEET = "SwitchControl.css";
-    private static final String STYLE = "myswitch-selected";
+    private static final String SELECTED = "myswitch-selected";
+    private static final String HOVER = "myswitch-hover";
+
+    private static final Paint TRACK = Color.SILVER;
+    private static final Paint TRACKHOVER = Color.WHITE;
 
     private int id = 0;
     private boolean state = false;
 
+    private Rectangle track;
     private Rectangle thumb;
     private Label switchLabel;
 
@@ -62,19 +68,21 @@ public class SwitchControl extends HBox {
 
     /**
      * Use CSS to change the style of a Control.
+     * @param state to adjust the appearance to or from.
      * @param field to adjust the appearance of.
+     * @param style to adjust the appearance to or from.
      */
-    private void setSliderStyleClass(Control field) {
+    private void setStyleClass(boolean state, Control field, String style) {
         if (!state) {
-            field.getStyleClass().remove(STYLE);
+            field.getStyleClass().remove(style);
         } else {
-            if (!field.getStyleClass().contains(STYLE))
-                field.getStyleClass().add(STYLE);
+            if (!field.getStyleClass().contains(style))
+                field.getStyleClass().add(style);
         }
     }
 
     private void syncUI() {
-        setSliderStyleClass(switchLabel);
+        setStyleClass(state, switchLabel, SELECTED);
         if (!state) {
             thumb.setX(x0);
         } else {
@@ -86,6 +94,15 @@ public class SwitchControl extends HBox {
         state = !state;
         syncUI();
         fireEvent(new SwitchEvent(SwitchEvent.SWITCH_TOGGLED, id, state));
+    }
+
+    private void hoverSwitch(boolean hovering) {
+        setStyleClass(hovering, switchLabel, HOVER);
+        if (hovering) {
+            track.setStroke(TRACKHOVER);
+        } else {
+            track.setStroke(TRACK);
+        }
     }
 
 
@@ -120,7 +137,7 @@ public class SwitchControl extends HBox {
         this.setAlignment(Pos.CENTER_LEFT);
 
         // Build the track.
-        Rectangle track = new Rectangle(0, 0, w, h);
+        track = new Rectangle(0, 0, w, h);
         Stop[] trackStops = new Stop[]{
             new Stop(0, Color.web("#444")),
             new Stop(1, Color.web("#888"))
@@ -128,7 +145,7 @@ public class SwitchControl extends HBox {
         LinearGradient trackLG = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, trackStops);
 
         track.setStrokeWidth(2.0);
-        track.setStroke(Color.SILVER);
+        track.setStroke(TRACK);
         track.setFill(trackLG);
         track.setArcWidth(h);
         track.setArcHeight(h);
@@ -145,16 +162,17 @@ public class SwitchControl extends HBox {
         thumb.setArcWidth(s);
         thumb.setArcHeight(s);
 
-        // Group track and thumb together.
-        Group group = new Group(track, thumb);
-        group.setOnMouseClicked(event -> toggleSwitch());
-
         // Build the label.
         switchLabel = new Label(" " + label);
-        switchLabel.setOnMouseClicked(event -> toggleSwitch());
         switchLabel.getStylesheets().add(App.class.getResource(STYLESHEET).toExternalForm());
+        
+        // Group track and thumb together.
+        Group group = new Group(track, thumb);
 
         this.getChildren().addAll(group, switchLabel);
+        this.setOnMouseClicked(event -> toggleSwitch());
+        this.setOnMouseEntered(event -> hoverSwitch(true));
+        this.setOnMouseExited(event -> hoverSwitch(false));
 
         syncUI();
     }
