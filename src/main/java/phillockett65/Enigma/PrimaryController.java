@@ -366,7 +366,7 @@ public class PrimaryController {
      * Initialize "Rotor Set-Up".
      */
     private void initializeRotorSetup() {
-        fourthWheelControl = new SwitchControl("Use Fourth Rotor");
+        fourthWheelControl = new SwitchControl("Use Fourth Rotor", 1.0);
         fourthWheelHBox.getChildren().add(fourthWheelControl);
         fourthWheelHBox.addEventFilter(SwitchEvent.ANY, this::handleFourthWheelEvent);
 
@@ -520,7 +520,7 @@ public class PrimaryController {
      * Initialize "Translation" panel.
      */
     private void initializeEncipher() {
-        showStepsControl = new SwitchControl("Show Translation");
+        showStepsControl = new SwitchControl("Show Translation", 1.0);
         showStepsHBox.getChildren().add(showStepsControl);
         showStepsHBox.addEventFilter(SwitchEvent.ANY, this::handleShowStepsEvent);
 

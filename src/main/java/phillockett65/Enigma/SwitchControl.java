@@ -64,6 +64,9 @@ public class SwitchControl extends HBox {
     private final double x0 = b;
     private final double x1 = w - (b + s);
     private final double y = b;
+    private final double p;
+    private final double a1;
+    private final double a2;
 
 
     /**
@@ -130,9 +133,17 @@ public class SwitchControl extends HBox {
 
     /**
      * Constructor.
+     * @param text string for its label.
+     * @param roundness of corners, 0.0 = square, 1.0 = round.
      */
-    public SwitchControl(String label) {
+    public SwitchControl(String text, double roundness) {
         super();
+
+        if (roundness < 0.0) roundness = 0.0;
+        if (roundness > 1.0) roundness = 1.0;
+        p = roundness;
+        a1 = h * p;
+        a2 = s * p;
 
         this.setAlignment(Pos.CENTER_LEFT);
 
@@ -147,8 +158,8 @@ public class SwitchControl extends HBox {
         track.setStrokeWidth(2.0);
         track.setStroke(TRACK);
         track.setFill(trackLG);
-        track.setArcWidth(h);
-        track.setArcHeight(h);
+        track.setArcWidth(a1);
+        track.setArcHeight(a1);
 
         // Build the thumb.
         thumb = new Rectangle(x0, y, s, s);
@@ -159,11 +170,11 @@ public class SwitchControl extends HBox {
         RadialGradient thumbRG = new RadialGradient(0, 0, 0.5, 0.25, 0.5, true, CycleMethod.NO_CYCLE, thumbStops);
 
         thumb.setFill(thumbRG);
-        thumb.setArcWidth(s);
-        thumb.setArcHeight(s);
+        thumb.setArcWidth(a2);
+        thumb.setArcHeight(a2);
 
         // Build the label.
-        switchLabel = new Label(" " + label);
+        switchLabel = new Label(" " + text);
         switchLabel.getStylesheets().add(App.class.getResource(STYLESHEET).toExternalForm());
         
         // Group track and thumb together.
