@@ -111,8 +111,9 @@ This code has the following points of interest:
   * Enigma3 is a Maven project that uses JavaFX, FXML and CSS.
   * Uses a custom controller, "RotorControl", to represent rotor settings.
   * Uses a custom controller, "PairSelect", to represent reflector and plugboard settings.
+  * Uses a custom controller, "SwitchControl", to represent a toggle switch.
   * Uses subtle linear and radial colour gradients on controls.
-  * Uses SVG paths to create circular text fields.
+  * Uses setShape() to create circular text fields.
   * Uses custom top-bars on all windows.
   * Rotor combinations can be selected that may not be available on the real machine.
   * Data is persisted from one session to the next.

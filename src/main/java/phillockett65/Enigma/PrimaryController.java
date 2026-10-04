@@ -531,8 +531,10 @@ public class PrimaryController {
             syncUI();
         });
 
-        showStepsControl.setTooltip("Select to show each translation step on the command line");
+        showStepsControl.setTooltip("Show each translation step on the command line when selected");
         settingsChoicebox.setTooltip(new Tooltip("Select a settings entry from the Luftwaffe Enigma key list number 649"));
+        keyIO.setTooltip(new Tooltip("Key pressed"));
+        lampIO.setTooltip(new Tooltip("Translated result"));
 
         final char arrow = '\u2799';
         labelIO.setText("" + arrow);
