@@ -28,6 +28,12 @@
     -fx-font-weight: bold;
     -fx-background-radius: 6;
 }
+.choice-box:hover, .button:hover{
+    -fx-background-color: linear-gradient(to bottom, #DB8682, #9B4642);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+}
 
 .tooltip{
     -fx-font-size: 14;
