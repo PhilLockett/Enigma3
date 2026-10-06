@@ -23,6 +23,7 @@
  */
 package phillockett65.Enigma;
 
+import javafx.animation.TranslateTransition;
 import javafx.event.Event;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
@@ -39,6 +40,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public class SwitchControl extends HBox {
 
@@ -61,12 +63,14 @@ public class SwitchControl extends HBox {
     private final double w = h * 2.0;
     private final double b = 2.0;
     private final double s = h - (2.0 * b);
-    private final double x0 = b;
-    private final double x1 = w - (b + s);
+    private final double x = b;
+    private final double dist = w - (x + b + s);
     private final double y = b;
     private final double p;
     private final double a1;
     private final double a2;
+
+    private final Duration duration = Duration.millis(100);
 
 
     /**
@@ -86,11 +90,16 @@ public class SwitchControl extends HBox {
 
     private void syncUI() {
         setStyleClass(state, switchLabel, SELECTED);
+
+        TranslateTransition translate = new TranslateTransition();
+        translate.setNode(thumb);
+        translate.setDuration(duration);
         if (!state) {
-            thumb.setX(x0);
+            translate.setByX(-dist);
         } else {
-            thumb.setX(x1);
+            translate.setByX(dist);
         }
+        translate.play();
     }
 
     private void toggleSwitch() {
@@ -162,7 +171,7 @@ public class SwitchControl extends HBox {
         track.setArcHeight(a1);
 
         // Build the thumb.
-        thumb = new Rectangle(x0, y, s, s);
+        thumb = new Rectangle(x, y, s, s);
         Stop[] thumbStops = new Stop[]{
             new Stop(0, Color.web("#fff")),
             new Stop(1, Color.web("#999"))
@@ -184,8 +193,6 @@ public class SwitchControl extends HBox {
         this.setOnMouseClicked(event -> toggleSwitch());
         this.setOnMouseEntered(event -> hoverSwitch(true));
         this.setOnMouseExited(event -> hoverSwitch(false));
-
-        syncUI();
     }
 
 
