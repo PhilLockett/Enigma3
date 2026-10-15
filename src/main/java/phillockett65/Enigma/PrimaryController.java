@@ -33,7 +33,9 @@ import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -51,7 +53,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
 import phillockett65.Debug.Debug;
-import phillockett65.Enigma.SwitchControl.SwitchEvent;
 
 public class PrimaryController {
 
@@ -115,6 +116,10 @@ public class PrimaryController {
         }
 
         headingLabel.setText(model.getTitle());
+
+        Scene scene = stage.getScene();
+        scene.setOnKeyPressed(event -> keyPress(event.getCode()));
+        scene.setOnKeyReleased(event -> keyRelease(event.getCode()));
     }
 
     /**
@@ -140,8 +145,8 @@ public class PrimaryController {
             pair.setText(model.getPairText(i));
         }
 
-        fourthWheelControl.setSelected(model.isFourthWheel());
-        showStepsControl.setSelected(model.isShow());
+        fourthWheelCheckbox.setSelected(model.isFourthWheel());
+        showStepsCheckbox.setSelected(model.isShow());
 
         for (int i = 0; i < plugs.size(); ++i) {
             TextField plug = plugs.get(i);
@@ -358,31 +363,23 @@ public class PrimaryController {
     private HBox rotorSetUpHBox;
 
     @FXML
-    private HBox fourthWheelHBox;
+    private CheckBox fourthWheelCheckbox;
 
-    private SwitchControl fourthWheelControl;
+    @FXML
+    void fourthWheelCheckboxActionPerformed(ActionEvent event) {
+        model.setFourthWheel(fourthWheelCheckbox.isSelected());
+    }
 
     /**
      * Initialize "Rotor Set-Up".
      */
     private void initializeRotorSetup() {
-        fourthWheelControl = new SwitchControl("Use Fourth Rotor", 1.0);
-        fourthWheelHBox.getChildren().add(fourthWheelControl);
-        fourthWheelHBox.addEventFilter(SwitchEvent.ANY, this::handleFourthWheelEvent);
-
         rotorSetUpHBox.getChildren().addAll(model.getRotorControls());
 
         rotorSetUpTitledPane.setTooltip(new Tooltip("Select and set up the Rotors (wheels / drums)"));
-        fourthWheelControl.setTooltip("Select to use a fourth Rotor");
+        fourthWheelCheckbox.setTooltip(new Tooltip("Select to use a fourth Rotor"));
     }
 
-    public void handleFourthWheelEvent(SwitchEvent event) {
-        Debug.trace(DD, "handleFourthWheelEvent() " + event.isOn());
-
-        if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {
-            model.setFourthWheel(event.isOn());
-        }
-    }
 
 
     /************************************************************************
@@ -496,9 +493,7 @@ public class PrimaryController {
     private int currentKey = -1;
 
     @FXML
-    private HBox showStepsHBox;
-
-    private SwitchControl showStepsControl;
+    private CheckBox showStepsCheckbox;
 
     @FXML
     private ChoiceBox<Integer> settingsChoicebox;
@@ -515,15 +510,16 @@ public class PrimaryController {
     @FXML
     private TextField lampIO;
 
+    @FXML
+    void showStepsCheckboxActionPerformed(ActionEvent event) {
+        model.setShow(showStepsCheckbox.isSelected());
+    }
+
 
     /**
      * Initialize "Translation" panel.
      */
     private void initializeEncipher() {
-        showStepsControl = new SwitchControl("Show Translation", 1.0);
-        showStepsHBox.getChildren().add(showStepsControl);
-        showStepsHBox.addEventFilter(SwitchEvent.ANY, this::handleShowStepsEvent);
-
         settingsChoicebox.setItems(model.getSettingsList());
 
         settingsChoicebox.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
@@ -531,10 +527,8 @@ public class PrimaryController {
             syncUI();
         });
 
-        showStepsControl.setTooltip("Show each translation step on the command line when selected");
+        showStepsCheckbox.setTooltip(new Tooltip("Select to show each translation step on the command line"));
         settingsChoicebox.setTooltip(new Tooltip("Select a settings entry from the Luftwaffe Enigma key list number 649"));
-        keyIO.setTooltip(new Tooltip("Key pressed"));
-        lampIO.setTooltip(new Tooltip("Translated result"));
 
         final char arrow = '\u2799';
         labelIO.setText("" + arrow);
@@ -546,10 +540,14 @@ public class PrimaryController {
 
 
     /**
-     * Called by the Application when a new key is pressed.
-     * @param keyCode key to be processed
+     * Called by the scene when a key is pressed.
+     * @param keyCode to be processed
      */
-    public void keyPress(KeyCode keyCode) {
+    private void keyPress(KeyCode keyCode) {
+        if (keyCode.isLetterKey() == false) {
+            return;
+        }
+
         if (currentKey == -1) {
             currentKey = Mapper.letterToIndex(keyCode.getChar());
             final int index = model.translate(currentKey);
@@ -560,23 +558,19 @@ public class PrimaryController {
     }
 
     /**
-     * Called by the Application when a current key is released.
-     * @param keyCode key to be processed
+     * Called by the scene when a key is released.
+     * @param keyCode to be processed
      */
-    public void keyRelease(KeyCode keyCode) {
+    private void keyRelease(KeyCode keyCode) {
+        if (keyCode.isLetterKey() == false) {
+            return;
+        }
+
         final int index = Mapper.letterToIndex(keyCode.getChar());
         if (currentKey == index) {
             currentKey = -1;
             keyIO.setText("");
             lampIO.setText("");
-        }
-    }
-
-    public void handleShowStepsEvent(SwitchEvent event) {
-        Debug.trace(DD, "handleShowStepsEvent() " + event.isOn());
-
-        if (event.getEventType() == SwitchEvent.SWITCH_TOGGLED) {
-            model.setShow(event.isOn());
         }
     }
 

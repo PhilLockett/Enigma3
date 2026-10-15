@@ -64,7 +64,7 @@ letters._
 ### Rotor Set-Up
 By default, Enigma3 functions as a 3 Rotor machine, allowing the Left, Middle 
 and Right Rotors to be configured.
-The 'Use Fourth Rotor' toggle, when selected, brings in the Fourth Rotor.
+Enable the 'Use Fourth Rotor' check-box to bring in the Fourth Rotor.
 
 #### Rotor Selection
 The 'Rotor' choice box allows different Rotors to be selected for each of the 
@@ -91,7 +91,7 @@ This area shows the key presses and the translated values using the current
 configuration settings.
 
 #### Show Translation
-Select the 'Show Translation' toggle to see all the individual translation 
+Enable the 'Show Translation' check-box to see all the individual translation 
 steps displayed on the command line.
 
 #### Default Settings
@@ -111,7 +111,6 @@ This code has the following points of interest:
   * Enigma3 is a Maven project that uses JavaFX, FXML and CSS.
   * Uses a custom controller, "RotorControl", to represent rotor settings.
   * Uses a custom controller, "PairSelect", to represent reflector and plugboard settings.
-  * Uses a custom controller, "SwitchControl", to represent a toggle switch.
   * Uses subtle linear and radial colour gradients on controls.
   * Uses setShape() to create circular text fields.
   * Uses custom top-bars on all windows.
